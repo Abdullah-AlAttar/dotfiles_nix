@@ -16,6 +16,7 @@
         self.nixosModules.mainPCHardware
         self.nixosModules.gnome
         self.nixosModules.nvidia
+        self.nixosModules.gaming
         self.nixosModules.homeManager
       ];
 
