@@ -9,7 +9,10 @@
     home-manager = {
       useGlobalPkgs = true;
       useUserPackages = true;
-      extraSpecialArgs = { inherit inputs; };
+      extraSpecialArgs = {
+        inherit inputs;
+        isNixOS = true;
+      };
       users.ab_dullah = import ../../home_man/nix_home.nix;
     };
   };
