@@ -10,7 +10,7 @@
       useGlobalPkgs = true;
       useUserPackages = true;
       extraSpecialArgs = { inherit inputs; };
-      users.ab_dullah = import ../../home/nix_home.nix;
+      users.ab_dullah = import ../../home_man/nix_home.nix;
     };
   };
 }
