@@ -103,11 +103,27 @@
           };
         };
 
+        shortcuts = {
+          kwin = {
+            "Window Close" = "Alt+Q";
+          };
+        };
+
+        hotkeys.commands."launch-terminal" = {
+          name = "Launch Terminal";
+          key = "Ctrl+Alt+T";
+          command = "ghostty";
+        };
+
         panels = [
           {
             location = "bottom";
             floating = true;
             height = 48;
+            alignment = "center";
+            lengthMode = "fit";
+            hiding = "autohide";
+            opacity = "adaptive";
             widgets = [
               "org.kde.plasma.kickoff"
               "org.kde.plasma.pager"
