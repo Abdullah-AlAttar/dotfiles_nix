@@ -1,0 +1,89 @@
+version: '3'
+
+tasks:
+  default:
+    desc: List available tasks
+    cmds:
+      - task --list
+    silent: true
+
+  nix:switch:
+    desc: Build and switch to the NixOS configuration
+    cmds:
+      - sudo nixos-rebuild switch --flake .#myMachine
+
+  nix:boot:
+    desc: Build and set as boot entry (no switch)
+    cmds:
+      - sudo nixos-rebuild boot --flake .#myMachine
+
+  nix:test:
+    desc: Build and activate temporarily (reverts on reboot)
+    cmds:
+      - sudo nixos-rebuild test --flake .#myMachine
+
+  nix:build:
+    desc: Build the configuration without activating
+    cmds:
+      - nixos-rebuild build --flake .#myMachine
+
+  nix:check:
+    desc: Evaluate the flake and check for errors
+    cmds:
+      - nix flake check
+
+  nix:update:
+    desc: Update all flake inputs
+    cmds:
+      - nix flake update
+
+  nix:update:input:
+    desc: Update a single flake input (usage - task nix:update:input INPUT=nixpkgs)
+    cmds:
+      - nix flake update {{.INPUT}}
+    requires:
+      vars: [INPUT]
+
+  nix:gc:
+    desc: Remove ALL old system generations and run garbage collection
+    cmds:
+      - sudo nix-env --profile /nix/var/nix/profiles/system --delete-generations old
+      - sudo nix-collect-garbage -d
+      - sudo nix store optimise
+
+  nix:gc:user:
+    desc: Garbage collect only user profile generations
+    cmds:
+      - nix-collect-garbage -d
+
+  nix:gc:old:
+    desc: Delete all but the last 3 system generations
+    cmds:
+      - sudo nix-env --profile /nix/var/nix/profiles/system --delete-generations +3
+      - sudo nix-collect-garbage
+
+  nix:generations:
+    desc: List system generations
+    cmds:
+      - sudo nix-env --profile /nix/var/nix/profiles/system --list-generations
+
+  nix:rollback:
+    desc: Roll back to the previous system generation
+    cmds:
+      - sudo nixos-rebuild switch --rollback
+
+  nix:diff:
+    desc: Show package diff between current and new build
+    cmds:
+      - nix build .#nixosConfigurations.myMachine.config.system.build.toplevel --no-link --print-out-paths | xargs -I{} nvd diff /run/current-system {}
+
+  nix:repl:
+    desc: Open a nix repl with the flake loaded
+    cmds:
+      - nix repl --expr 'builtins.getFlake (toString ./.)'
+
+  nix:show:
+    desc: Show flake outputs
+    cmds:
+      - nix flake show
+
