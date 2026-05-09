@@ -14,7 +14,7 @@
         # Include the results of the hardware scan.
         # ./hardware-configuration.nix
         self.nixosModules.mainPCHardware
-        self.nixosModules.gnome
+        self.nixosModules.kde
         self.nixosModules.nvidia
         self.nixosModules.gaming
         self.nixosModules.homeManager
