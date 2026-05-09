@@ -2,7 +2,7 @@
 
 ## What this is
 
-A NixOS system configuration managed as a **flake**, structured using **flake-parts** and **import-tree**. It configures one machine (`myMachine`) with a full desktop environment and a Home Manager user environment for `ab_dullah`.
+A NixOS system configuration managed as a **flake**, structured using **flake-parts** and **import-tree**. It configures one machine (`mainPC`) with a full desktop environment and a Home Manager user environment for `ab_dullah`.
 
 ---
 
@@ -32,8 +32,8 @@ abdullah_nix/
 │   │   └── default.nix        # nixosModule that wires Home Manager into NixOS
 │   │
 │   └── hosts/
-│       └── myMachine/
-│           ├── default.nix           # Declares `nixosConfigurations.myMachine`
+│       └── mainPC/
+│           ├── default.nix           # Declares `nixosConfigurations.mainPC`
 │           ├── configuration.nix     # Main system config — imports modules, sets users, packages
 │           └── hardware-configuration.nix  # Auto-generated hardware config
 │
@@ -85,9 +85,9 @@ import-tree ./modules
     ├── features/desktop/niri/default.nix  → flake.nixosModules.niri
     ├── features/desktop/niri/noctalia.nix → perSystem.packages.myNoctalia
     ├── modules/home/default.nix           → flake.nixosModules.homeManager
-    └── modules/hosts/myMachine/
-            ├── default.nix        → flake.nixosConfigurations.myMachine
-            └── configuration.nix  → flake.nixosModules.myMachineConfiguration
+        └── modules/hosts/mainPC/
+          ├── default.nix        → flake.nixosConfigurations.mainPC
+          └── configuration.nix  → flake.nixosModules.mainPCConfiguration
 ```
 
 Each node adds exactly what it owns. Cross-references are done via `self.nixosModules.*` (e.g. `configuration.nix` imports `self.nixosModules.gnome`).
@@ -109,12 +109,12 @@ flake.nixosModules.homeManager = { pkgs, ... }: {
 };
 ```
 
-This module is then imported by `myMachineConfiguration`. The `home/` directory is **not** in `modules/` — it is plain Home Manager configuration, imported by the bridge above. It does **not** use the flake-parts / import-tree machinery. Instead, `ab_dullah.nix` manually lists its program imports.
+This module is then imported by `mainPCConfiguration`. The `home/` directory is **not** in `modules/` — it is plain Home Manager configuration, imported by the bridge above. It does **not** use the flake-parts / import-tree machinery. Instead, `ab_dullah.nix` manually lists its program imports.
 
 ```
 NixOS system build
-  └── myMachineConfiguration
-        ├── myMachineHardware   (hardware)
+    └── mainPCConfiguration
+      ├── mainPCHardware   (hardware)
         ├── gnome               (or niri)
         └── homeManager         ← injects home-manager module
               └── ab_dullah.nix
@@ -138,7 +138,7 @@ NixOS system build
 ## Rebuild
 
 ```bash
-sudo nixos-rebuild switch --flake '.?submodules=1#myMachine'
+sudo nixos-rebuild switch --flake '.?submodules=1#mainPC'
 ```
 
 `.?submodules=1` means:
