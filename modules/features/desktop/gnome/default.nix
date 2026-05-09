@@ -23,10 +23,30 @@
       extraPortals = [ pkgs.xdg-desktop-portal-gnome ];
     };
 
-    # Keyboard layout via xserver
+    # Keyboard layout via xserver (affects X11 / GDM login screen)
     services.xserver.xkb = {
       layout = "us,ara";
       options = "grp:alt_shift_toggle,caps:escape";
+    };
+
+    # GNOME Wayland ignores xkb settings at runtime — it reads input sources
+    # from dconf. Set system-wide dconf defaults so Arabic is available.
+    # sources is GVariant type a(ss) — requires mkTuple; xkb-options is as.
+    programs.dconf = {
+      enable = true;
+      profiles.user.databases = [
+        {
+          settings = {
+            "org/gnome/desktop/input-sources" = {
+              sources = [
+                (lib.gvariant.mkTuple [ "xkb" "us" ])
+                (lib.gvariant.mkTuple [ "xkb" "ara" ])
+              ];
+              xkb-options = [ "grp:alt_shift_toggle" "caps:escape" ];
+            };
+          };
+        }
+      ];
     };
 
     # Exclude some default GNOME apps if desired
