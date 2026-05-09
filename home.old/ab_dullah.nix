@@ -23,7 +23,7 @@
     ./programs/zoxide.nix
     ./programs/eza.nix
     ./programs/ghostty
-    ./programs/gnome.nix
+    # ./programs/gnome.nix
   ];
 
   # programs.git = {
