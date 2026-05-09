@@ -14,7 +14,7 @@
     [ # Include the results of the hardware scan.
       # ./hardware-configuration.nix
               self.nixosModules.myMachineHardware
-                      # self.nixosModules.homeManager
+                      self.nixosModules.homeManager
     ];
 
   # Bootloader.
