@@ -138,5 +138,12 @@ NixOS system build
 ## Rebuild
 
 ```bash
-sudo nixos-rebuild switch --flake .#myMachine
+sudo nixos-rebuild switch --flake '.?submodules=1#myMachine'
 ```
+
+`.?submodules=1` means:
+- `.` = use the current directory as the flake source.
+- `?submodules=1` = include Git submodule contents in that source snapshot.
+
+This repo imports Home Manager files from the `home_man` submodule, so omitting
+`submodules=1` can cause evaluation errors for paths inside that submodule.

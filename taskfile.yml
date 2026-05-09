@@ -1,5 +1,10 @@
 version: '3'
 
+# This repo imports files from the git submodule at ./home_man.
+# Using '.?submodules=1' tells Nix to include submodule contents when
+# materializing the flake source snapshot.
+# Without it, paths like home_man/nix_home.nix can fail during evaluation.
+
 tasks:
   default:
     desc: List available tasks
@@ -10,22 +15,26 @@ tasks:
   nix:switch:
     desc: Build and switch to the NixOS configuration
     cmds:
-      - sudo nixos-rebuild switch --flake .#myMachine
+      # submodules=1 ensures imports from ./home_man are visible to flake eval.
+      - sudo nixos-rebuild switch --flake '.?submodules=1#myMachine'
 
   nix:boot:
     desc: Build and set as boot entry (no switch)
     cmds:
-      - sudo nixos-rebuild boot --flake .#myMachine
+      # Keep the same submodule-aware flake ref as nix:switch.
+      - sudo nixos-rebuild boot --flake '.?submodules=1#myMachine'
 
   nix:test:
     desc: Build and activate temporarily (reverts on reboot)
     cmds:
-      - sudo nixos-rebuild test --flake .#myMachine
+      # Keep the same submodule-aware flake ref as nix:switch.
+      - sudo nixos-rebuild test --flake '.?submodules=1#myMachine'
 
   nix:build:
     desc: Build the configuration without activating
     cmds:
-      - nixos-rebuild build --flake .#myMachine
+      # Keep the same submodule-aware flake ref as nix:switch.
+      - nixos-rebuild build --flake '.?submodules=1#myMachine'
 
   nix:check:
     desc: Evaluate the flake and check for errors
@@ -75,12 +84,14 @@ tasks:
   nix:diff:
     desc: Show package diff between current and new build
     cmds:
-      - nix build .#nixosConfigurations.myMachine.config.system.build.toplevel --no-link --print-out-paths | xargs -I{} nvd diff /run/current-system {}
+      # Build from flake source with submodules included.
+      - nix build '.?submodules=1#nixosConfigurations.myMachine.config.system.build.toplevel' --no-link --print-out-paths | xargs -I{} nvd diff /run/current-system {}
 
   nix:repl:
     desc: Open a nix repl with the flake loaded
     cmds:
-      - nix repl --expr 'builtins.getFlake (toString ./.)'
+      # builtins.getFlake also needs ?submodules=1 for local submodule imports.
+      - nix repl --expr 'builtins.getFlake (toString ./. + "?submodules=1")'
 
   nix:show:
     desc: Show flake outputs
