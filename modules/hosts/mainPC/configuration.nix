@@ -70,6 +70,7 @@
       users.users.ab_dullah = {
         isNormalUser = true;
         description = "Abdullah";
+        shell = pkgs.zsh;
         extraGroups = [
           "networkmanager"
           "wheel"
@@ -82,6 +83,8 @@
 
       # Install firefox.
       programs.firefox.enable = true;
+
+      programs.zsh.enable = true;
 
       # Allow unfree packages
       nixpkgs.config.allowUnfree = true;
@@ -96,6 +99,7 @@
         vscode
       ];
 
+      security.pki.certificateFiles = [ ./certs/cert_ca.crt ];
       # Some programs need SUID wrappers, can be configured further or are
       # started in user sessions.
       # programs.mtr.enable = true;
