@@ -19,9 +19,13 @@ abdullah_nix/
 │   ├── features/              # Reusable nixosModules (desktop, theme, etc.)
 │   │   ├── theme.nix          # Base16 color theme exposed on `self.theme` / `self.themeNoHash`
 │   │   ├── wallpaper.png      # Wallpaper asset
+│   │   ├── gaming.nix         # Steam / gaming packages
+│   │   ├── nvidia.nix         # Nvidia drivers / CUDA
 │   │   └── desktop/
 │   │       ├── gnome/
-│   │       │   └── default.nix   # GNOME desktop module (active)
+│   │       │   └── default.nix   # GNOME desktop module
+│   │       ├── kde/
+│   │       │   └── default.nix   # KDE Plasma module (currently active)
 │   │       └── niri/
 │   │           ├── default.nix   # Niri wayland compositor module
 │   │           ├── niri.nix.dep  # Niri wrapper-modules configuration (keybinds, layout, etc.)
@@ -37,8 +41,10 @@ abdullah_nix/
 │           ├── configuration.nix     # Main system config — imports modules, sets users, packages
 │           └── hardware-configuration.nix  # Auto-generated hardware config
 │
-└── home/                      # Home Manager user configuration (not a flake module)
-    ├── ab_dullah.nix          # Root home config — imports all programs
+└── home_man/                  # Git submodule — Home Manager user configuration (not a flake module)
+    ├── home.nix               # Standalone HM entry (non-NixOS)
+    ├── common.nix             # Shared config imported by both home.nix and NixOS HM bridge
+    │                          #   └── home.packages: CLI tools, dev deps, cross-platform packages
     └── programs/
         ├── zsh/               # Zsh + oh-my-zsh + plugins
         ├── starship/          # Starship prompt
@@ -51,13 +57,24 @@ abdullah_nix/
         │   ├── completion.nix
         │   ├── extraConfigLua.lua
         │   └── plugins/       # One file per plugin
-        ├── ghostty/           # Ghostty terminal
         ├── yazi/              # File manager
         ├── bottom.nix         # System monitor
         ├── eza.nix            # ls replacement
         ├── fastfetch.nix      # System info
         ├── fzf.nix            # Fuzzy finder
-        └── zoxide.nix         # Smarter cd
+        ├── zoxide.nix         # Smarter cd
+        └── system-specific/   # Platform-conditional config
+            ├── default.nix    # Defines enableNativeLinux / enableGuiApps options
+            └── linux/
+                ├── default.nix       # Imports all linux-specific modules
+                ├── ghostty/          # Ghostty terminal
+                ├── obsidian/         # Obsidian note-taking (GUI)
+                ├── telegram/         # Telegram desktop (GUI)
+                ├── obs/              # OBS Studio (GUI)
+                ├── microsoft-edge/   # Edge browser (GUI)
+                ├── zed/              # Zed editor (GUI)
+                ├── alacrity/         # Alacritty terminal (GUI)
+                └── fonts/            # Font packages
 ```
 
 ---
@@ -104,21 +121,24 @@ flake.nixosModules.homeManager = { pkgs, ... }: {
   home-manager = {
     useGlobalPkgs = true;       # uses system nixpkgs, no separate HM nixpkgs
     useUserPackages = true;     # installs HM packages into the user profile
-    users.ab_dullah = import ../../home/ab_dullah.nix;
+    users.ab_dullah = import ../../home_man/common.nix;
   };
 };
 ```
 
-This module is then imported by `mainPCConfiguration`. The `home/` directory is **not** in `modules/` — it is plain Home Manager configuration, imported by the bridge above. It does **not** use the flake-parts / import-tree machinery. Instead, `ab_dullah.nix` manually lists its program imports.
+This module is then imported by `mainPCConfiguration`. The `home_man/` directory is a **git submodule** — it is plain Home Manager configuration, imported by the bridge above. It does **not** use the flake-parts / import-tree machinery. Instead, `common.nix` manually lists its program imports.
 
 ```
 NixOS system build
     └── mainPCConfiguration
       ├── mainPCHardware   (hardware)
-        ├── gnome               (or niri)
+        ├── kde                 (or gnome / niri)
+        ├── nvidia
+        ├── gaming
         └── homeManager         ← injects home-manager module
-              └── ab_dullah.nix
+              └── common.nix
                     └── programs/* (zsh, neovim, ghostty, ...)
+                          └── system-specific/linux/* (GUI apps, fonts, ...)
 ```
 
 ---
@@ -128,10 +148,53 @@ NixOS system build
 | Convention | Details |
 |---|---|
 | Module naming | Derived from the `flake.nixosModules.<name>` key declared inside each file, **not** from the file path |
-| Switching desktops | Change the import in `configuration.nix`: `self.nixosModules.gnome` ↔ `self.nixosModules.niri` |
+| Switching desktops | Change the import in `configuration.nix`: `self.nixosModules.kde` ↔ `self.nixosModules.gnome` ↔ `self.nixosModules.niri` |
 | Theme access | `self.theme.base0X` (with `#`), `self.themeNoHash.base0X` (without) — used inside niri binds, colors, etc. |
-| Adding a program | Create `home/programs/<name>.nix` (or `<name>/default.nix`), add it to the `imports` list in `ab_dullah.nix` |
+| Adding a program | Create `home_man/programs/<name>.nix` (or `<name>/default.nix`), add it to the `imports` list in `common.nix` |
 | Adding a feature | Create `modules/features/<name>.nix` exposing `flake.nixosModules.<name>`, import it in `configuration.nix` |
+| Adding a GUI app | Create `home_man/programs/system-specific/linux/<name>/default.nix`, add it to `linux/default.nix` imports (see below) |
+| System-level packages | Only put packages in `configuration.nix` (`environment.systemPackages` or `users.users.ab_dullah.packages`) if they need system-level integration. Everything else belongs in Home Manager |
+| Docker | Enabled via `virtualisation.docker.enable = true` in `configuration.nix`; user added to `"docker"` extraGroup |
+
+### Where to put a new package
+
+```
+Need system integration (services, kernel, PAM)?
+  └── YES → modules/features/<name>.nix  (new nixosModule) or configuration.nix directly
+  └── NO → Is it a GUI app only used on NixOS native Linux?
+        └── YES → home_man/programs/system-specific/linux/<name>/default.nix
+        └── NO  → home_man/common.nix  home.packages (CLI tools, cross-platform dev deps)
+```
+
+### GUI App Module Pattern
+
+All GUI apps under `home_man/programs/system-specific/linux/` **must** follow this pattern (see `telegram/default.nix` as the reference):
+
+```nix
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+
+let
+  has<Name> = builtins.hasAttr "<pkg-attr-name>" pkgs;
+in
+{
+  config = {
+    home.packages = lib.mkIf (config.programs.system-specific.enableGuiApps && has<Name>) [
+      pkgs.<pkg-attr-name>
+    ];
+
+    warnings =
+      lib.optional (config.programs.system-specific.enableGuiApps && !has<Name>)
+        "programs.system-specific.<name>: <pkg-attr-name> is not available for this platform; skipping installation.";
+  };
+}
+```
+
+After creating the file, add `./\<name\>` to the `imports` list in `home_man/programs/system-specific/linux/default.nix`.
 
 ---
 

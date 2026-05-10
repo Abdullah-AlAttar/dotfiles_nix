@@ -74,10 +74,10 @@
         extraGroups = [
           "networkmanager"
           "wheel"
+          "docker"
         ];
         packages = with pkgs; [
           #  thunderbird
-
         ];
       };
 
@@ -107,6 +107,12 @@
       #   enable = true;
       #   enableSSHSupport = true;
       # };
+
+      # SSH agent (needed so keys are available to git/ssh without manual ssh-add)
+      programs.ssh.startAgent = true;
+
+      # Docker
+      virtualisation.docker.enable = true;
 
       # List services that you want to enable:
 
