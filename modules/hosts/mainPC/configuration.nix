@@ -122,6 +122,8 @@
 
       # Enable the OpenSSH daemon.
       # services.openssh.enable = true;
+      services.resolved.enable = true;
+      services.resolved.settings.Resolve.DNSSEC = "no";
 
       # Open ports in the firewall.
       # networking.firewall.allowedTCPPorts = [ ... ];
