@@ -122,8 +122,12 @@
 
       # Enable the OpenSSH daemon.
       # services.openssh.enable = true;
-      services.resolved.enable = true;
-      services.resolved.settings.Resolve.DNSSEC = "no";
+      # services.resolved.enable = true;
+      # services.resolved.settings.Resolve.DNSSEC = "no";
+
+      # # openfortivpn NetworkManager plugin — NM handles DNS integration with
+      # # systemd-resolved automatically when the VPN connection is managed via NM.
+      # networking.networkmanager.plugins = [ pkgs.networkmanager-openfortivpn ];
 
       # Open ports in the firewall.
       # networking.firewall.allowedTCPPorts = [ ... ];
