@@ -44,7 +44,7 @@ tasks:
   nix:update:
     desc: Update all flake inputs
     cmds:
-    - nix flake update
+    - sudo nix flake update
 
   nix:update:input:
     desc: Update a single flake input (usage - task nix:update:input INPUT=nixpkgs)

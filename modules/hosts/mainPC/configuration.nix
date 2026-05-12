@@ -30,6 +30,12 @@
       networking.hostName = "nixos"; # Define your hostname.
       # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
+      nix.gc = {
+        automatic = true;
+        dates = "weekly";
+        options = "--delete-older-than 14d";
+      };
+      nix.settings.auto-optimise-store = true;
       # Configure network proxy if necessary
       # networking.proxy.default = "http://user:password@proxy:port/";
       # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
@@ -66,6 +72,8 @@
       # Enable touchpad support (enabled default in most desktopManager).
       # services.xserver.libinput.enable = true;
 
+      # Docker
+      virtualisation.docker.enable = true;
       # Define a user account. Don't forget to set a password with ‘passwd’.
       users.users.ab_dullah = {
         isNormalUser = true;
@@ -114,9 +122,6 @@
 
       # SSH agent (needed so keys are available to git/ssh without manual ssh-add)
       programs.ssh.startAgent = true;
-
-      # Docker
-      virtualisation.docker.enable = true;
 
       # List services that you want to enable:
 

@@ -19,7 +19,7 @@
       };
       # 2. Force the cursor size and theme for the whole system/Steam
       environment.variables = {
-        XCURSOR_SIZE = "32"; # Increase to 48 or 64 if you have a 4K monitor
+        XCURSOR_SIZE = "64"; # Increase to 48 or 64 if you have a 4K monitor
         XCURSOR_THEME = "Adwaita";
       };
       # GameMode — lets games request higher CPU/GPU performance while running
