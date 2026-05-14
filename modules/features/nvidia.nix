@@ -16,10 +16,15 @@
       # Use the stable driver package
       package = config.boot.kernelPackages.nvidiaPackages.stable;
 
-      # Power management (safe defaults; tune if you experience suspend issues)
-      powerManagement.enable = false;
+      # Required for monitors to wake up after suspend on Wayland.
+      # Registers nvidia-sleep.sh systemd hooks that save/restore GPU state.
+      powerManagement.enable = true;
       powerManagement.finegrained = false;
     };
+
+    # Preserve VRAM allocations across suspend/resume.
+    # Without this, dual monitors on Wayland will not receive signal after wake.
+    boot.kernelParams = [ "nvidia.NVreg_PreserveVideoMemoryAllocations=1" ];
 
     # Enable OpenGL (required for rendering)
     hardware.graphics = {
