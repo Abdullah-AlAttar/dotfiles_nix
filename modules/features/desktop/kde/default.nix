@@ -52,7 +52,7 @@
           enable = true;
           # Override KDE defaults with our own preferences. This is the main place we customize the KDE experience.
           # overrideConfig = true;
-
+          powerdevil.AC.autoSuspend.action = "nothing";
           workspace = {
             lookAndFeel = "org.kde.breezedark.desktop";
             colorScheme = "BreezeDark";

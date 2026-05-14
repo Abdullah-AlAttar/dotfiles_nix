@@ -213,6 +213,7 @@
       org_kde_powerdevil."Toggle Keyboard Backlight" = "Keyboard Light On/Off";
       org_kde_powerdevil."Turn Off Screen" = [ ];
       org_kde_powerdevil.powerProfile = ["Battery" "Meta+B"];
+      "plasma-manager-commands.desktop".launch-terminal = "Ctrl+Alt+T";
       plasmashell."Slideshow Wallpaper Next Image" = [ ];
       plasmashell."activate application launcher" = ["Meta" "Alt+F1"];
       plasmashell."activate task manager entry 1" = "Meta+1";
@@ -242,6 +243,8 @@
       plasmashell."switch to previous activity" = [ ];
       plasmashell."toggle do not disturb" = [ ];
       "services/com.mitchellh.ghostty.desktop"._launch = [ ];
+      "services/org.kde.spectacle.desktop".CurrentMonitorScreenShot = [ ];
+      "services/org.kde.spectacle.desktop".OpenWithoutScreenshot = [ ];
       "services/plasma-manager-commands.desktop".launch-terminal = "Ctrl+Alt+T";
       wayscriber.toggle-overlay = "Meta+K";
     };
