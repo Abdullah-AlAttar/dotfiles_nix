@@ -17,8 +17,18 @@
         self.nixosModules.kde
         self.nixosModules.nvidia
         self.nixosModules.gaming
+        # self.nixosModules.weylus
         self.nixosModules.homeManager
       ];
+
+      # mainPC-specific Home Manager packages (not in shared home_man submodule)
+      home-manager.users.ab_dullah =
+        { pkgs, ... }:
+        {
+          home.packages = with pkgs; [
+            scrcpy
+          ];
+        };
 
       # Bootloader.
       boot.loader.grub.enable = true;
@@ -74,7 +84,8 @@
 
       # Docker
       virtualisation.docker.enable = true;
-      # Define a user account. Don't forget to set a password with ‘passwd’.
+
+      # Define a user account. Don't forget to set a password with 'passwd'.
       users.users.ab_dullah = {
         isNormalUser = true;
         description = "Abdullah";
@@ -139,6 +150,13 @@
       # networking.firewall.allowedUDPPorts = [ ... ];
       # Or disable the firewall altogether.
       # networking.firewall.enable = false;
+      networking.firewall = {
+        enable = true;
+        allowedTCPPorts = [
+          1701
+          9001
+        ]; # 1701 for Web, 9001 for Websocket
+      };
 
       # This value determines the NixOS release from which the default
       # settings for stateful data, like file locations and database versions
