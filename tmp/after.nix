@@ -2,7 +2,7 @@
   programs.plasma = {
     enable = true;
     shortcuts = {
-      ActivityManager.switch-to-activity-ad0c83d9-979d-4a6f-9e40-06e1e69c061e = [ ];
+      ActivityManager.switch-to-activity-96daeac0-b957-4b04-8577-db44c2883289 = [ ];
       "KDE Keyboard Layout Switcher"."Switch to Last-Used Keyboard Layout" = "Meta+Alt+L";
       "KDE Keyboard Layout Switcher"."Switch to Next Keyboard Layout" = "Meta+Alt+K";
       kaccess."Toggle Screen Reader On and Off" = "Meta+Alt+S";
@@ -247,9 +247,10 @@
     };
     configFile = {
       baloofilerc.General.dbVersion = 2;
+      dolphinrc.General.ViewPropsTimestamp = "2026,5,14,10,37,46.985";
       dolphinrc."KFileDialog Settings"."Places Icons Auto-resize" = false;
       dolphinrc."KFileDialog Settings"."Places Icons Static Size" = 22;
-      kactivitymanagerdrc.activities.ad0c83d9-979d-4a6f-9e40-06e1e69c061e = "Default";
+      kactivitymanagerdrc.activities."96daeac0-b957-4b04-8577-db44c2883289" = "Default";
       kcminputrc.Mouse.cursorSize = 24;
       kded5rc.Module-device_automounter.autoload = false;
       kdeglobals.General.fixed = "JetBrainsMono Nerd Font,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1";
@@ -265,7 +266,7 @@
       kdeglobals.WM.inactiveBlend = "161,169,177";
       kdeglobals.WM.inactiveForeground = "161,169,177";
       kwalletrc.Wallet."First Use" = false;
-      kwinrc.Desktops.Id_1 = "a6cc0168-ed78-4db7-89a0-92a69f620531";
+      kwinrc.Desktops.Id_1 = "98b4e66e-adde-4fcc-8063-5de57c313dcb";
       kwinrc.Desktops.Number = 1;
       kwinrc.Desktops.Rows = 1;
       kwinrc.Effect-blur.BlurStrength = 6;
@@ -280,13 +281,14 @@
       kwinrc.Plugins.magiclampEnabled = true;
       kwinrc.Plugins.slideEnabled = true;
       kwinrc.Plugins.squashEnabled = false;
-      kwinrc."Tiling/a6cc0168-ed78-4db7-89a0-92a69f620531/0ef926c4-11d4-4b10-b7ff-901a5cc3acf3".padding = 4;
-      kwinrc."Tiling/a6cc0168-ed78-4db7-89a0-92a69f620531/0ef926c4-11d4-4b10-b7ff-901a5cc3acf3".tiles = "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
-      kwinrc."Tiling/a6cc0168-ed78-4db7-89a0-92a69f620531/42d2ce5f-a965-489a-8c61-c4ad805e9f43".padding = 4;
-      kwinrc."Tiling/a6cc0168-ed78-4db7-89a0-92a69f620531/42d2ce5f-a965-489a-8c61-c4ad805e9f43".tiles = "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+      kwinrc."Tiling/98b4e66e-adde-4fcc-8063-5de57c313dcb/0ef926c4-11d4-4b10-b7ff-901a5cc3acf3".padding = 4;
+      kwinrc."Tiling/98b4e66e-adde-4fcc-8063-5de57c313dcb/0ef926c4-11d4-4b10-b7ff-901a5cc3acf3".tiles = "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
+      kwinrc."Tiling/98b4e66e-adde-4fcc-8063-5de57c313dcb/42d2ce5f-a965-489a-8c61-c4ad805e9f43".padding = 4;
+      kwinrc."Tiling/98b4e66e-adde-4fcc-8063-5de57c313dcb/42d2ce5f-a965-489a-8c61-c4ad805e9f43".tiles = "{\"layoutDirection\":\"horizontal\",\"tiles\":[{\"width\":0.25},{\"width\":0.5},{\"width\":0.25}]}";
       kwinrc.Windows.BorderlessMaximizedWindows = true;
       kwinrc.Xwayland.Scale = 1.7;
       plasma-localerc.Formats.LANG = "en_US.UTF-8";
+      plasmanotifyrc."Applications/discord".Seen = true;
       plasmarc.Theme.name = "breeze-dark";
       spectaclerc.ImageSave.translatedScreenshotsFolder = "Screenshots";
       spectaclerc.VideoSave.translatedScreencastsFolder = "Screencasts";
