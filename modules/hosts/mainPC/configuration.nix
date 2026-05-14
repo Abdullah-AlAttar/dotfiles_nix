@@ -84,9 +84,7 @@
           "wheel"
           "docker"
         ];
-        packages = with pkgs; [
-          #  thunderbird
-        ];
+
       };
 
       # Install firefox.
@@ -109,6 +107,8 @@
         wget
         go-task
         vscode
+        inputs.wayscriber.packages.${pkgs.stdenv.hostPlatform.system}.default
+
       ];
 
       security.pki.certificateFiles = [ ./certs/cert_ca.crt ];
