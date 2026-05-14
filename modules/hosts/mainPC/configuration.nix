@@ -46,6 +46,13 @@
         options = "--delete-older-than 14d";
       };
       nix.settings.auto-optimise-store = true;
+      # Trusted users can pass extra settings to the Nix daemon (e.g. system, extra-substituters).
+      # Tools like devenv require this — without it, the daemon silently ignores their settings
+      # and derivation evaluation fails. "@wheel" means "all users in the wheel group" (sudoers).
+      nix.settings.trusted-users = [
+        "root"
+        "@wheel"
+      ];
       # Configure network proxy if necessary
       # networking.proxy.default = "http://user:password@proxy:port/";
       # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
@@ -118,6 +125,7 @@
         wget
         go-task
         vscode
+        android-tools # adb/fastboot — udev rules handled automatically by systemd 258+
         inputs.wayscriber.packages.${pkgs.stdenv.hostPlatform.system}.default
 
       ];
