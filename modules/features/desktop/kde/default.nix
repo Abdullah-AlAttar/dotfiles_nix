@@ -112,6 +112,7 @@
             kwin = {
               "Window Close" = "Alt+Q";
             };
+            wayscriber.toggle-overlay = "Meta+K";
           };
 
           hotkeys.commands."launch-terminal" = {
