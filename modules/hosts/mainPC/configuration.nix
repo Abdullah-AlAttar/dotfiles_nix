@@ -18,6 +18,7 @@
         self.nixosModules.nvidia
         self.nixosModules.gaming
         # self.nixosModules.weylus
+        self.nixosModules.teamviewer
         self.nixosModules.homeManager
       ];
 
