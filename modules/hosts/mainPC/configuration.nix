@@ -17,6 +17,7 @@
         # ./hardware-configuration.nix
         self.nixosModules.mainPCHardware
         self.nixosModules.kde
+        # self.nixosModules.niri
         self.nixosModules.nvidia
         self.nixosModules.gaming
         # self.nixosModules.weylus
@@ -85,7 +86,7 @@
       # Enable sound with pipewire.
       services.pulseaudio.enable = false;
       security.rtkit.enable = true;
-      # PipeWire is configured by self.nixosModules.gnome.
+      # PipeWire is configured by the selected desktop module.
 
       # Enable touchpad support (enabled default in most desktopManager).
       # services.xserver.libinput.enable = true;
