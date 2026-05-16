@@ -25,7 +25,13 @@ abdullah_nix/
 │   │       ├── gnome/
 │   │       │   └── default.nix   # GNOME desktop module
 │   │       ├── kde/
-│   │       │   └── default.nix   # KDE Plasma module (currently active)
+│   │       │   ├── default.nix   # KDE aggregator module; composes sibling KDE feature modules
+│   │       │   ├── system.nix    # KDE system integration (SDDM, PipeWire, xkb, plasma-manager enablement)
+│   │       │   ├── workspace.nix # Plasma workspace look-and-feel, theme, wallpaper, cursor
+│   │       │   ├── fonts.nix     # Plasma font preferences
+│   │       │   ├── kwin.nix      # KWin effects and night-light behavior
+│   │       │   ├── shortcuts.nix # Plasma shortcuts and hotkeys
+│   │       │   └── panels.nix    # Plasma top bar + bottom dock panel layout
 │   │       └── niri/
 │   │           ├── default.nix   # Niri wayland compositor module
 │   │           ├── niri.nix.dep  # Niri wrapper-modules configuration (keybinds, layout, etc.)
@@ -89,6 +95,8 @@ outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.imp
 
 `flake-parts` structures the flake as composable **parts** (modules for the flake itself, not NixOS). `import-tree` recursively discovers and merges every `.nix` file under `./modules/` — no manual import lists needed.
 
+That means `modules/` is reserved for **real flake-parts modules**. Do not place helper/data-only `.nix` files there unless they themselves expose `flake.*` or `perSystem.*`. If a file under `modules/` is not a real module, `import-tree` will still try to evaluate it as one and the flake can fail to build.
+
 ### The Dendritic Pattern
 
 Every `.nix` file under `modules/` is a **flake-parts module** — a function that receives `{ self, inputs, ... }` and contributes to the flake outputs by adding keys to `flake.*` or `perSystem.*`. The tree of files is the structure; there is no single registry file.
@@ -108,6 +116,26 @@ import-tree ./modules
 ```
 
 Each node adds exactly what it owns. Cross-references are done via `self.nixosModules.*` (e.g. `configuration.nix` imports `self.nixosModules.gnome`).
+
+For multi-file features, prefer an **aggregator module + sibling feature modules** pattern:
+
+```nix
+{ self, ... }:
+{
+  flake.nixosModules.kde = {
+    imports = [
+      self.nixosModules.kdeSystem
+      self.nixosModules.kdeWorkspace
+      self.nixosModules.kdeFonts
+      self.nixosModules.kdeKwin
+      self.nixosModules.kdeShortcuts
+      self.nixosModules.kdePanels
+    ];
+  };
+}
+```
+
+In this pattern, each sibling file under `modules/features/desktop/kde/` is still a top-level flake-parts module that owns one concern. This is more aligned with the dendritic pattern than using a raw helper file imported from inside `modules/`.
 
 **Adding a new desktop or feature** = drop a new `.nix` file anywhere under `modules/` that contributes a `flake.nixosModules.<name>`, then reference it by name in `configuration.nix`.
 
@@ -148,7 +176,9 @@ NixOS system build
 | Convention | Details |
 |---|---|
 | Module naming | Derived from the `flake.nixosModules.<name>` key declared inside each file, **not** from the file path |
+| `modules/` contents | Every `.nix` file under `modules/` must be a real flake-parts module. Put plain helper/data files outside `modules/`, or better, refactor them into sibling modules when they represent a real concern |
 | Switching desktops | Change the import in `configuration.nix`: `self.nixosModules.kde` ↔ `self.nixosModules.gnome` ↔ `self.nixosModules.niri` |
+| Large feature layout | Prefer an aggregator module plus sibling modules with single ownership, instead of one huge file or ad-hoc helper snippets |
 | Theme access | `self.theme.base0X` (with `#`), `self.themeNoHash.base0X` (without) — used inside niri binds, colors, etc. |
 | Adding a program | Create `home_man/programs/<name>.nix` (or `<name>/default.nix`), add it to the `imports` list in `common.nix` |
 | Adding a feature | Create `modules/features/<name>.nix` exposing `flake.nixosModules.<name>`, import it in `configuration.nix` |
@@ -165,6 +195,15 @@ Need system integration (services, kernel, PAM)?
         └── YES → home_man/programs/system-specific/linux/<name>/default.nix
         └── NO  → home_man/common.nix  home.packages (CLI tools, cross-platform dev deps)
 ```
+
+### KDE Module Pattern
+
+KDE is the reference example for a split dendritic desktop feature:
+
+- `default.nix` is only the aggregator.
+- `system.nix` owns system-level KDE integration.
+- `workspace.nix`, `fonts.nix`, `kwin.nix`, `shortcuts.nix`, and `panels.nix` each own one Plasma configuration slice.
+- If a KDE concern is only used once and corresponds to a real option subtree, prefer a sibling module over a separate helper file.
 
 ### GUI App Module Pattern
 
