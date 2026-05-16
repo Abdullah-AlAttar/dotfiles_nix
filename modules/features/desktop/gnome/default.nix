@@ -1,5 +1,13 @@
-{ self, inputs, ... }: {
-  flake.nixosModules.gnome = { pkgs, lib, ... }: {
+{
+  self,
+  inputs,
+  ...
+}: {
+  flake.nixosModules.gnome = {
+    pkgs,
+    lib,
+    ...
+  }: {
     services.xserver.enable = true;
 
     services.displayManager.gdm = {
@@ -20,7 +28,7 @@
     # XDG portal for screen sharing, file pickers, etc.
     xdg.portal = {
       enable = true;
-      extraPortals = [ pkgs.xdg-desktop-portal-gnome ];
+      extraPortals = [pkgs.xdg-desktop-portal-gnome];
     };
 
     # Keyboard layout via xserver (affects X11 / GDM login screen)
@@ -39,10 +47,10 @@
           settings = {
             "org/gnome/desktop/input-sources" = {
               sources = [
-                (lib.gvariant.mkTuple [ "xkb" "us" ])
-                (lib.gvariant.mkTuple [ "xkb" "ara" ])
+                (lib.gvariant.mkTuple ["xkb" "us"])
+                (lib.gvariant.mkTuple ["xkb" "ara"])
               ];
-              xkb-options = [ "grp:alt_shift_toggle" "caps:escape" ];
+              xkb-options = ["grp:alt_shift_toggle" "caps:escape"];
             };
           };
         }

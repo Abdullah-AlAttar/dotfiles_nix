@@ -1,6 +1,8 @@
-{ ... }:
-let
-  screens = [ 0 1 ];
+{...}: let
+  screens = [
+    0
+    1
+  ];
 
   mkBottomDock = screen: {
     location = "bottom";
@@ -41,18 +43,15 @@ let
         };
       }
       "org.kde.plasma.panelspacer"
-      { keyboardLayout = { }; }
+      {keyboardLayout = {};}
       "org.kde.plasma.systemtray"
     ];
   };
-in
-{
-  flake.nixosModules.kdePanels =
-    { ... }:
-    {
-      home-manager.users.ab_dullah.programs.plasma.panels = builtins.concatLists [
-        (map mkTopBar screens)
-        (map mkBottomDock screens)
-      ];
-    };
+in {
+  flake.nixosModules.kdePanels = {...}: {
+    home-manager.users.ab_dullah.programs.plasma.panels = builtins.concatLists [
+      (map mkBottomDock screens)
+      (map mkTopBar screens)
+    ];
+  };
 }

@@ -1,5 +1,13 @@
-{ self, inputs, ... }: {
-  flake.nixosModules.niri = { pkgs, lib, ... }: {
+{
+  self,
+  inputs,
+  ...
+}: {
+  flake.nixosModules.niri = {
+    pkgs,
+    lib,
+    ...
+  }: {
     programs.niri = {
       enable = true;
       package = self.packages.${pkgs.stdenv.hostPlatform.system}.myNiri;
@@ -16,7 +24,12 @@
     };
   };
 
-  perSystem = { pkgs, lib, self', ... }: {
+  perSystem = {
+    pkgs,
+    lib,
+    self',
+    ...
+  }: {
     packages.myNiri = inputs.wrapper-modules.wrappers.niri.wrap {
       inherit pkgs; # THIS PART IS VERY IMPORTAINT, I FORGOT IT IN THE VIDEO!!!
       settings = {
@@ -65,17 +78,25 @@
         };
 
         workspaces = let
-          ws = { layout.gaps = 5; };
+          ws = {layout.gaps = 5;};
         in {
-          "w0" = ws; "w1" = ws; "w2" = ws; "w3" = ws; "w4" = ws;
-          "w5" = ws; "w6" = ws; "w7" = ws; "w8" = ws; "w9" = ws;
+          "w0" = ws;
+          "w1" = ws;
+          "w2" = ws;
+          "w3" = ws;
+          "w4" = ws;
+          "w5" = ws;
+          "w6" = ws;
+          "w7" = ws;
+          "w8" = ws;
+          "w9" = ws;
         };
 
         binds = let
           noctaliaExe = lib.getExe self'.packages.myNoctalia;
           screenshot = pkgs.writeShellApplication {
             name = "screenshot-region";
-            runtimeInputs = [ pkgs.grim pkgs.slurp pkgs.wl-clipboard ];
+            runtimeInputs = [pkgs.grim pkgs.slurp pkgs.wl-clipboard];
             text = ''grim -g "$(slurp -w 0)" - | wl-copy'';
           };
         in {
@@ -146,7 +167,7 @@
           # Mod+Shift+S → region → swappy annotation
           "Mod+Shift+S".spawn-sh = lib.getExe (pkgs.writeShellApplication {
             name = "screenshot-annotate";
-            runtimeInputs = [ pkgs.grim pkgs.slurp pkgs.wl-clipboard pkgs.swappy ];
+            runtimeInputs = [pkgs.grim pkgs.slurp pkgs.wl-clipboard pkgs.swappy];
             text = ''grim -g "$(slurp -w 0)" - | swappy -f -'';
           });
 

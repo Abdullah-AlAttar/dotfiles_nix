@@ -8,97 +8,78 @@ version: "3"
 tasks:
   default:
     desc: List available tasks
-    cmds:
-      - task --list
+    cmd: task --list
     silent: true
 
   nix:switch:
     desc: Build and switch to the NixOS configuration
-    cmds:
-      # submodules=1 ensures imports from ./home_man are visible to flake eval.
-      - sudo nixos-rebuild switch --flake '.?submodules=1#mainPC'
+    # submodules=1 ensures imports from ./home_man are visible to flake eval.
+    cmd: sudo nixos-rebuild switch --flake '.?submodules=1#mainPC'
 
   nix:boot:
     desc: Build and set as boot entry (no switch)
-    cmds:
-      # Keep the same submodule-aware flake ref as nix:switch.
-      - sudo nixos-rebuild boot --flake '.?submodules=1#mainPC'
+    # Keep the same submodule-aware flake ref as nix:switch.
+    cmd: sudo nixos-rebuild boot --flake '.?submodules=1#mainPC'
 
   nix:test:
     desc: Build and activate temporarily (reverts on reboot)
-    cmds:
-      # Keep the same submodule-aware flake ref as nix:switch.
-      - sudo nixos-rebuild test --flake '.?submodules=1#mainPC'
+    # Keep the same submodule-aware flake ref as nix:switch.
+    cmd: sudo nixos-rebuild test --flake '.?submodules=1#mainPC'
 
   nix:build:
     desc: Build the configuration without activating
-    cmds:
-      # Keep the same submodule-aware flake ref as nix:switch.
-      - nixos-rebuild build --flake '.?submodules=1#mainPC'
+    # Keep the same submodule-aware flake ref as nix:switch.
+    cmd: nixos-rebuild build --flake '.?submodules=1#mainPC'
 
   nix:check:
     desc: Evaluate the flake and check for errors
-    cmds:
-      - nix flake check
+    cmd: nix flake check
+
+  nix:format:
+    desc: Format all Nix files with alejandra
+    cmd: find . -name '*.nix' -print0 | xargs -0 alejandra
 
   nix:update:
     desc: Update all flake inputs
-    cmds:
-      - sudo nix flake update
-
-  nix:update:input:
-    desc: Update a single flake input (usage - task nix:update:input INPUT=nixpkgs)
-    cmds:
-      - nix flake update {{.INPUT}}
-    requires:
-      vars: [INPUT]
+    cmd: sudo nix flake update
 
   nix:gc:
     desc: Remove ALL old system generations and run garbage collection
     cmds:
-      - sudo nix-env --profile /nix/var/nix/profiles/system --delete-generations old
-      - sudo nix-collect-garbage -d
-      - sudo nix store optimise
+    - sudo nix-env --profile /nix/var/nix/profiles/system --delete-generations old
+    - sudo nix-collect-garbage -d
+    - sudo nix store optimise
 
   nix:gc:user:
     desc: Garbage collect only user profile generations
-    cmds:
-      - nix-collect-garbage -d
+    cmd: nix-collect-garbage -d
 
   nix:gc:old:
     desc: Delete all but the last 3 system generations
     cmds:
-      - sudo nix-env --profile /nix/var/nix/profiles/system --delete-generations +3
-      - sudo nix-collect-garbage
+    - sudo nix-env --profile /nix/var/nix/profiles/system --delete-generations +3
+    - sudo nix-collect-garbage
 
   nix:generations:
     desc: List system generations
-    cmds:
-      - sudo nix-env --profile /nix/var/nix/profiles/system --list-generations
+    cmd: sudo nix-env --profile /nix/var/nix/profiles/system --list-generations
 
   nix:rollback:
     desc: Roll back to the previous system generation
-    cmds:
-      - sudo nixos-rebuild switch --rollback
+    cmd: sudo nixos-rebuild switch --rollback
 
   nix:diff:
     desc: Show package diff between current and new build
     cmds:
-      # Build from flake source with submodules included.
-      - nix build '.?submodules=1#nixosConfigurations.mainPC.config.system.build.toplevel' --no-link --print-out-paths | xargs -I{} nvd diff /run/current-system {}
+    # Build from flake source with submodules included.
+    - nix build '.?submodules=1#nixosConfigurations.mainPC.config.system.build.toplevel' --no-link --print-out-paths | xargs -I{} nvd diff /run/current-system {}
 
   nix:repl:
     desc: Open a nix repl with the flake loaded
     cmds:
-      # builtins.getFlake also needs ?submodules=1 for local submodule imports.
-      - nix repl --expr 'builtins.getFlake (toString ./. + "?submodules=1")'
-
-  nix:show:
-    desc: Show flake outputs
-    cmds:
-      - nix flake show
+    # builtins.getFlake also needs ?submodules=1 for local submodule imports.
+    - nix repl --expr 'builtins.getFlake (toString ./. + "?submodules=1")'
 
   dump:config:
     desc: Dump kde plasma configuration to a nix file
-    cmds:
-      - nix run github:nix-community/plasma-manager -- > ./tmp/after.nix
+    cmd: nix run github:nix-community/plasma-manager -- > ./tmp/after.nix

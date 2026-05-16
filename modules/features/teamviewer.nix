@@ -1,6 +1,5 @@
-{ self, ... }:
-{
-  flake.nixosModules.teamviewer = { ... }: {
+{self, ...}: {
+  flake.nixosModules.teamviewer = {...}: {
     services.teamviewer.enable = true;
   };
 }

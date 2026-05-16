@@ -1,30 +1,27 @@
-{ ... }:
-{
-  flake.nixosModules.kdeKwin =
-    { ... }:
-    {
-      home-manager.users.ab_dullah.programs.plasma.kwin = {
-        borderlessMaximizedWindows = true;
-        effects = {
-          blur = {
-            enable = true;
-            strength = 6;
-          };
-          minimization.animation = "magiclamp";
-          desktopSwitching.animation = "slide";
+{...}: {
+  flake.nixosModules.kdeKwin = {...}: {
+    home-manager.users.ab_dullah.programs.plasma.kwin = {
+      borderlessMaximizedWindows = true;
+      effects = {
+        blur = {
+          enable = true;
+          strength = 6;
         };
-        nightLight = {
-          enable = false;
-          mode = "times";
-          temperature = {
-            day = 5500;
-            night = 3500;
-          };
-          time = {
-            evening = "20:00";
-            morning = "07:00";
-          };
+        minimization.animation = "magiclamp";
+        desktopSwitching.animation = "slide";
+      };
+      nightLight = {
+        enable = false;
+        mode = "times";
+        temperature = {
+          day = 5500;
+          night = 3500;
+        };
+        time = {
+          evening = "20:00";
+          morning = "07:00";
         };
       };
     };
+  };
 }

@@ -1,7 +1,11 @@
-{ self, inputs, ... }: {
-  flake.nixosModules.nvidia = { config, ... }: {
+{
+  self,
+  inputs,
+  ...
+}: {
+  flake.nixosModules.nvidia = {config, ...}: {
     # Load the proprietary NVIDIA driver
-    services.xserver.videoDrivers = [ "nvidia" ];
+    services.xserver.videoDrivers = ["nvidia"];
 
     hardware.nvidia = {
       # Modesetting is required for Wayland (GDM/GNOME)
@@ -24,7 +28,7 @@
 
     # Preserve VRAM allocations across suspend/resume.
     # Without this, dual monitors on Wayland will not receive signal after wake.
-    boot.kernelParams = [ "nvidia.NVreg_PreserveVideoMemoryAllocations=1" ];
+    boot.kernelParams = ["nvidia.NVreg_PreserveVideoMemoryAllocations=1"];
 
     # Enable OpenGL (required for rendering)
     hardware.graphics = {
