@@ -17,6 +17,7 @@
         # ./hardware-configuration.nix
         self.nixosModules.mainPCHardware
         self.nixosModules.kde
+        # self.nixosModules.cosmic
         # self.nixosModules.niri
         self.nixosModules.nvidia
         self.nixosModules.gaming
