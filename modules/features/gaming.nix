@@ -1,8 +1,10 @@
 {...}: {
   flake.nixosModules.gaming = {pkgs, ...}: {
     # Steam — system-level config required for proper 32-bit/Proton/hardware support
+    programs.gamescope.enable = true;
     programs.steam = {
       enable = true;
+      gamescopeSession.enable = true;
 
       # Open firewall ports for Steam Remote Play
       remotePlay.openFirewall = true;

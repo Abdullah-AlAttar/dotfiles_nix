@@ -28,8 +28,11 @@
 
     # Preserve VRAM allocations across suspend/resume.
     # Without this, dual monitors on Wayland will not receive signal after wake.
-    boot.kernelParams = ["nvidia.NVreg_PreserveVideoMemoryAllocations=1"];
 
+    boot.kernelParams = [
+      "nvidia.NVreg_UsePageAttributeTable=1" # improves memory performance
+      "nvidia.NVreg_EnableMSI=1" # reduces interrupt overhead (usually default)
+    ];
     # Enable OpenGL (required for rendering)
     hardware.graphics = {
       enable = true;
