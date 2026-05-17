@@ -1,4 +1,4 @@
-{ ... }: {
+{...}: {
   flake.nixosModules.cosmicSystem = {pkgs, ...}: {
     services.desktopManager.cosmic.enable = true;
 
