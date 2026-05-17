@@ -23,6 +23,7 @@
         self.nixosModules.gaming
         # self.nixosModules.weylus
         self.nixosModules.teamviewer
+        self.nixosModules.scanner
         self.nixosModules.homeManager
       ];
 
