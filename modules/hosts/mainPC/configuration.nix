@@ -28,9 +28,16 @@
 
       # mainPC-specific Home Manager packages (not in shared home_man submodule)
       home-manager.users.ab_dullah = {pkgs, ...}: {
-        home.packages = with pkgs; [
-          scrcpy
-        ];
+        home.packages =
+          with pkgs;
+          [
+            scrcpy
+          ]
+          ++ (with inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}; [
+            opencode
+            copilot-cli
+            spec-kit
+          ]);
       };
 
       boot.loader = {
