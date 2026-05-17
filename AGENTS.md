@@ -1,3 +1,4 @@
+
 # abdullah_nix — Project Reference
 
 ## What this is
@@ -170,6 +171,84 @@ NixOS system build
 ```
 
 ---
+
+## Using the `nix` (mcp) helper for package and docs lookups
+
+When you need to find a package, option, or documentation reference, prefer
+using the `nix` mcp helper. It queries live Nix resources (NixOS, Home Manager,
+NixHub, nix.dev, Noogle, FlakeHub, the NixOS wiki, etc.) and returns structured
+results. Examples:
+
+```js
+# Search NixOS packages
+nix(action="search", query="firefox", source="nixos", type="packages")
+
+# Get package info
+nix(action="info", query="firefox", source="nixos", type="package")
+
+# Search Home Manager options
+nix(action="search", query="git", source="home-manager")
+
+# Browse darwin options
+nix(action="options", source="darwin", query="system.defaults")
+
+# Search Nixvim options
+nix(action="search", query="telescope", source="nixvim")
+
+# Get Nixvim option info
+nix(action="info", query="plugins.telescope.enable", source="nixvim")
+
+# Search FlakeHub
+nix(action="search", query="nixpkgs", source="flakehub")
+
+# Get FlakeHub flake info
+nix(action="info", query="NixOS/nixpkgs", source="flakehub")
+
+# Search Noogle for Nix functions
+nix(action="search", query="mapAttrs", source="noogle")
+
+# Get Noogle function info
+nix(action="info", query="lib.attrsets.mapAttrs", source="noogle")
+
+# Browse Noogle function categories
+nix(action="options", source="noogle", query="lib.strings")
+
+# Search NixOS Wiki
+nix(action="search", query="nvidia", source="wiki")
+
+# Get Wiki page info
+nix(action="info", query="Flakes", source="wiki")
+
+# Search nix.dev documentation
+nix(action="search", query="packaging tutorial", source="nix-dev")
+
+# Search NixHub for package metadata
+nix(action="search", query="nodejs", source="nixhub")
+
+# Get detailed package info from NixHub (license, homepage, store paths)
+nix(action="info", query="python", source="nixhub")
+
+# Check binary cache status
+nix(action="cache", query="hello")
+
+# Check cache for specific version
+nix(action="cache", query="python", version="3.12.0")
+
+# Check cache for specific system
+nix(action="cache", query="firefox", system="x86_64-linux")
+
+# Get stats
+nix(action="stats", source="nixos", channel="stable")
+
+# List local flake inputs (requires Nix)
+nix(action="flake-inputs", type="list")
+
+# Browse files in a flake input
+nix(action="flake-inputs", type="ls", query="nixpkgs:pkgs/by-name")
+
+# Read a file from a flake input
+nix(action="flake-inputs", type="read", query="nixpkgs:flake.nix")
+```
 
 ## Key Conventions
 
