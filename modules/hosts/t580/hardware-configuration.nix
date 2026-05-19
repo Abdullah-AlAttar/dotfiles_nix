@@ -30,10 +30,9 @@
       "i915.enable_fbc=1" # framebuffer compression (power saving)
       "i915.enable_psr=2" # panel self-refresh (display power saving)
     ];
-    hardware.intelgpu = {
-      computeRuntime = "legacy";
-      vaapiDriver = "intel-media-driver"; # hardware video acceleration
-    };
+    hardware.graphics.extraPackages = with pkgs; [
+      intel-media-driver # hardware video acceleration (VAAPI)
+    ];
 
     # Enable firmware blobs (WiFi, BT, GPU)
     hardware.enableRedistributableFirmware = true;
