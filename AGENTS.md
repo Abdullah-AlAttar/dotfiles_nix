@@ -3,7 +3,7 @@
 
 ## What this is
 
-A NixOS system configuration managed as a **flake**, structured using **flake-parts** and **import-tree**. It configures one machine (`mainPC`) with a full desktop environment and a Home Manager user environment for `ab_dullah`.
+A NixOS system configuration managed as a **flake**, structured using **flake-parts** and **import-tree**. It configures multiple machines (`mainPC`, `t580`) with a full desktop environment and a Home Manager user environment for `ab_dullah`.
 
 ---
 
@@ -43,10 +43,16 @@ abdullah_nix/
 │   │   └── default.nix        # nixosModule that wires Home Manager into NixOS
 │   │
 │   └── hosts/
-│       └── mainPC/
-│           ├── default.nix           # Declares `nixosConfigurations.mainPC`
-│           ├── configuration.nix     # Main system config — imports modules, sets users, packages
-│           └── hardware-configuration.nix  # Auto-generated hardware config
+│       ├── mainPC/
+│       │   ├── default.nix                 # Declares `nixosConfigurations.mainPC`
+│       │   ├── configuration.nix           # Main system config — imports modules, sets users, packages
+│       │   ├── hardware-configuration.nix  # Auto-generated hardware config
+│       │   └── taskfile.yml               # Host-specific tasks (included by root taskfile under `mainpc:` namespace)
+│       └── t580/
+│           ├── default.nix                 # Declares `nixosConfigurations.t580`
+│           ├── configuration.nix           # ThinkPad T580 system config (Intel Kaby Lake, systemd-boot)
+│           ├── hardware-configuration.nix  # T580 hardware — Intel Kaby Lake GPU params, VAAPI, TRIM
+│           └── taskfile.yml               # Host-specific tasks (included by root taskfile under `t580:` namespace)
 │
 └── home_man/                  # Git submodule — Home Manager user configuration (not a flake module)
     ├── home.nix               # Standalone HM entry (non-NixOS)
@@ -111,9 +117,12 @@ import-tree ./modules
     ├── features/desktop/niri/default.nix  → flake.nixosModules.niri
     ├── features/desktop/niri/noctalia.nix → perSystem.packages.myNoctalia
     ├── modules/home/default.nix           → flake.nixosModules.homeManager
-        └── modules/hosts/mainPC/
-          ├── default.nix        → flake.nixosConfigurations.mainPC
-          └── configuration.nix  → flake.nixosModules.mainPCConfiguration
+    ├── modules/hosts/mainPC/
+    │   ├── default.nix        → flake.nixosConfigurations.mainPC
+    │   └── configuration.nix  → flake.nixosModules.mainPCConfiguration
+    └── modules/hosts/t580/
+        ├── default.nix        → flake.nixosConfigurations.t580
+        └── configuration.nix  → flake.nixosModules.t580Configuration
 ```
 
 Each node adds exactly what it owns. Cross-references are done via `self.nixosModules.*` (e.g. `configuration.nix` imports `self.nixosModules.gnome`).
@@ -158,16 +167,23 @@ flake.nixosModules.homeManager = { pkgs, ... }: {
 This module is then imported by `mainPCConfiguration`. The `home_man/` directory is a **git submodule** — it is plain Home Manager configuration, imported by the bridge above. It does **not** use the flake-parts / import-tree machinery. Instead, `common.nix` manually lists its program imports.
 
 ```
-NixOS system build
+NixOS system build (mainPC)
     └── mainPCConfiguration
-      ├── mainPCHardware   (hardware)
-        ├── kde                 (or gnome / niri)
-        ├── nvidia
-        ├── gaming
-        └── homeManager         ← injects home-manager module
-              └── common.nix
-                    └── programs/* (zsh, neovim, ghostty, ...)
-                          └── system-specific/linux/* (GUI apps, fonts, ...)
+          ├── mainPCHardware   (hardware — GRUB, Nvidia GPU)
+          ├── kde                 (or gnome / niri)
+          ├── nvidia
+          ├── gaming
+          └── homeManager         ← injects home-manager module
+                └── common.nix
+                      └── programs/* (zsh, neovim, ghostty, ...)
+                            └── system-specific/linux/* (GUI apps, fonts, ...)
+
+NixOS system build (t580 — ThinkPad T580)
+    └── t580Configuration
+          ├── t580Hardware     (hardware — systemd-boot, Intel Kaby Lake GPU, VAAPI, TRIM)
+          ├── kde                 (or gnome / niri)
+          └── homeManager
+                └── common.nix
 ```
 
 ---
@@ -260,7 +276,8 @@ nix(action="flake-inputs", type="read", query="nixpkgs:flake.nix")
 | Large feature layout | Prefer an aggregator module plus sibling modules with single ownership, instead of one huge file or ad-hoc helper snippets |
 | Theme access | `self.theme.base0X` (with `#`), `self.themeNoHash.base0X` (without) — used inside niri binds, colors, etc. |
 | Adding a program | Create `home_man/programs/<name>.nix` (or `<name>/default.nix`), add it to the `imports` list in `common.nix` |
-| Adding a feature | Create `modules/features/<name>.nix` exposing `flake.nixosModules.<name>`, import it in `configuration.nix` |
+| Adding a feature | Create `modules/features/<name>.nix` exposing `flake.nixosModules.<name>`, import it in the relevant host `configuration.nix` |
+| Adding a new host | Create `modules/hosts/<name>/` with `default.nix`, `configuration.nix`, `hardware-configuration.nix`, and `taskfile.yml`; add an `includes` entry to root `taskfile.yml` |
 | Adding a GUI app | Create `home_man/programs/system-specific/linux/<name>/default.nix`, add it to `linux/default.nix` imports (see below) |
 | System-level packages | Only put packages in `configuration.nix` (`environment.systemPackages` or `users.users.ab_dullah.packages`) if they need system-level integration. Everything else belongs in Home Manager |
 | Docker | Enabled via `virtualisation.docker.enable = true` in `configuration.nix`; user added to `"docker"` extraGroup |
@@ -318,8 +335,19 @@ After creating the file, add `./\<name\>` to the `imports` list in `home_man/pro
 
 ## Rebuild
 
+Host-specific tasks live in each host's `taskfile.yml` and are included in the root taskfile under their namespace:
+
+```bash
+task mainpc:switch   # build and switch mainPC
+task t580:switch     # build and switch t580
+task t580:boot       # build and set boot entry (use before first reboot on t580)
+```
+
+Or call nixos-rebuild directly:
+
 ```bash
 sudo nixos-rebuild switch --flake '.?submodules=1#mainPC'
+sudo nixos-rebuild switch --flake '.?submodules=1#t580'
 ```
 
 `.?submodules=1` means:
