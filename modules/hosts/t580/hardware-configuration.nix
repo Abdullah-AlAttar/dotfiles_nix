@@ -24,6 +24,20 @@
     boot.kernelModules = ["kvm-intel"];
     boot.extraModulePackages = [];
 
+    # Intel Kaby Lake GPU — from nixos-hardware t480 profile (same silicon)
+    boot.kernelParams = [
+      "i915.enable_guc=2" # GuC firmware for GPU command submission
+      "i915.enable_fbc=1" # framebuffer compression (power saving)
+      "i915.enable_psr=2" # panel self-refresh (display power saving)
+    ];
+    hardware.intelgpu = {
+      computeRuntime = "legacy";
+      vaapiDriver = "intel-media-driver"; # hardware video acceleration
+    };
+
+    # Enable firmware blobs (WiFi, BT, GPU)
+    hardware.enableRedistributableFirmware = true;
+
     # NOTE: These UUIDs are from the source machine — replace them after
     # running `nixos-generate-config` on this machine.
     fileSystems."/" = {
@@ -45,6 +59,6 @@
     ];
 
     nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-    hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+    hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;  # Intel microcode updates
   };
 }

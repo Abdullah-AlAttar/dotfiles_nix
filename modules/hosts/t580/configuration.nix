@@ -83,6 +83,22 @@
     security.rtkit.enable = true;
     # PipeWire is configured by the selected desktop module.
 
+    # Periodic NVMe/SSD TRIM
+    services.fstrim.enable = true;
+
+    # Fix Intel Kaby Lake CPU throttling bug (affects T480/T580 series)
+    services.throttled.enable = true;
+
+    # TrackPoint — enable middle-button scroll
+    hardware.trackpoint = {
+      enable = true;
+      emulateWheel = true;
+    };
+
+    # TLP is intentionally omitted: KDE enables power-profiles-daemon by default,
+    # and the two conflict. Remove the comment and disable power-profiles-daemon
+    # first if you prefer TLP.
+
     # services.openssh.enable = true;
 
     environment.systemPackages = with pkgs; [
