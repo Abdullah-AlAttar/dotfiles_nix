@@ -5,44 +5,22 @@ version: "3"
 # materializing the flake source snapshot.
 # Without it, paths like home_man/nix_home.nix can fail during evaluation.
 
+# Host-specific tasks live in each host's own taskfile.yml and are included
+# here under their respective namespaces, e.g.:
+#   task mainpc:switch   task t580:build
+includes:
+  mainpc:
+    taskfile: ./modules/hosts/mainPC/taskfile.yml
+    dir: .
+  t580:
+    taskfile: ./modules/hosts/t580/taskfile.yml
+    dir: .
+
 tasks:
   default:
     desc: List available tasks
     cmd: task --list
     silent: true
-
-  nix:switch:
-    desc: Build and switch to the NixOS configuration (mainPC)
-    # submodules=1 ensures imports from ./home_man are visible to flake eval.
-    cmd: sudo nixos-rebuild switch --flake '.?submodules=1#mainPC'
-
-  nix:switch:t580:
-    desc: Build and switch to the NixOS configuration (t580)
-    cmd: sudo nixos-rebuild switch --flake '.?submodules=1#t580'
-
-  nix:boot:
-    desc: Build and set as boot entry — no switch (mainPC)
-    cmd: sudo nixos-rebuild boot --flake '.?submodules=1#mainPC'
-
-  nix:boot:t580:
-    desc: Build and set as boot entry — no switch (t580)
-    cmd: sudo nixos-rebuild boot --flake '.?submodules=1#t580'
-
-  nix:test:
-    desc: Build and activate temporarily — reverts on reboot (mainPC)
-    cmd: sudo nixos-rebuild test --flake '.?submodules=1#mainPC'
-
-  nix:test:t580:
-    desc: Build and activate temporarily — reverts on reboot (t580)
-    cmd: sudo nixos-rebuild test --flake '.?submodules=1#t580'
-
-  nix:build:
-    desc: Build the configuration without activating (mainPC)
-    cmd: nixos-rebuild build --flake '.?submodules=1#mainPC'
-
-  nix:build:t580:
-    desc: Build the configuration without activating (t580)
-    cmd: nixos-rebuild build --flake '.?submodules=1#t580'
 
   nix:check:
     desc: Evaluate the flake and check for errors
@@ -81,21 +59,10 @@ tasks:
     desc: Roll back to the previous system generation
     cmd: sudo nixos-rebuild switch --rollback
 
-  nix:diff:
-    desc: Show package diff between current and new build (mainPC)
-    cmds:
-    - nix build '.?submodules=1#nixosConfigurations.mainPC.config.system.build.toplevel' --no-link --print-out-paths | xargs -I{} nvd diff /run/current-system {}
-
-  nix:diff:t580:
-    desc: Show package diff between current and new build (t580)
-    cmds:
-    - nix build '.?submodules=1#nixosConfigurations.t580.config.system.build.toplevel' --no-link --print-out-paths | xargs -I{} nvd diff /run/current-system {}
-
   nix:repl:
     desc: Open a nix repl with the flake loaded
-    cmds:
     # builtins.getFlake also needs ?submodules=1 for local submodule imports.
-    - nix repl --expr 'builtins.getFlake (toString ./. + "?submodules=1")'
+    cmd: nix repl --expr 'builtins.getFlake (toString ./. + "?submodules=1")'
 
   dump:config:
     desc: Dump kde plasma configuration to a nix file
