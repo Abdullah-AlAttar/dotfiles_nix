@@ -20,6 +20,7 @@
         # self.nixosModules.cosmic
         # self.nixosModules.niri
         self.nixosModules.nvidia
+        # self.nixosModules.displaylink
         self.nixosModules.gaming
         # self.nixosModules.weylus
         self.nixosModules.teamviewer
