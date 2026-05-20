@@ -26,7 +26,8 @@
       inputs.home-manager.follows = "home-manager";
     };
     wayscriber = {
-      url = "github:devmobasa/wayscriber";
+      # TODO: Remember to remove specific version once the dependency is stable on rustc
+      url = "github:devmobasa/wayscriber/v0.9.18";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     llm-agents.url = "github:numtide/llm-agents.nix";
