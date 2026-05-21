@@ -121,6 +121,10 @@
       # Install firefox.
       programs.firefox.enable = true;
 
+      # Enable AppImage support (binfmt and desktop integration).
+      programs.appimage.enable = true;
+      programs.appimage.binfmt = true;
+
       programs.zsh.enable = true;
       programs.nix-ld.enable = true;
       # Allow unfree packages
@@ -139,6 +143,8 @@
         go-task
         vscode
         android-tools # adb/fastboot — udev rules handled automatically by systemd 258+
+        brave
+        beekeeper-studio
         inputs.wayscriber.packages.${pkgs.stdenv.hostPlatform.system}.default
       ];
 
