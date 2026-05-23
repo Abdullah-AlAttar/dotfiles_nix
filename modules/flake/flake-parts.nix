@@ -1,4 +1,4 @@
-{ inputs, ... }: {
+{inputs, ...}: {
   # Enables the flake.modules.* typed registry.
   # Allows each file under modules/ to expose named HM/NixOS modules via
   # flake.modules.homeManager.<name> or flake.modules.nixos.<name>,

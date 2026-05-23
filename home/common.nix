@@ -25,54 +25,22 @@
     xh # Command-line HTTP client
     tokei # Code statistics tool
     sqlfluff # SQL linter and formatter
-    strace
-    sqlite
-    # Clipboard utilities for neovim
-    xclip # X11 clipboard utility
-    xsel # X11 clipboard utility (alternative)
-    wl-clipboard # Wayland clipboard utility (for future use)
     unixtools.column
 
     jnv # JSON viewer
     fx # Command-line JSON processor
-
-    ## cpp
-    gcc
-    gnumake
-    cmake
-    llvmPackages_20.clang-tools
-
-    ## python
-    python314
-    uv
-    meson
-    ninja
-
-    ## node
-    nodejs_24
-    bun
-
-    ## dev
-    glab
-    postgresql
-    buf # Protocol buffer compiler
-    jfrog-cli
 
     ## network
     lsof
     nettools
     iproute2
 
-    # idk
+    # misc
     hugo
     openfortivpn
     qpdf
     asciinema
     ocrmypdf
-
-    devenv
-    dioxus-cli
-    binaryen
     vips
     inkscape
     # cargo-tauri
