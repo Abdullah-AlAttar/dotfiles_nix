@@ -1,0 +1,21 @@
+version: "3"
+
+vars:
+  USER: ab_dullah
+
+tasks:
+  switch:
+    desc: Build and activate the Home Manager configuration
+    cmd: home-manager switch --flake '.#{{.USER}}'
+
+  build:
+    desc: Build the configuration without activating
+    cmd: home-manager build --flake '.#{{.USER}}'
+
+  news:
+    desc: Show Home Manager news for the current generation
+    cmd: home-manager news --flake '.#{{.USER}}'
+
+  diff:
+    desc: Show package diff between current and new build
+    cmd: nix build '.#homeConfigurations.{{.USER}}.activationPackage' --no-link --print-out-paths | xargs -I{} nvd diff ~/.local/state/nix/profiles/home-manager {}

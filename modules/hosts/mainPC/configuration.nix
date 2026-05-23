@@ -1,8 +1,9 @@
 {
   self,
   inputs,
+  config,
   ...
-}: {
+}@flakeArgs: {
   flake.nixosModules.mainPCConfiguration =
     # Edit this configuration file to define what should be installed on
     # your system.  Help is available in the configuration.nix(5) man page
@@ -28,18 +29,7 @@
         self.nixosModules.homeManager
       ];
 
-      # mainPC-specific Home Manager packages (not in shared home_man submodule)
-      home-manager.users.ab_dullah = {pkgs, ...}: {
-        home.packages = with pkgs;
-          [
-            scrcpy
-          ]
-          ++ (with inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}; [
-            opencode
-            copilot-cli
-            spec-kit
-          ]);
-      };
+      home-manager.users.ab_dullah = flakeArgs.config.flake.modules.homeManager.mainPC;
 
       boot.loader = {
         grub = {

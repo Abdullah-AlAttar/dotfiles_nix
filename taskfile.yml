@@ -1,19 +1,17 @@
 version: "3"
 
-# This repo imports files from the git submodule at ./home_man.
-# Using '.?submodules=1' tells Nix to include submodule contents when
-# materializing the flake source snapshot.
-# Without it, paths like home_man/nix_home.nix can fail during evaluation.
-
-# Host-specific tasks live in each host's own taskfile.yml and are included
-# here under their respective namespaces, e.g.:
-#   task mainpc:switch   task t580:build
+# Host-specific and home tasks live in their own taskfile.yml files and are
+# included here under their respective namespaces:
+#   task mainpc:switch   task t580:switch   task home:switch
 includes:
   mainpc:
     taskfile: ./modules/hosts/mainPC/taskfile.yml
     dir: .
   t580:
     taskfile: ./modules/hosts/t580/taskfile.yml
+    dir: .
+  home:
+    taskfile: ./home/taskfile.yml
     dir: .
 
 tasks:
@@ -61,8 +59,7 @@ tasks:
 
   nix:repl:
     desc: Open a nix repl with the flake loaded
-    # builtins.getFlake also needs ?submodules=1 for local submodule imports.
-    cmd: nix repl --expr 'builtins.getFlake (toString ./. + "?submodules=1")'
+    cmd: nix repl --expr 'builtins.getFlake (toString ./.)'
 
   dump:config:
     desc: Dump kde plasma configuration to a nix file

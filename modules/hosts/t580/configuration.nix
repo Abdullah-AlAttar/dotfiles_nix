@@ -1,8 +1,9 @@
 {
   self,
   inputs,
+  config,
   ...
-}: {
+}@flakeArgs: {
   flake.nixosModules.t580Configuration = {
     config,
     pkgs,
@@ -109,6 +110,8 @@
     ];
 
     networking.firewall.enable = true;
+
+    home-manager.users.ab_dullah = flakeArgs.config.flake.modules.homeManager.t580;
 
     system.stateVersion = "25.11"; # Did you read the comment?
   };
