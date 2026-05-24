@@ -17,27 +17,27 @@ abdullah_nix/
 ├── modules/                   # All flake-parts modules (auto-imported via import-tree)
 │   ├── parts.nix              # Declares supported systems (x86_64-linux, etc.)
 │   │
-│   ├── features/              # Reusable nixosModules (desktop, theme, etc.)
-│   │   ├── theme.nix          # Base16 color theme exposed on `self.theme` / `self.themeNoHash`
-│   │   ├── wallpaper.png      # Wallpaper asset
+│   ├── features/              # Reusable nixosModules (desktops, hardware, etc.)
 │   │   ├── gaming.nix         # Steam / gaming packages
 │   │   ├── nvidia.nix         # Nvidia drivers / CUDA
+│   │   ├── displaylink.nix    # DisplayLink dock support
+│   │   ├── scanner.nix        # Scanner drivers
+│   │   ├── teamviewer.nix     # TeamViewer remote desktop
+│   │   ├── weylus.nix         # Weylus screen drawing
 │   │   └── desktop/
+│   │       ├── cosmic/
+│   │       │   ├── default.nix   # COSMIC desktop aggregator module
+│   │       │   └── system.nix    # COSMIC system integration (DE enablement, xkb, fonts)
 │   │       ├── gnome/
 │   │       │   └── default.nix   # GNOME desktop module
-│   │       ├── kde/
-│   │       │   ├── default.nix   # KDE aggregator module; composes sibling KDE feature modules
-│   │       │   ├── system.nix    # KDE system integration (SDDM, PipeWire, xkb, plasma-manager enablement)
-│   │       │   ├── workspace.nix # Plasma workspace look-and-feel, theme, wallpaper, cursor
-│   │       │   ├── fonts.nix     # Plasma font preferences
-│   │       │   ├── kwin.nix      # KWin effects and night-light behavior
-│   │       │   ├── shortcuts.nix # Plasma shortcuts and hotkeys
-│   │       │   └── panels.nix    # Plasma top bar + bottom dock panel layout
-│   │       └── niri/
-│   │           ├── default.nix   # Niri wayland compositor module
-│   │           ├── niri.nix.dep  # Niri wrapper-modules configuration (keybinds, layout, etc.)
-│   │           ├── noctalia.nix  # Noctalia bar package definition
-│   │           └── noctalia.json # Noctalia bar settings
+│   │       └── kde/
+│   │           ├── default.nix   # KDE aggregator module; composes sibling KDE feature modules
+│   │           ├── system.nix    # KDE system integration (SDDM, PipeWire, xkb, plasma-manager enablement)
+│   │           ├── workspace.nix # Plasma workspace look-and-feel, theme, wallpaper, cursor
+│   │           ├── fonts.nix     # Plasma font preferences
+│   │           ├── kwin.nix      # KWin effects and night-light behavior
+│   │           ├── shortcuts.nix # Plasma shortcuts and hotkeys
+│   │           └── panels.nix    # Plasma top bar + bottom dock panel layout
 │   │
 │   ├── home/
 │   │   ├── default.nix        # NixOS HM bridge — sets up home-manager NixOS module
@@ -48,11 +48,15 @@ abdullah_nix/
 │       ├── mainPC/
 │       │   ├── default.nix                 # Declares `nixosConfigurations.mainPC`
 │       │   ├── configuration.nix           # Main system config — imports modules, sets users, packages
+│       │   ├── home-manager.nix            # Per-host HM user config (module imports, host-specific packages)
 │       │   ├── hardware-configuration.nix  # Auto-generated hardware config
-│       │   └── taskfile.yml               # Host-specific tasks (included by root taskfile under `mainpc:` namespace)
+│       │   ├── taskfile.yml               # Host-specific tasks (included by root taskfile under `mainpc:` namespace)
+│       │   └── certs/
+│       │       └── cert_ca.crt            # Custom CA certificate
 │       └── t580/
 │           ├── default.nix                 # Declares `nixosConfigurations.t580`
 │           ├── configuration.nix           # ThinkPad T580 system config (Intel Kaby Lake, systemd-boot)
+│           ├── home-manager.nix            # Per-host HM user config (module imports)
 │           ├── hardware-configuration.nix  # T580 hardware — Intel Kaby Lake GPU params, VAAPI, TRIM
 │           └── taskfile.yml               # Host-specific tasks (included by root taskfile under `t580:` namespace)
 │
@@ -102,8 +106,7 @@ abdullah_nix/
     │   └── fonts/             # Font packages
     │
     └── system/                # System integration
-        ├── default.nix        # Aggregator — session vars, network tools, misc
-        └── session.nix        # SSH_ASKPASS session variables
+        └── default.nix        # Aggregator — session vars, network tools, misc
 ```
 
 ---
@@ -128,19 +131,20 @@ Every `.nix` file under `modules/` is a **flake-parts module** — a function th
 import-tree ./modules
     │
     ├── parts.nix           → config.systems = [...]
-    ├── features/theme.nix  → flake.theme, flake.themeNoHash
     ├── features/desktop/gnome/default.nix → flake.nixosModules.gnome
-    ├── features/desktop/niri/default.nix  → flake.nixosModules.niri
-    ├── features/desktop/niri/noctalia.nix → perSystem.packages.myNoctalia
+    ├── features/desktop/cosmic/default.nix → flake.nixosModules.cosmic
+    ├── features/desktop/kde/default.nix   → flake.nixosModules.kde
     ├── modules/home/default.nix           → flake.nixosModules.homeManager
     ├── modules/home/modules.nix           → flake.homeModules (common, cli, dev, apps, system)
     ├── modules/home/standalone.nix        → flake.homeConfigurations (ubuntu, wsl)
     ├── modules/hosts/mainPC/
-    │   ├── default.nix        → flake.nixosConfigurations.mainPC
-    │   └── configuration.nix  → flake.nixosModules.mainPCConfiguration
+    │   ├── default.nix           → flake.nixosConfigurations.mainPC
+    │   ├── configuration.nix     → flake.nixosModules.mainPCConfiguration
+    │   └── home-manager.nix      → flake.nixosModules.mainPCHomeManager
     └── modules/hosts/t580/
-        ├── default.nix        → flake.nixosConfigurations.t580
-        └── configuration.nix  → flake.nixosModules.t580Configuration
+        ├── default.nix           → flake.nixosConfigurations.t580
+        ├── configuration.nix     → flake.nixosModules.t580Configuration
+        └── home-manager.nix      → flake.nixosModules.t580HomeManager
 ```
 
 Each node adds exactly what it owns. Cross-references are done via `self.nixosModules.*` (e.g. `configuration.nix` imports `self.nixosModules.gnome`).
@@ -179,7 +183,7 @@ flake.nixosModules.homeManager = { pkgs, ... }: {
     useUserPackages = true;
     backupFileExtension = "hm-backup";
     extraSpecialArgs = { inherit inputs; isNixOS = true; };
-    # Per-host module selection is set in each host's configuration.nix
+    # Per-host module selection is set in each host's home-manager.nix
   };
 };
 ```
@@ -196,19 +200,26 @@ flake.homeModules = {
 };
 ```
 
-Each host selects which modules to include in its `configuration.nix`:
+Each host selects which modules to include in its `home-manager.nix` (a separate flake-parts module under `modules/hosts/<host>/`):
 
 ```nix
-home-manager.users.ab_dullah = {
-  imports = [
-    self.homeModules.common
-    self.homeModules.cli
-    self.homeModules.dev
-    self.homeModules.apps
-    self.homeModules.system
-  ];
-};
+{ self, inputs, ... }: {
+  flake.nixosModules.mainPCHomeManager = { pkgs, ... }: {
+    home-manager.users.ab_dullah = {
+      imports = [
+        self.homeModules.common
+        self.homeModules.cli
+        self.homeModules.dev
+        self.homeModules.apps
+        self.homeModules.system
+      ];
+      # Host-specific packages, session variables, etc.
+    };
+  };
+}
 ```
+
+Then in `configuration.nix`, add `self.nixosModules.mainPCHomeManager` to the imports list.
 
 Standalone (non-NixOS) configurations for Ubuntu/WSL are in `modules/home/standalone.nix`:
 ```bash
@@ -223,7 +234,7 @@ NixOS system build (mainPC)
           ├── kde
           ├── nvidia
           ├── gaming
-          └── homeManager
+          └── mainPCHomeManager
                 └── home-manager.users.ab_dullah.imports = [
                       self.homeModules.common   → home/common.nix (base packages)
                       self.homeModules.cli      → home/cli/default.nix (zsh, neovim, ...)
@@ -319,14 +330,13 @@ nix(action="flake-inputs", type="read", query="nixpkgs:flake.nix")
 |---|---|
 | Module naming | Derived from the `flake.nixosModules.<name>` key declared inside each file, **not** from the file path |
 | `modules/` contents | Every `.nix` file under `modules/` must be a real flake-parts module. Put plain helper/data files outside `modules/`, or better, refactor them into sibling modules when they represent a real concern |
-| Switching desktops | Change the import in `configuration.nix`: `self.nixosModules.kde` ↔ `self.nixosModules.gnome` ↔ `self.nixosModules.niri` |
+| Switching desktops | Change the import in `configuration.nix`: `self.nixosModules.kde` ↔ `self.nixosModules.gnome` ↔ `self.nixosModules.cosmic` |
 | Large feature layout | Prefer an aggregator module plus sibling modules with single ownership, instead of one huge file or ad-hoc helper snippets |
-| Theme access | `self.theme.base0X` (with `#`), `self.themeNoHash.base0X` (without) — used inside niri binds, colors, etc. |
 | Adding a program | Create `home/<category>/<name>.nix` (or `<name>/default.nix`), add it to the category `default.nix` imports |
 | Adding a feature | Create `modules/features/<name>.nix` exposing `flake.nixosModules.<name>`, import it in the relevant host `configuration.nix` |
-| Adding a new host | Create `modules/hosts/<name>/` with `default.nix`, `configuration.nix`, `hardware-configuration.nix`, and `taskfile.yml`; add an `includes` entry to root `taskfile.yml` |
+| Adding a new host | Create `modules/hosts/<name>/` with `default.nix`, `configuration.nix`, `hardware-configuration.nix`, `home-manager.nix`, and `taskfile.yml`; add an `includes` entry to root `taskfile.yml` |
 | Adding a GUI app | Create `home/apps/<name>/default.nix`, add `./<name>` to `home/apps/default.nix` imports |
-| Selecting HM modules | Each host's `configuration.nix` sets `home-manager.users.ab_dullah.imports` with the modules it needs |
+| Selecting HM modules | Each host's `home-manager.nix` sets `home-manager.users.ab_dullah.imports` with the modules it needs |
 
 ### Where to put a new package
 
