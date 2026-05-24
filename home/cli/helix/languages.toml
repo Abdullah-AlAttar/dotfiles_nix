@@ -1,0 +1,22 @@
+# in <config_dir>/helix/languages.toml
+
+[[language]]
+name = "rust"
+auto-format = false
+
+
+# go 
+[[language]]
+name = "go"
+auto-format = false
+
+
+# python
+[[language]]
+name = "python"
+auto-format = false
+
+# nix
+[[language]]
+name = "nix"
+auto-format = false

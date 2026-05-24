@@ -40,7 +40,9 @@ abdullah_nix/
 │   │           └── noctalia.json # Noctalia bar settings
 │   │
 │   ├── home/
-│   │   └── default.nix        # nixosModule that wires Home Manager into NixOS
+│   │   ├── default.nix        # NixOS HM bridge — sets up home-manager NixOS module
+│   │   ├── modules.nix        # Exposes flake.homeModules (common, cli, dev, apps, system)
+│   │   └── standalone.nix     # flake.homeConfigurations for non-NixOS (Ubuntu, WSL)
 │   │
 │   └── hosts/
 │       ├── mainPC/
@@ -54,40 +56,54 @@ abdullah_nix/
 │           ├── hardware-configuration.nix  # T580 hardware — Intel Kaby Lake GPU params, VAAPI, TRIM
 │           └── taskfile.yml               # Host-specific tasks (included by root taskfile under `t580:` namespace)
 │
-└── home_man/                  # Git submodule — Home Manager user configuration (not a flake module)
-    ├── home.nix               # Standalone HM entry (non-NixOS)
-    ├── common.nix             # Shared config imported by both home.nix and NixOS HM bridge
-    │                          #   └── home.packages: CLI tools, dev deps, cross-platform packages
-    └── programs/
-        ├── zsh/               # Zsh + oh-my-zsh + plugins
-        ├── starship/          # Starship prompt
-        ├── zellij/            # Terminal multiplexer
-        ├── neovim/            # NixVim-based Neovim config
-        │   ├── default.nix
-        │   ├── options.nix
-        │   ├── keymappings.nix
-        │   ├── autocommands.nix
-        │   ├── completion.nix
-        │   ├── extraConfigLua.lua
-        │   └── plugins/       # One file per plugin
-        ├── yazi/              # File manager
-        ├── bottom.nix         # System monitor
-        ├── eza.nix            # ls replacement
-        ├── fastfetch.nix      # System info
-        ├── fzf.nix            # Fuzzy finder
-        ├── zoxide.nix         # Smarter cd
-        └── system-specific/   # Platform-conditional config
-            ├── default.nix    # Defines enableNativeLinux / enableGuiApps options
-            └── linux/
-                ├── default.nix       # Imports all linux-specific modules
-                ├── ghostty/          # Ghostty terminal
-                ├── obsidian/         # Obsidian note-taking (GUI)
-                ├── telegram/         # Telegram desktop (GUI)
-                ├── obs/              # OBS Studio (GUI)
-                ├── microsoft-edge/   # Edge browser (GUI)
-                ├── zed/              # Zed editor (GUI)
-                ├── alacrity/         # Alacritty terminal (GUI)
-                └── fonts/            # Font packages
+└── home/                      # Home Manager modules (plain HM modules, NOT flake-parts modules)
+    ├── common.nix             # Base config: stateVersion + essential packages (git, ripgrep, etc.)
+    │
+    ├── cli/                   # Terminal / CLI tools
+    │   ├── default.nix        # Aggregator — imports all CLI modules below
+    │   ├── zsh/               # Zsh + oh-my-zsh + plugins
+    │   ├── starship/          # Starship prompt
+    │   ├── atuin/             # Atuin shell history
+    │   ├── zellij/            # Terminal multiplexer
+    │   ├── helix/             # Helix editor
+    │   ├── neovim/            # NixVim-based Neovim config
+    │   │   ├── default.nix
+    │   │   ├── options.nix, keymappings.nix, ...
+    │   │   └── plugins/       # One file per plugin
+    │   ├── bash/              # Bash shell config
+    │   ├── yazi.nix           # File manager
+    │   ├── eza.nix            # ls replacement
+    │   ├── fzf.nix            # Fuzzy finder
+    │   ├── zoxide.nix         # Smarter cd
+    │   ├── fastfetch.nix      # System info
+    │   └── bottom.nix         # System monitor
+    │
+    ├── dev/                   # Development tools
+    │   ├── default.nix        # Aggregator — imports all dev modules + language toolchains
+    │   ├── go/                # Go toolchain
+    │   ├── kubernetes.nix     # kubectl + plugins
+    │   ├── direnv/            # Direnv + nix-direnv
+    │   └── k9s/               # K9s TUI + skins + plugins
+    │
+    ├── apps/                  # GUI applications (NixOS / native Linux only)
+    │   ├── default.nix        # Aggregator — imports all GUI app modules
+    │   ├── ghostty/           # Ghostty terminal
+    │   ├── discord/           # Discord
+    │   ├── obsidian/          # Obsidian note-taking
+    │   ├── telegram/          # Telegram desktop
+    │   ├── obs/               # OBS Studio
+    │   ├── microsoft-edge/    # Edge browser
+    │   ├── zed/               # Zed editor
+    │   ├── alacrity/          # Alacritty terminal
+    │   ├── bruno/             # Bruno API client
+    │   ├── remmina/           # RDP client
+    │   ├── teams/             # Teams for Linux
+    │   ├── vlc/               # VLC media player
+    │   └── fonts/             # Font packages
+    │
+    └── system/                # System integration
+        ├── default.nix        # Aggregator — session vars, network tools, misc
+        └── session.nix        # SSH_ASKPASS session variables
 ```
 
 ---
@@ -117,6 +133,8 @@ import-tree ./modules
     ├── features/desktop/niri/default.nix  → flake.nixosModules.niri
     ├── features/desktop/niri/noctalia.nix → perSystem.packages.myNoctalia
     ├── modules/home/default.nix           → flake.nixosModules.homeManager
+    ├── modules/home/modules.nix           → flake.homeModules (common, cli, dev, apps, system)
+    ├── modules/home/standalone.nix        → flake.homeConfigurations (ubuntu, wsl)
     ├── modules/hosts/mainPC/
     │   ├── default.nix        → flake.nixosConfigurations.mainPC
     │   └── configuration.nix  → flake.nixosModules.mainPCConfiguration
@@ -151,39 +169,68 @@ In this pattern, each sibling file under `modules/features/desktop/kde/` is stil
 
 ### Home Manager Integration
 
-Home Manager runs as a **NixOS module** (not a standalone flake output). The bridge is `modules/home/default.nix`:
+Home Manager runs as a **NixOS module**. The bridge is `modules/home/default.nix`:
 
 ```nix
 flake.nixosModules.homeManager = { pkgs, ... }: {
   imports = [ inputs.home-manager.nixosModules.home-manager ];
   home-manager = {
-    useGlobalPkgs = true;       # uses system nixpkgs, no separate HM nixpkgs
-    useUserPackages = true;     # installs HM packages into the user profile
-    users.ab_dullah = import ../../home_man/common.nix;
+    useGlobalPkgs = true;
+    useUserPackages = true;
+    backupFileExtension = "hm-backup";
+    extraSpecialArgs = { inherit inputs; isNixOS = true; };
+    # Per-host module selection is set in each host's configuration.nix
   };
 };
 ```
 
-This module is then imported by `mainPCConfiguration`. The `home_man/` directory is a **git submodule** — it is plain Home Manager configuration, imported by the bridge above. It does **not** use the flake-parts / import-tree machinery. Instead, `common.nix` manually lists its program imports.
+HM modules live in `home/` at the repo root. `modules/home/modules.nix` exposes them as `flake.homeModules`:
+
+```nix
+flake.homeModules = {
+  common = import ../../home/common.nix;
+  cli    = import ../../home/cli/default.nix;
+  dev    = import ../../home/dev/default.nix;
+  apps   = import ../../home/apps/default.nix;
+  system = import ../../home/system/default.nix;
+};
+```
+
+Each host selects which modules to include in its `configuration.nix`:
+
+```nix
+home-manager.users.ab_dullah = {
+  imports = [
+    self.homeModules.common
+    self.homeModules.cli
+    self.homeModules.dev
+    self.homeModules.apps
+    self.homeModules.system
+  ];
+};
+```
+
+Standalone (non-NixOS) configurations for Ubuntu/WSL are in `modules/home/standalone.nix`:
+```bash
+nix run nixpkgs#home-manager -- switch --flake .#ubuntu
+nix run nixpkgs#home-manager -- switch --flake .#wsl
+```
 
 ```
 NixOS system build (mainPC)
     └── mainPCConfiguration
-          ├── mainPCHardware   (hardware — GRUB, Nvidia GPU)
-          ├── kde                 (or gnome / niri)
+          ├── mainPCHardware
+          ├── kde
           ├── nvidia
           ├── gaming
-          └── homeManager         ← injects home-manager module
-                └── common.nix
-                      └── programs/* (zsh, neovim, ghostty, ...)
-                            └── system-specific/linux/* (GUI apps, fonts, ...)
-
-NixOS system build (t580 — ThinkPad T580)
-    └── t580Configuration
-          ├── t580Hardware     (hardware — systemd-boot, Intel Kaby Lake GPU, VAAPI, TRIM)
-          ├── kde                 (or gnome / niri)
           └── homeManager
-                └── common.nix
+                └── home-manager.users.ab_dullah.imports = [
+                      self.homeModules.common   → home/common.nix (base packages)
+                      self.homeModules.cli      → home/cli/default.nix (zsh, neovim, ...)
+                      self.homeModules.dev      → home/dev/default.nix (go, k8s, ...)
+                      self.homeModules.apps     → home/apps/default.nix (ghostty, discord, ...)
+                      self.homeModules.system   → home/system/default.nix (session vars, ...)
+                    ]
 ```
 
 ---
@@ -275,21 +322,20 @@ nix(action="flake-inputs", type="read", query="nixpkgs:flake.nix")
 | Switching desktops | Change the import in `configuration.nix`: `self.nixosModules.kde` ↔ `self.nixosModules.gnome` ↔ `self.nixosModules.niri` |
 | Large feature layout | Prefer an aggregator module plus sibling modules with single ownership, instead of one huge file or ad-hoc helper snippets |
 | Theme access | `self.theme.base0X` (with `#`), `self.themeNoHash.base0X` (without) — used inside niri binds, colors, etc. |
-| Adding a program | Create `home_man/programs/<name>.nix` (or `<name>/default.nix`), add it to the `imports` list in `common.nix` |
+| Adding a program | Create `home/<category>/<name>.nix` (or `<name>/default.nix`), add it to the category `default.nix` imports |
 | Adding a feature | Create `modules/features/<name>.nix` exposing `flake.nixosModules.<name>`, import it in the relevant host `configuration.nix` |
 | Adding a new host | Create `modules/hosts/<name>/` with `default.nix`, `configuration.nix`, `hardware-configuration.nix`, and `taskfile.yml`; add an `includes` entry to root `taskfile.yml` |
-| Adding a GUI app | Create `home_man/programs/system-specific/linux/<name>/default.nix`, add it to `linux/default.nix` imports (see below) |
-| System-level packages | Only put packages in `configuration.nix` (`environment.systemPackages` or `users.users.ab_dullah.packages`) if they need system-level integration. Everything else belongs in Home Manager |
-| Docker | Enabled via `virtualisation.docker.enable = true` in `configuration.nix`; user added to `"docker"` extraGroup |
+| Adding a GUI app | Create `home/apps/<name>/default.nix`, add `./<name>` to `home/apps/default.nix` imports |
+| Selecting HM modules | Each host's `configuration.nix` sets `home-manager.users.ab_dullah.imports` with the modules it needs |
 
 ### Where to put a new package
 
 ```
 Need system integration (services, kernel, PAM)?
   └── YES → modules/features/<name>.nix  (new nixosModule) or configuration.nix directly
-  └── NO → Is it a GUI app only used on NixOS native Linux?
-        └── YES → home_man/programs/system-specific/linux/<name>/default.nix
-        └── NO  → home_man/common.nix  home.packages (CLI tools, cross-platform dev deps)
+  └── NO → Is it a GUI app (Linux desktop only)?
+        └── YES → home/apps/<name>/default.nix
+        └── NO  → Appropriate category: home/cli, home/dev, or home/system
 ```
 
 ### KDE Module Pattern
@@ -303,33 +349,26 @@ KDE is the reference example for a split dendritic desktop feature:
 
 ### GUI App Module Pattern
 
-All GUI apps under `home_man/programs/system-specific/linux/` **must** follow this pattern (see `telegram/default.nix` as the reference):
+All GUI apps under `home/apps/` follow a simple pattern — just enable the program or add its package. No conditional flags; module selection is at the per-host level.
+
+Simple package-only app:
 
 ```nix
-{
-  config,
-  pkgs,
-  lib,
-  ...
-}:
-
-let
-  has<Name> = builtins.hasAttr "<pkg-attr-name>" pkgs;
-in
-{
-  config = {
-    home.packages = lib.mkIf (config.programs.system-specific.enableGuiApps && has<Name>) [
-      pkgs.<pkg-attr-name>
-    ];
-
-    warnings =
-      lib.optional (config.programs.system-specific.enableGuiApps && !has<Name>)
-        "programs.system-specific.<name>: <pkg-attr-name> is not available for this platform; skipping installation.";
-  };
+{ pkgs, ... }: {
+  home.packages = [ pkgs.discord ];
 }
 ```
 
-After creating the file, add `./\<name\>` to the `imports` list in `home_man/programs/system-specific/linux/default.nix`.
+App with configuration files:
+
+```nix
+{ pkgs, ... }: {
+  home.packages = [ pkgs.ghostty ];
+  home.file.".config/ghostty/config".source = ./config;
+}
+```
+
+After creating the file, add `./<name>` to the `imports` list in `home/apps/default.nix`.
 
 ---
 
@@ -346,13 +385,6 @@ task t580:boot       # build and set boot entry (use before first reboot on t580
 Or call nixos-rebuild directly:
 
 ```bash
-sudo nixos-rebuild switch --flake '.?submodules=1#mainPC'
-sudo nixos-rebuild switch --flake '.?submodules=1#t580'
+sudo nixos-rebuild switch --flake '.#mainPC'
+sudo nixos-rebuild switch --flake '.#t580'
 ```
-
-`.?submodules=1` means:
-- `.` = use the current directory as the flake source.
-- `?submodules=1` = include Git submodule contents in that source snapshot.
-
-This repo imports Home Manager files from the `home_man` submodule, so omitting
-`submodules=1` can cause evaluation errors for paths inside that submodule.

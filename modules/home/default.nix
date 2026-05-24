@@ -14,7 +14,8 @@
         inherit inputs;
         isNixOS = true;
       };
-      users.ab_dullah = import ../../home_man/nix_home.nix;
+      # users.ab_dullah.imports is set by each host's configuration
+      # so hosts can choose which home modules to include.
     };
   };
 }

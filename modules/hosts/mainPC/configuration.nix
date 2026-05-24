@@ -28,8 +28,18 @@
         self.nixosModules.homeManager
       ];
 
-      # mainPC-specific Home Manager packages (not in shared home_man submodule)
-      home-manager.users.ab_dullah = {pkgs, ...}: {
+      # Per-host Home Manager module selection (dendritic pattern).
+      # Each host chooses which home modules to include.
+      home-manager.users.ab_dullah = {
+        imports = [
+          self.homeModules.common
+          self.homeModules.cli
+          self.homeModules.dev
+          self.homeModules.apps
+          self.homeModules.system
+        ];
+
+        # mainPC-specific packages not in shared home modules
         home.packages = with pkgs;
           [
             scrcpy

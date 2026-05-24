@@ -1,0 +1,59 @@
+[
+  {
+    "context": "Workspace",
+    "bindings": {
+      "ctrl-l": "workspace::ActivatePaneRight",
+      "ctrl-h": "workspace::ActivatePaneLeft",
+      "ctrl-j": "workspace::ActivatePaneDown",
+      "ctrl-k": "workspace::ActivatePaneUp",
+      "ctrl-b": "workspace::ToggleBottomDock"
+    }
+  },
+  {
+    "context": "VimControl && !menu",
+    "bindings": {
+      "ctrl-l": "workspace::ActivatePaneRight",
+      "ctrl-h": "workspace::ActivatePaneLeft",
+      "ctrl-j": "workspace::ActivatePaneDown",
+      "ctrl-k": "workspace::ActivatePaneUp",
+      "ctrl-b": "workspace::ToggleBottomDock",
+      "g i": "editor::GoToImplementation"
+    }
+  },
+  {
+    "context": "Editor",
+    "bindings": {
+      "ctrl-f": "buffer_search::Deploy",
+      "ctrl-v": "editor::Paste",
+      "ctrl-c": "editor::Copy",
+      "ctrl-x": "editor::Cut",
+      "ctrl-z": "editor::Undo",
+      "ctrl-y": "editor::Redo",
+      "ctrl-a": "editor::SelectAll",
+      "ctrl-s": "workspace::Save",
+      "ctrl-w": ["pane::CloseActiveItem", { "close_pinned": false }],
+      "ctrl-alt-up": "editor::AddSelectionAbove",
+      "ctrl-alt-down": "editor::AddSelectionBelow"
+    }
+  },
+  {
+    "context": "Editor && (vim_mode == normal || vim_mode == visual)",
+    "bindings": {
+      "ctrl-e": "file_finder::Toggle",
+      ", e": "vim::EndOfLine",
+      ", s": "vim::StartOfLineDownward"
+    }
+  },
+
+  {
+    "bindings": {
+      "f4": null,
+      "f7": null,
+      "ctrl-f11": null,
+
+      "f10": "debugger::StepOver",
+      "f11": "debugger::StepInto",
+      "shift-f11": "debugger::StepOut"
+    }
+  }
+]

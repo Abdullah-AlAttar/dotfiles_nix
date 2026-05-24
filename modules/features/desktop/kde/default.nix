@@ -9,4 +9,5 @@
       self.nixosModules.kdePanels
     ];
   };
+
 }

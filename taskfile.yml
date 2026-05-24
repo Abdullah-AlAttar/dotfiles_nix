@@ -1,10 +1,5 @@
 version: "3"
 
-# This repo imports files from the git submodule at ./home_man.
-# Using '.?submodules=1' tells Nix to include submodule contents when
-# materializing the flake source snapshot.
-# Without it, paths like home_man/nix_home.nix can fail during evaluation.
-
 # Host-specific tasks live in each host's own taskfile.yml and are included
 # here under their respective namespaces, e.g.:
 #   task mainpc:switch   task t580:build
@@ -61,8 +56,24 @@ tasks:
 
   nix:repl:
     desc: Open a nix repl with the flake loaded
-    # builtins.getFlake also needs ?submodules=1 for local submodule imports.
-    cmd: nix repl --expr 'builtins.getFlake (toString ./. + "?submodules=1")'
+    cmd: nix repl --expr 'builtins.getFlake (toString ./.)'
+
+  # ── Standalone Home Manager (Ubuntu / WSL) ──────────────────────────
+  standalone:switch:ubuntu:
+    desc: Apply Home Manager configuration on Ubuntu
+    cmd: nix run nixpkgs#home-manager -- switch --flake '.#ubuntu'
+
+  standalone:switch:wsl:
+    desc: Apply Home Manager configuration on WSL
+    cmd: nix run nixpkgs#home-manager -- switch --flake '.#wsl'
+
+  standalone:build:ubuntu:
+    desc: Build (dry-run) Home Manager configuration for Ubuntu
+    cmd: nix run nixpkgs#home-manager -- build --flake '.#ubuntu'
+
+  standalone:build:wsl:
+    desc: Build (dry-run) Home Manager configuration for WSL
+    cmd: nix run nixpkgs#home-manager -- build --flake '.#wsl'
 
   dump:config:
     desc: Dump kde plasma configuration to a nix file
