@@ -23,6 +23,12 @@
     devenv
     dioxus-cli
 
+    # WebAssembly
+    binaryen
+
+    # Artifactory / package registry
+    jfrog-cli
+
     # Debugging
     strace
 

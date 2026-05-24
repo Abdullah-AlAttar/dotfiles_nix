@@ -24,5 +24,8 @@
     fontconfig
     graphviz
     unixtools.column
+
+    # GUI apps without their own module (yet)
+    inkscape
   ];
 }
