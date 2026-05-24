@@ -3,7 +3,7 @@
   inputs,
   config,
   ...
-} @ flakeArgs: {
+}@flakeArgs: {
   flake.nixosModules.t580Configuration = {
     config,
     pkgs,

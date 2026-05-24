@@ -21,12 +21,7 @@
     ./bruno
   ];
 
-  home.packages =
-    (with pkgs; [process-compose])
-    ++ lib.optionals config.programs.system-specific.enableNativeLinux (with pkgs; [
-      # Clipboard utilities (X11 + Wayland) — used by neovim and other TUI tools
-      xclip
-      xsel
-      wl-clipboard
-    ]);
+  home.packages = with pkgs; [
+    process-compose
+  ];
 }
