@@ -1,8 +1,5 @@
 # CLI tools aggregator — imports all CLI program modules.
-{
-  pkgs,
-  ...
-}: {
+{pkgs, ...}: {
   imports = [
     ./zsh
     ./starship

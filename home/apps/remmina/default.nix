@@ -1,3 +1,3 @@
-{ pkgs, ... }: {
-  home.packages = [ pkgs.remmina ];
+{pkgs, ...}: {
+  home.packages = [pkgs.remmina];
 }

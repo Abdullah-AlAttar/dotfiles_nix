@@ -1,3 +1,3 @@
-{ pkgs, ... }: {
-  home.packages = [ pkgs.telegram-desktop ];
+{pkgs, ...}: {
+  home.packages = [pkgs.telegram-desktop];
 }

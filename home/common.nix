@@ -1,8 +1,5 @@
 # Base Home Manager configuration shared by all hosts (NixOS, Ubuntu, WSL).
-{
-  pkgs,
-  ...
-}: {
+{pkgs, ...}: {
   home.stateVersion = "24.11";
 
   home.packages = with pkgs; [

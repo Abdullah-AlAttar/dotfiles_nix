@@ -1,9 +1,6 @@
 # Exposes Home Manager modules as flake.homeModules for per-host selection.
 # Each host imports the categories it needs via self.homeModules.<name>.
-{
-  lib,
-  ...
-}: {
+{lib, ...}: {
   flake.homeModules = {
     common = import ../../home/common.nix;
     cli = import ../../home/cli/default.nix;

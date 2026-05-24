@@ -1,12 +1,5 @@
 # System integration aggregator — session variables, state, etc.
-{
-  pkgs,
-  ...
-}: {
-  imports = [
-    ./session.nix
-  ];
-
+{pkgs, ...}: {
   home.packages = with pkgs; [
     # Network / system tools
     lsof

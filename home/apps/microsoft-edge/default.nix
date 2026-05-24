@@ -1,3 +1,3 @@
-{ pkgs, ... }: {
-  home.packages = [ pkgs.microsoft-edge ];
+{pkgs, ...}: {
+  home.packages = [pkgs.microsoft-edge];
 }

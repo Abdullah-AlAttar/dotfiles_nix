@@ -17,19 +17,9 @@
       # self.nixosModules.gaming
       # self.nixosModules.scanner
       # self.nixosModules.teamviewer
+      self.nixosModules.t580HomeManager
       self.nixosModules.homeManager
     ];
-
-    # Per-host Home Manager module selection (dendritic pattern).
-    home-manager.users.ab_dullah = {
-      imports = [
-        self.homeModules.common
-        self.homeModules.cli
-        self.homeModules.dev
-        self.homeModules.apps
-        self.homeModules.system
-      ];
-    };
 
     boot.loader = {
       systemd-boot.enable = true;
