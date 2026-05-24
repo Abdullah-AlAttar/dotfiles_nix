@@ -6,20 +6,20 @@ vars:
 tasks:
   switch:
     desc: Build and switch to the NixOS configuration
-    cmd: sudo nixos-rebuild switch --flake '.#{{.HOST}}'
+    cmd: sudo nixos-rebuild switch --flake '.?submodules=1#{{.HOST}}'
 
   boot:
     desc: Build and set as boot entry — no switch
-    cmd: sudo nixos-rebuild boot --flake '.#{{.HOST}}'
+    cmd: sudo nixos-rebuild boot --flake '.?submodules=1#{{.HOST}}'
 
   test:
     desc: Build and activate temporarily — reverts on reboot
-    cmd: sudo nixos-rebuild test --flake '.#{{.HOST}}'
+    cmd: sudo nixos-rebuild test --flake '.?submodules=1#{{.HOST}}'
 
   build:
     desc: Build the configuration without activating
-    cmd: nixos-rebuild build --flake '.#{{.HOST}}'
+    cmd: nixos-rebuild build --flake '.?submodules=1#{{.HOST}}'
 
   diff:
     desc: Show package diff between current and new build
-    cmd: nix build '.#nixosConfigurations.{{.HOST}}.config.system.build.toplevel' --no-link --print-out-paths | xargs -I{} nvd diff /run/current-system {}
+    cmd: nix build '.?submodules=1#nixosConfigurations.{{.HOST}}.config.system.build.toplevel' --no-link --print-out-paths | xargs -I{} nvd diff /run/current-system {}
