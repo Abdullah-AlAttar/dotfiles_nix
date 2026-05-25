@@ -13,18 +13,23 @@
       ...
     }: {
       imports = [
-        # Include the results of the hardware scan.
-        # ./hardware-configuration.nix
+        # Base hardware + desktop
         self.nixosModules.mainPCHardware
         self.nixosModules.kde
         # self.nixosModules.cosmic
         # self.nixosModules.niri
+
+        # Hardware-specific features
         self.nixosModules.nvidia
         # self.nixosModules.displaylink
+
+        # Optional workstation features
         self.nixosModules.gaming
         # self.nixosModules.weylus
         self.nixosModules.teamviewer
         self.nixosModules.scanner
+
+        # User environment
         self.nixosModules.mainPCHomeManager
         self.nixosModules.homeManager
       ];
@@ -39,62 +44,64 @@
         timeout = 10;
       };
 
-      networking.hostName = "nixos"; # Define your hostname.
-      # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-
-      nix.gc = {
-        automatic = true;
-        dates = "weekly";
-        options = "--delete-older-than 14d";
+      networking = {
+        hostName = "nixos";
+        networkmanager.enable = true;
+        firewall = {
+          enable = true;
+          allowedTCPPorts = [
+            1701
+            9001
+          ];
+        };
       };
-      nix.settings.auto-optimise-store = true;
+
+      nix = {
+        gc = {
+          automatic = true;
+          dates = "weekly";
+          options = "--delete-older-than 14d";
+        };
+        settings = {
+          auto-optimise-store = true;
+          experimental-features = [
+            "nix-command"
+            "flakes"
+          ];
+          trusted-users = [
+            "root"
+            "@wheel"
+          ];
+        };
+      };
+
       # Trusted users can pass extra settings to the Nix daemon (e.g. system, extra-substituters).
       # Tools like devenv require this — without it, the daemon silently ignores their settings
       # and derivation evaluation fails. "@wheel" means "all users in the wheel group" (sudoers).
-      nix.settings.trusted-users = [
-        "root"
-        "@wheel"
-      ];
       # Configure network proxy if necessary
       # networking.proxy.default = "http://user:password@proxy:port/";
       # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
-      # Enable networking
-      networking.networkmanager.enable = true;
-
-      # Set your time zone.
       time.timeZone = "Europe/Berlin";
 
-      # Select internationalisation properties.
-      i18n.defaultLocale = "en_US.UTF-8";
-
-      i18n.extraLocaleSettings = {
-        LC_ADDRESS = "de_DE.UTF-8";
-        LC_IDENTIFICATION = "de_DE.UTF-8";
-        LC_MEASUREMENT = "de_DE.UTF-8";
-        LC_MONETARY = "de_DE.UTF-8";
-        LC_NAME = "de_DE.UTF-8";
-        LC_NUMERIC = "de_DE.UTF-8";
-        LC_PAPER = "de_DE.UTF-8";
-        LC_TELEPHONE = "de_DE.UTF-8";
-        LC_TIME = "de_DE.UTF-8";
+      i18n = {
+        defaultLocale = "en_US.UTF-8";
+        extraLocaleSettings = {
+          LC_ADDRESS = "de_DE.UTF-8";
+          LC_IDENTIFICATION = "de_DE.UTF-8";
+          LC_MEASUREMENT = "de_DE.UTF-8";
+          LC_MONETARY = "de_DE.UTF-8";
+          LC_NAME = "de_DE.UTF-8";
+          LC_NUMERIC = "de_DE.UTF-8";
+          LC_PAPER = "de_DE.UTF-8";
+          LC_TELEPHONE = "de_DE.UTF-8";
+          LC_TIME = "de_DE.UTF-8";
+        };
       };
 
-      # Enable CUPS to print documents.
-      services.printing.enable = true;
-
-      # Enable sound with pipewire.
-      services.pulseaudio.enable = false;
+      security.pki.certificateFiles = [./certs/cert_ca.crt];
       security.rtkit.enable = true;
-      # PipeWire is configured by the selected desktop module.
 
-      # Enable touchpad support (enabled default in most desktopManager).
-      # services.xserver.libinput.enable = true;
-
-      # Docker
-      virtualisation.docker.enable = true;
-
-      # Define a user account. Don't forget to set a password with 'passwd'.
       users.users.ab_dullah = {
         isNormalUser = true;
         description = "Abdullah";
@@ -106,37 +113,38 @@
         ];
       };
 
-      # Install firefox.
-      programs.firefox.enable = true;
+      programs = {
+        appimage = {
+          enable = true;
+          binfmt = true;
+        };
+        firefox.enable = true;
+        nix-ld.enable = true;
+        ssh.startAgent = true;
+        zsh.enable = true;
+      };
 
-      # Enable AppImage support (binfmt and desktop integration).
-      programs.appimage.enable = true;
-      programs.appimage.binfmt = true;
-
-      programs.zsh.enable = true;
-      programs.nix-ld.enable = true;
-      # Allow unfree packages
       nixpkgs.config.allowUnfree = true;
-      nix.settings.experimental-features = [
-        "nix-command"
-        "flakes"
-      ];
 
-      # List packages installed in system profile. To search, run:
-      # $ nix search wget
+      services = {
+        printing.enable = true;
+        pulseaudio.enable = false;
+      };
+
+      virtualisation.docker.enable = true;
+
       environment.systemPackages = with pkgs; [
-        vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+        vim
         git
         wget
         go-task
         vscode
-        android-tools # adb/fastboot — udev rules handled automatically by systemd 258+
+        android-tools
         brave
         beekeeper-studio
         inputs.wayscriber.packages.${pkgs.stdenv.hostPlatform.system}.default
       ];
 
-      security.pki.certificateFiles = [./certs/cert_ca.crt];
       # Some programs need SUID wrappers, can be configured further or are
       # started in user sessions.
       # programs.mtr.enable = true;
@@ -144,9 +152,6 @@
       #   enable = true;
       #   enableSSHSupport = true;
       # };
-
-      # SSH agent (needed so keys are available to git/ssh without manual ssh-add)
-      programs.ssh.startAgent = true;
 
       # List services that you want to enable:
 
@@ -158,19 +163,6 @@
       # # openfortivpn NetworkManager plugin — NM handles DNS integration with
       # # systemd-resolved automatically when the VPN connection is managed via NM.
       # networking.networkmanager.plugins = [ pkgs.networkmanager-openfortivpn ];
-
-      # Open ports in the firewall.
-      # networking.firewall.allowedTCPPorts = [ ... ];
-      # networking.firewall.allowedUDPPorts = [ ... ];
-      # Or disable the firewall altogether.
-      # networking.firewall.enable = false;
-      networking.firewall = {
-        enable = true;
-        allowedTCPPorts = [
-          1701
-          9001
-        ]; # 1701 for Web, 9001 for Websocket
-      };
 
       # This value determines the NixOS release from which the default
       # settings for stateful data, like file locations and database versions
