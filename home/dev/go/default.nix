@@ -21,7 +21,7 @@
 
     # Your other tools
     go-task
-    # process-compose
+    process-compose
     kaf
   ];
 

@@ -12,7 +12,7 @@
     ./eza.nix
     ./fzf.nix
     ./zoxide.nix
-    ./fastfetch.nix
+    ./fastfetch
     ./bottom.nix
   ];
 
