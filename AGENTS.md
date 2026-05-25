@@ -1,5 +1,4 @@
-
-# abdullah_nix — Project Reference
+# dotfiles_nix — Project Reference
 
 ## What this is
 
@@ -10,7 +9,7 @@ A NixOS system configuration managed as a **flake**, structured using **flake-pa
 ## Project Structure
 
 ```
-abdullah_nix/
+dotfiles_nix/
 ├── flake.nix                  # Entry point — wires inputs and delegates to modules/
 ├── taskfile.yml               # Task runner shortcuts
 │

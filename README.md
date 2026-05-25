@@ -1,4 +1,4 @@
-# abdullah_nix
+# dotfiles_nix
 
 Personal NixOS + Home Manager configuration — declarative, modular, multi-machine.
 
@@ -42,7 +42,7 @@ The standalone configurations include CLI tools, dev toolchains, and system util
 ## Repository Structure
 
 ```
-abdullah_nix/
+dotfiles_nix/
 ├── flake.nix              # Entry point — flake inputs and outputs
 ├── taskfile.yml           # Task runner (task mainpc:switch, task nix:check, …)
 │
