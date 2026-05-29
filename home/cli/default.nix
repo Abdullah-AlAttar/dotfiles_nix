@@ -25,5 +25,6 @@
     typst
     sqlfluff
     asciinema
+    chafa
   ];
 }
