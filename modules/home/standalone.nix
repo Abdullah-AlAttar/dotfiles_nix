@@ -28,10 +28,12 @@
     ubuntu = inputs.home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
       modules = baseModules;
+      extraSpecialArgs = { inherit inputs; };
     };
     wsl = inputs.home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
       modules = baseModules;
+      extraSpecialArgs = { inherit inputs; };
     };
   };
 }

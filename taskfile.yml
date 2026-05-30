@@ -75,6 +75,12 @@ tasks:
     desc: Build (dry-run) Home Manager configuration for WSL
     cmd: nix run nixpkgs#home-manager -- build --flake '.#wsl'
 
+  standalone:gc:
+    desc: Delete old Home Manager generations and run garbage collection (no sudo needed)
+    cmds:
+    - nix-collect-garbage -d
+    - nix store optimise
+
   dump:config:
     desc: Dump kde plasma configuration to a nix file
     cmd: nix run github:nix-community/plasma-manager -- > ./tmp/after.nix
