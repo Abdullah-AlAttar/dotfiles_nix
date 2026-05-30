@@ -16,6 +16,7 @@
         # Base hardware + desktop
         self.nixosModules.mainPCHardware
         self.nixosModules.kde
+        self.nixosModules.hyprland
         # self.nixosModules.cosmic
         # self.nixosModules.niri
 
