@@ -27,7 +27,8 @@
     };
     wayscriber = {
       # TODO: Remember to remove specific version once the dependency is stable on rustc
-      url = "github:devmobasa/wayscriber/v0.9.18";
+      # url = "github:devmobasa/wayscriber/v0.9.18";
+      url = "github:devmobasa/wayscriber";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     llm-agents.url = "github:numtide/llm-agents.nix";
