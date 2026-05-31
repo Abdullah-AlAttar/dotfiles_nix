@@ -111,6 +111,8 @@
           "networkmanager"
           "wheel"
           "docker"
+          "sound"
+          "audio"
         ];
       };
 

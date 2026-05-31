@@ -1,4 +1,8 @@
-{self, inputs, ...}: {
+{
+  self,
+  inputs,
+  ...
+}: {
   flake.nixosModules.niriHome = {pkgs, ...}: {
     home-manager.users.ab_dullah = {
       imports = [
