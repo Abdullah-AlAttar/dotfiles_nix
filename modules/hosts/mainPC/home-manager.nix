@@ -22,6 +22,8 @@
       home.packages = with pkgs;
         [
           scrcpy
+          libreoffice-qt6-fresh
+
           # nixard # explore NixOS packages
         ]
         ++ (with inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}; [
