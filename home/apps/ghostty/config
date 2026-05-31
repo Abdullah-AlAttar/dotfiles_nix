@@ -18,5 +18,5 @@ keybind = alt+l=goto_split:right
 
 # custom-shader = shaders/cursor_tail.glsl
 custom-shader = shaders/cursor_warp.glsl
-custom-shader-animation = always
+custom-shader-animation = true
 # custom-shader = shaders/yourshader2.glsl
