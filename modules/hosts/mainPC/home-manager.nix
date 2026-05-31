@@ -28,6 +28,7 @@
           opencode
           copilot-cli
           spec-kit
+          omp
         ]);
     };
   };

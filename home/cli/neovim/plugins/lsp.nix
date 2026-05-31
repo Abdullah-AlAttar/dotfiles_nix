@@ -37,6 +37,7 @@
             enable = true;
             package = null;
           };
+          buf_ls.enable = true;
           ts_ls.enable = true;
           yamlls.enable = true;
           jsonls.enable = true;
