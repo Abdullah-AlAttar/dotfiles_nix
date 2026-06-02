@@ -31,6 +31,7 @@
           copilot-cli
           spec-kit
           omp
+          hermes-agent
         ]);
     };
   };
