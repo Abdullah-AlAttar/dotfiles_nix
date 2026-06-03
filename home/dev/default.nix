@@ -20,7 +20,6 @@
     buf
 
     # Dev environments
-    devenv
     process-compose
     dioxus-cli
 
