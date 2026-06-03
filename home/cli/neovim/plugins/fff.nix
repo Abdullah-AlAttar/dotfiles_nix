@@ -8,10 +8,21 @@
           __raw = "vim.fn.getcwd()";
         };
         max_results = 100;
+        # layout = {
+        #   height = 0.8;
+        #   width = 0.8;
+        #   preview_position = "right";
+        # };
         layout = {
-          height = 0.8;
-          width = 0.8;
+          anchor = "bottom";
+          width = 1.0;
+          height = 0.7;
+          prompt_position = "top";
           preview_position = "right";
+          # Keep the preview on the right at any width. fff's flex layout
+          # otherwise flips it on top below 130 cols, which at height 0.5
+          # collapses the list window to 0 rows and crashes nvim_open_win.
+          flex.size = 0;
         };
         key_bindings = {
           close = [
