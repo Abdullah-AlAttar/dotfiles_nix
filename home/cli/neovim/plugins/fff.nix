@@ -1,7 +1,18 @@
+{ pkgs, ... }:
 {
   programs.nixvim = {
     plugins.fff = {
       enable = true;
+
+      # recent packages breaks the file selection highlight. remember to check if future packge will fix.
+      package = pkgs.vimPlugins.fff-nvim.overrideAttrs (_: {
+        src = pkgs.fetchFromGitHub {
+          owner = "dmtrKovalenko";
+          repo = "fff.nvim";
+          rev = "97c1812668e304e626d086d330723f8a70f5a9d8"; # v0.8.0
+          hash = "sha256-JbV2dTQhTyZgDZYvFoR1mz9CeM2IPv59Qmp2iiJC8a0=";
+        };
+      });
 
       settings = {
         base_path = {
