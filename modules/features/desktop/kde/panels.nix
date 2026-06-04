@@ -48,8 +48,8 @@
     ];
   };
 in {
-  flake.nixosModules.kdePanels = {...}: {
-    home-manager.users.ab_dullah.programs.plasma.panels = builtins.concatLists [
+  flake.nixosModules.kdePanels = {username, ...}: {
+    home-manager.users.${username}.programs.plasma.panels = builtins.concatLists [
       (map mkBottomDock screens)
       (map mkTopBar screens)
     ];

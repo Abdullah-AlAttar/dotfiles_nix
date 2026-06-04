@@ -9,8 +9,7 @@
     # and in the NixOS manual (accessible by running ‘nixos-help’).
     {
       config,
-      pkgs,
-      ...
+      pkgs,      username,      ...
     }: {
       imports = [
         # Base hardware + desktop
@@ -103,7 +102,7 @@
       security.pki.certificateFiles = [./certs/cert_ca.crt];
       security.rtkit.enable = true;
 
-      users.users.ab_dullah = {
+      users.users.${username} = {
         isNormalUser = true;
         description = "Abdullah";
         shell = pkgs.zsh;

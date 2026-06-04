@@ -1,6 +1,6 @@
 {...}: {
-  flake.nixosModules.kdeFonts = {...}: {
-    home-manager.users.ab_dullah.programs.plasma.fonts = {
+  flake.nixosModules.kdeFonts = {username, ...}: {
+    home-manager.users.${username}.programs.plasma.fonts = {
       general = {
         family = "Noto Sans";
         pointSize = 10;

@@ -1,8 +1,8 @@
 {self, ...}: {
-  flake.nixosModules.scanner = {pkgs, ...}: {
+  flake.nixosModules.scanner = {pkgs, username, ...}: {
     hardware.sane.enable = true;
 
-    users.users.ab_dullah.extraGroups = [
+    users.users.${username}.extraGroups = [
       "scanner"
       "lp"
     ];

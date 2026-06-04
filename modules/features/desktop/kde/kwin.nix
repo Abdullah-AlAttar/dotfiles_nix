@@ -1,6 +1,6 @@
 {...}: {
-  flake.nixosModules.kdeKwin = {...}: {
-    home-manager.users.ab_dullah.programs.plasma.kwin = {
+  flake.nixosModules.kdeKwin = {username, ...}: {
+    home-manager.users.${username}.programs.plasma.kwin = {
       borderlessMaximizedWindows = true;
       effects = {
         blur = {

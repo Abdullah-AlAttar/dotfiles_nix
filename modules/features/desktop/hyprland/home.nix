@@ -1,6 +1,6 @@
 {...}: {
-  flake.nixosModules.hyprlandHome = {pkgs, ...}: {
-    home-manager.users.ab_dullah = {
+  flake.nixosModules.hyprlandHome = {pkgs, username, ...}: {
+    home-manager.users.${username} = {
       home.packages = with pkgs; [
         brightnessctl
         grim

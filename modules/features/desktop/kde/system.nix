@@ -1,5 +1,5 @@
 {inputs, ...}: {
-  flake.nixosModules.kdeSystem = {pkgs, ...}: {
+  flake.nixosModules.kdeSystem = {pkgs, username, ...}: {
     services.xserver.enable = true;
 
     services.displayManager.sddm = {
@@ -38,7 +38,7 @@
       nerd-fonts.jetbrains-mono
     ];
 
-    home-manager.users.ab_dullah = {
+    home-manager.users.${username} = {
       imports = [inputs.plasma-manager.homeModules.plasma-manager];
       programs.plasma = {
         enable = true;

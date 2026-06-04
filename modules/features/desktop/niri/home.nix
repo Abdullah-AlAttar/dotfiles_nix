@@ -3,8 +3,8 @@
   inputs,
   ...
 }: {
-  flake.nixosModules.niriHome = {pkgs, ...}: {
-    home-manager.users.ab_dullah = {
+  flake.nixosModules.niriHome = {pkgs, username, ...}: {
+    home-manager.users.${username} = {
       imports = [
         inputs.niri-flake.homeModules.niri
         inputs.dms.homeModules.dank-material-shell

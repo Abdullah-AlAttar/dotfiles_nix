@@ -1,6 +1,6 @@
 {...}: {
-  flake.nixosModules.kdeShortcuts = {...}: {
-    home-manager.users.ab_dullah.programs.plasma = {
+  flake.nixosModules.kdeShortcuts = {username, ...}: {
+    home-manager.users.${username}.programs.plasma = {
       shortcuts = {
         kwin = {
           "Window Close" = "Alt+Q";

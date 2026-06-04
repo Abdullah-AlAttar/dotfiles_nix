@@ -2,21 +2,23 @@
 {pkgs, ...}: {
   imports = [
     ./ghostty
-    ./discord
-    ./obsidian
-    ./telegram
-    ./obs
-    ./microsoft-edge
     ./zed
     ./alacrity
-    ./bruno
-    ./remmina
-    ./teams
-    ./vlc
     ./fonts
   ];
 
   home.packages = with pkgs; [
+    # Trivial apps — no config files, just the package
+    discord
+    obs-studio
+    telegram-desktop
+    obsidian
+    microsoft-edge
+    vlc
+    remmina
+    teams-for-linux
+    bruno
+
     # GUI-related utilities
     xclip
     xsel

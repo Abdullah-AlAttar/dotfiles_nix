@@ -3,10 +3,10 @@
   inputs,
   ...
 }: {
-  flake.nixosModules.mainPCHomeManager = {pkgs, ...}: {
+  flake.nixosModules.mainPCHomeManager = {pkgs, username, ...}: {
     # Per-host Home Manager module selection (dendritic pattern).
     # Each host chooses which home modules to include.
-    home-manager.users.ab_dullah = {
+    home-manager.users.${username} = {
       imports = [
         self.homeModules.common
         self.homeModules.cli

@@ -1,6 +1,6 @@
 {...}: {
-  flake.nixosModules.kdeWorkspace = {pkgs, ...}: {
-    home-manager.users.ab_dullah.programs.plasma.workspace = {
+  flake.nixosModules.kdeWorkspace = {pkgs, username, ...}: {
+    home-manager.users.${username}.programs.plasma.workspace = {
       lookAndFeel = "org.kde.breezedark.desktop";
       colorScheme = "BreezeDark";
       theme = "breeze-dark";

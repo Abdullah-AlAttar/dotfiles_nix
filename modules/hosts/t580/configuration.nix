@@ -6,6 +6,7 @@
   flake.nixosModules.t580Configuration = {
     config,
     pkgs,
+    username,
     ...
   }: {
     imports = [
@@ -75,7 +76,7 @@
 
     nixpkgs.config.allowUnfree = true;
 
-    users.users.ab_dullah = {
+    users.users.${username} = {
       isNormalUser = true;
       description = "Abdullah";
       shell = pkgs.zsh;
