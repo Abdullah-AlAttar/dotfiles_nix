@@ -15,11 +15,13 @@
     ./telescope.nix # Fuzzy finder for Neovim
     ./treesitter.nix # Syntax highlighting and code parsing
     # ./vimtex.nix # inria
+    ./zellij-nav.nix # Seamless nav between Zellij panes and Neovim windows
     ./which-key.nix # Shows available keybindings
     ./yazi.nix # file explorer for Neovim
     # ./hardtime.nix # Prevents accidental key presses
     ./neoscroll.nix # smooth scrolling for Neovim
     ./copilot.nix
+    # ./pi.nix # AI coding assistant (pi.dev)
     ./lazygit.nix
   ];
 

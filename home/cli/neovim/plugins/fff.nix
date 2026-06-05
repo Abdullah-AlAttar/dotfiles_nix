@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   programs.nixvim = {
     plugins.fff = {
       enable = true;
@@ -19,7 +18,7 @@
           __raw = "vim.fn.getcwd()";
         };
         max_results = 100;
- 
+
         layout = {
           anchor = "top";
           width = 0.9;

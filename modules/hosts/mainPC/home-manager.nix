@@ -3,7 +3,11 @@
   inputs,
   ...
 }: {
-  flake.nixosModules.mainPCHomeManager = {pkgs, username, ...}: {
+  flake.nixosModules.mainPCHomeManager = {
+    pkgs,
+    username,
+    ...
+  }: {
     # Per-host Home Manager module selection (dendritic pattern).
     # Each host chooses which home modules to include.
     home-manager.users.${username} = {
@@ -30,8 +34,8 @@
           opencode
           copilot-cli
           spec-kit
+          pi
           omp
-          hermes-agent
         ]);
     };
   };

@@ -3,13 +3,12 @@
   pkgs,
   lib,
   ...
-}:
-{
+}: {
   home.packages = with pkgs; [
     devenv
   ];
   programs.zsh.initContent = lib.mkBefore ''
-    source ${pkgs.runCommand "devenv-zsh-hook" { } "${pkgs.devenv}/bin/devenv hook zsh > $out"}
+    source ${pkgs.runCommand "devenv-zsh-hook" {} "${pkgs.devenv}/bin/devenv hook zsh > $out"}
   '';
   programs.direnv = {
     enable = true;

@@ -1,4 +1,4 @@
-# Font configuration
+# Font configuration — matches Ghostty
 [font]
 normal = { family = "CaskaydiaCove Nerd Font", style = "Regular" }
 bold = { family = "CaskaydiaCove Nerd Font", style = "Bold" }
@@ -6,42 +6,46 @@ italic = { family = "CaskaydiaCove Nerd Font", style = "Italic" }
 bold_italic = { family = "CaskaydiaCove Nerd Font", style = "Bold Italic" }
 size = 12.0
 
-# Colors (Catppuccin Mocha)
+# Colors — Gruvbox Material Dark (matches Ghostty theme)
 [colors.primary]
-background = "#1e1e2e"
-foreground = "#cdd6f4"
+background = "#282828"
+foreground = "#d4be98"
 
 [colors.normal]
-black = "#45475a"
-red = "#f38ba8"
-green = "#a6e3a1"
-yellow = "#f9e2af"
-blue = "#89b4fa"
-magenta = "#f5c2e7"
-cyan = "#94e2d5"
-white = "#bac2de"
+black = "#282828"
+red = "#ea6962"
+green = "#a9b665"
+yellow = "#d8a657"
+blue = "#7daea3"
+magenta = "#d3869b"
+cyan = "#89b482"
+white = "#d4be98"
 
 [colors.bright]
-black = "#585b70"
-red = "#f38ba8"
-green = "#a6e3a1"
-yellow = "#f9e2af"
-blue = "#89b4fa"
-magenta = "#f5c2e7"
-cyan = "#94e2d5"
-white = "#a6adc8"
+black = "#5a524c"
+red = "#ea6962"
+green = "#a9b665"
+yellow = "#d8a657"
+blue = "#7daea3"
+magenta = "#d3869b"
+cyan = "#89b482"
+white = "#d4be98"
 
-# Window settings
+# Window — matches Ghostty maximize + opacity
 [window]
-# Set window dimensions for 80% of screen size (calculated for 1920x1080)
-dimensions = { columns = 219, lines = 57 }
+startup_mode = "Maximized"
 padding = { x = 10, y = 10 }
 decorations = "None"
-startup_mode = "Windowed"
-opacity = 0.9
+opacity = 0.95
 dynamic_padding = false
 
+# Cursor — matches Ghostty (block + blink)
+[cursor]
+style = "Block"
 
+# Selection — matches Ghostty copy-on-select
+[selection]
+save_to_clipboard = true
 
 # Performance
 [scrolling]

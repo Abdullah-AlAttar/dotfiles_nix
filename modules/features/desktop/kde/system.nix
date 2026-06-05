@@ -1,5 +1,9 @@
 {inputs, ...}: {
-  flake.nixosModules.kdeSystem = {pkgs, username, ...}: {
+  flake.nixosModules.kdeSystem = {
+    pkgs,
+    username,
+    ...
+  }: {
     services.xserver.enable = true;
 
     services.displayManager.sddm = {

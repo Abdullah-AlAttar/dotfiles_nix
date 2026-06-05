@@ -3,7 +3,11 @@
   inputs,
   ...
 }: {
-  flake.nixosModules.niriHome = {pkgs, username, ...}: {
+  flake.nixosModules.niriHome = {
+    pkgs,
+    username,
+    ...
+  }: {
     home-manager.users.${username} = {
       imports = [
         inputs.niri-flake.homeModules.niri

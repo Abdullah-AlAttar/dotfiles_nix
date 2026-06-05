@@ -1,5 +1,9 @@
 {self, ...}: {
-  flake.nixosModules.weylus = {pkgs, username, ...}: {
+  flake.nixosModules.weylus = {
+    pkgs,
+    username,
+    ...
+  }: {
     # Weylus — use tablet/phone as graphic tablet / touch screen
     # Requires uinput access for stylus, multi-touch and mouse injection.
     # https://github.com/H-M-H/Weylus#linux

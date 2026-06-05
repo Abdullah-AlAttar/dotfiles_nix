@@ -17,7 +17,8 @@
     vlc
     remmina
     teams-for-linux
-    bruno
+    bruno # API testing tool, like Postman but open source and with a nice UI
+    zathura # PDF viewer
 
     # GUI-related utilities
     xclip
