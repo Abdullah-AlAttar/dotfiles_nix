@@ -3,6 +3,7 @@
     ./barbar.nix # Tab bar for Neovim
     ./comment.nix # Commenting plugin
     ./floaterm.nix # Floating terminal for Neovim
+    ./toggleterm.nix # Vertical side-panel terminal
     ./fff.nix # Fast fuzzy file finder
     # ./harpoon.nix
     ./lsp.nix # Language Server Protocol support
@@ -72,6 +73,7 @@
           ft_blocklist = [
             "checkhealth"
             "floaterm"
+            "toggleterm"
             "lspinfo"
             "neo-tree"
             "TelescopePrompt"

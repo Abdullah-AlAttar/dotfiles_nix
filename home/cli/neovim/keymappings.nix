@@ -221,7 +221,25 @@
                 desc = "Save file";
               };
             };
+        terminal =
+          lib.mapAttrsToList
+            (key: value: {
+              mode = "t";
+              key = key;
+              action = value.action;
+              options = {
+                silent = true;
+                noremap = true;
+                desc = value.desc or null;
+              };
+            })
+            {
+              "<Esc>" = {
+                action = "<C-\\><C-n>";
+                desc = "Exit terminal mode";
+              };
+            };
       in
-      normal ++ visual ++ insert;
+      normal ++ visual ++ insert ++ terminal;
   };
 }

@@ -1,0 +1,342 @@
+keybinds clear-defaults=true {
+    // ================================================================
+    // Locked — all keys pass through to terminal (Vim, shell, etc.)
+    // Ctrl+Space toggles back to Pane mode
+    // ================================================================
+    locked {
+        bind "Ctrl Space" {
+            SwitchToMode "Pane";
+        }
+    }
+
+    // ================================================================
+    // Pane — primary Zellij navigation mode
+    // h/j/k/l : move focus (vim-style)
+    // H/J/K/L : new pane in that direction (Shift = bigger action)
+    // t/r/s/m : enter sub-mode (Tab, Resize, Scroll, Move)
+    // Ctrl+Space or Esc : back to Locked (terminal passthrough)
+    // ================================================================
+    pane {
+        // Toggle / exit
+        bind "Ctrl Space" "Esc" {
+            SwitchToMode "Locked";
+        }
+
+        // Vim-style navigation
+        bind "h" "Left" {
+            MoveFocus "Left";
+        }
+        bind "j" "Down" {
+            MoveFocus "Down";
+        }
+        bind "k" "Up" {
+            MoveFocus "Up";
+        }
+        bind "l" "Right" {
+            MoveFocus "Right";
+        }
+
+        // Enter sub-modes (mnemonic first letter)
+        bind "t" {
+            SwitchToMode "Tab";
+        }
+        bind "r" {
+            SwitchToMode "Resize";
+        }
+        bind "s" {
+            SwitchToMode "Scroll";
+            ScrollToBottom;
+        }
+        bind "m" {
+            SwitchToMode "Move";
+        }
+        bind "o" {
+            SwitchToMode "Session";
+        }
+
+        // New panes — Shift + direction = split in that direction
+        bind "H" {
+            NewPane "Left";
+        }
+        bind "J" {
+            NewPane "Down";
+        }
+        bind "K" {
+            NewPane "Up";
+        }
+        bind "L" {
+            NewPane "Right";
+        }
+
+        // Close
+        bind "x" {
+            CloseFocus;
+        }
+        bind "X" {
+            CloseTab;
+        }
+
+        // Tab management
+        bind "n" {
+            NewTab;
+        }
+        bind "Tab" {
+            GoToNextTab;
+        }
+        bind "Shift Tab" {
+            GoToPreviousTab;
+        }
+        bind "Ctrl Tab" {
+            ToggleActiveSyncTab;
+        }
+
+        // Toggle display modes
+        bind "f" {
+            ToggleFocusFullscreen;
+        }
+        bind "z" {
+            TogglePaneFrames;
+        }
+        bind "w" {
+            ToggleFloatingPanes;
+        }
+        bind "e" {
+            TogglePaneEmbedOrFloating;
+        }
+
+        // Rename
+        bind "c" {
+            SwitchToMode "RenamePane";
+            PaneNameInput 0;
+        }
+
+        // Direct tab access (Ctrl+number)
+        bind "Ctrl 1" { GoToTab 1; }
+        bind "Ctrl 2" { GoToTab 2; }
+        bind "Ctrl 3" { GoToTab 3; }
+        bind "Ctrl 4" { GoToTab 4; }
+        bind "Ctrl 5" { GoToTab 5; }
+        bind "Ctrl 6" { GoToTab 6; }
+        bind "Ctrl 7" { GoToTab 7; }
+        bind "Ctrl 8" { GoToTab 8; }
+        bind "Ctrl 9" { GoToTab 9; }
+
+        // Quit Zellij
+        bind "Ctrl q" {
+            Quit;
+        }
+    }
+
+    // ================================================================
+    // Tab — navigate and manage tabs
+    // h/l : prev/next tab
+    // 1-9 : direct tab
+    // Esc : back to Pane
+    // Ctrl+Space : back to Locked
+    // ================================================================
+    tab {
+        bind "Ctrl Space" {
+            SwitchToMode "Locked";
+        }
+        bind "Esc" {
+            SwitchToMode "Pane";
+        }
+
+        bind "h" "Left" {
+            GoToPreviousTab;
+        }
+        bind "l" "Right" {
+            GoToNextTab;
+        }
+
+        bind "1" { GoToTab 1; }
+        bind "2" { GoToTab 2; }
+        bind "3" { GoToTab 3; }
+        bind "4" { GoToTab 4; }
+        bind "5" { GoToTab 5; }
+        bind "6" { GoToTab 6; }
+        bind "7" { GoToTab 7; }
+        bind "8" { GoToTab 8; }
+        bind "9" { GoToTab 9; }
+
+        bind "n" {
+            NewTab;
+        }
+        bind "x" {
+            CloseTab;
+        }
+        bind "c" {
+            SwitchToMode "RenameTab";
+            TabNameInput 0;
+        }
+        bind "s" {
+            ToggleActiveSyncTab;
+        }
+
+        // Shared pane toggles available from tab mode too
+        bind "f" { ToggleFocusFullscreen; }
+        bind "z" { TogglePaneFrames; }
+        bind "w" { ToggleFloatingPanes; }
+        bind "e" { TogglePaneEmbedOrFloating; }
+    }
+
+    // ================================================================
+    // Resize — vim directional keys resize in that direction
+    // =/+/ - : increase / decrease
+    // Esc/Enter : back to Pane
+    // Ctrl+Space : back to Locked
+    // ================================================================
+    resize {
+        bind "Ctrl Space" {
+            SwitchToMode "Locked";
+        }
+        bind "Esc" "Enter" {
+            SwitchToMode "Pane";
+        }
+
+        bind "h" "Left" { Resize "Left"; }
+        bind "j" "Down" { Resize "Down"; }
+        bind "k" "Up" { Resize "Up"; }
+        bind "l" "Right" { Resize "Right"; }
+
+        bind "=" "+" { Resize "Increase"; }
+        bind "-" { Resize "Decrease"; }
+    }
+
+    // ================================================================
+    // Move — move the current pane in a direction
+    // ================================================================
+    move {
+        bind "Ctrl Space" {
+            SwitchToMode "Locked";
+        }
+        bind "Esc" "Enter" {
+            SwitchToMode "Pane";
+        }
+
+        bind "h" "Left" { MovePane "Left"; }
+        bind "j" "Down" { MovePane "Down"; }
+        bind "k" "Up" { MovePane "Up"; }
+        bind "l" "Right" { MovePane "Right"; }
+    }
+
+    // ================================================================
+    // Scroll — scroll through pane history
+    // j/k : line scroll
+    // d/u : half page (like Vim Ctrl+d/u)
+    // Ctrl+f / Ctrl+b : full page
+    // e : edit scrollback in $EDITOR
+    // s : search
+    // ================================================================
+    scroll {
+        bind "Ctrl Space" {
+            SwitchToMode "Locked";
+        }
+        bind "Esc" "Enter" {
+            SwitchToMode "Pane";
+            ScrollToBottom;
+        }
+
+        bind "j" "Down" { ScrollDown; }
+        bind "k" "Up" { ScrollUp; }
+        bind "d" { HalfPageScrollDown; }
+        bind "u" { HalfPageScrollUp; }
+        bind "Ctrl f" "PageDown" { PageScrollDown; }
+        bind "Ctrl b" "PageUp" { PageScrollUp; }
+
+        bind "G" {
+            ScrollToBottom;
+        }
+        bind "g" {
+            ScrollToTop;
+        }
+
+        bind "e" {
+            EditScrollback;
+        }
+        bind "s" {
+            SwitchToMode "EnterSearch";
+            SearchInput 0;
+        }
+    }
+
+    // ================================================================
+    // Search (following EnterSearch) — Vim-style search navigation
+    // n/N : next/previous match
+    // j/k : scroll around the match
+    // c/w/o : toggle search options
+    // ================================================================
+    search {
+        bind "Esc" {
+            SwitchToMode "EnterSearch";
+        }
+        bind "Ctrl Space" {
+            SwitchToMode "Locked";
+        }
+
+        bind "j" "Down" { ScrollDown; }
+        bind "k" "Up" { ScrollUp; }
+        bind "d" { HalfPageScrollDown; }
+        bind "u" { HalfPageScrollUp; }
+        bind "Ctrl f" "PageDown" { PageScrollDown; }
+        bind "Ctrl b" "PageUp" { PageScrollUp; }
+
+        bind "n" { Search "Down"; }
+        bind "N" { Search "Up"; }
+
+        bind "c" { SearchToggleOption "CaseSensitivity"; }
+        bind "w" { SearchToggleOption "Wrap"; }
+        bind "o" { SearchToggleOption "WholeWord"; }
+    }
+
+    // ================================================================
+    // EnterSearch — transition state before search active
+    // ================================================================
+    entersearch {
+        bind "Esc" {
+            SearchInput 27;
+            SwitchToMode "Scroll";
+        }
+        bind "Enter" {
+            SwitchToMode "Search";
+        }
+    }
+
+    // ================================================================
+    // Session — session management
+    // d : detach
+    // ================================================================
+    session {
+        bind "Ctrl Space" {
+            SwitchToMode "Locked";
+        }
+        bind "Esc" {
+            SwitchToMode "Pane";
+        }
+
+        bind "d" { Detach; }
+    }
+
+    // ================================================================
+    // Rename — input modes, only need Esc to cancel and Enter to confirm
+    // ================================================================
+    renametab {
+        bind "Esc" {
+            UndoRenameTab;
+            SwitchToMode "Pane";
+        }
+        bind "Enter" {
+            SwitchToMode "Pane";
+        }
+    }
+
+    renamepane {
+        bind "Esc" {
+            UndoRenamePane;
+            SwitchToMode "Pane";
+        }
+        bind "Enter" {
+            SwitchToMode "Pane";
+        }
+    }
+}
