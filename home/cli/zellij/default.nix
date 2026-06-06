@@ -6,6 +6,9 @@
       # theme = "catppuccin-macchiato";
       theme = "gruvbox-dark";
     };
+    layouts = {
+      ai = ./ai.kdl;
+    };
     extraConfig = ''
       keybinds {
         normal {
