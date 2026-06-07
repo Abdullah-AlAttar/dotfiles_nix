@@ -6,7 +6,7 @@
     ./atuin
     ./zellij
     ./helix
-    ./neovim
+    ./nixvim
     ./yazi.nix
     ./bash
     ./eza.nix
