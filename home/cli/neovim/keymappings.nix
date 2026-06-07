@@ -234,7 +234,7 @@
               };
             })
             {
-              "<Esc>" = {
+              "<C-Space>" = {
                 action = "<C-\\><C-n>";
                 desc = "Exit terminal mode";
               };

@@ -5,17 +5,14 @@
     ./floaterm.nix # Floating terminal for Neovim
     ./toggleterm.nix # Vertical side-panel terminal
     ./fff.nix # Fast fuzzy file finder
-    # ./harpoon.nix
     ./lsp.nix # Language Server Protocol support
     ./lualine.nix # Status line for Neovim
     ./markdown-preview.nix # Markdown preview plugin
-    # ./neorg.nix # Neorg plugin for Neovim
     ./neo-tree.nix # File explorer for Neovim
     # ./snacks.nix # TODO remove
     ./startify.nix # Start screen for Neovim
     ./telescope.nix # Fuzzy finder for Neovim
     ./treesitter.nix # Syntax highlighting and code parsing
-    # ./vimtex.nix # inria
     ./zellij-nav.nix # Seamless nav between Zellij panes and Neovim windows
     ./which-key.nix # Shows available keybindings
     ./yazi.nix # file explorer for Neovim
