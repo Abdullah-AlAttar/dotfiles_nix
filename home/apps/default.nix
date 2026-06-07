@@ -5,6 +5,7 @@
     ./zed
     ./alacrity
     ./fonts
+    ./neovide
   ];
 
   home.packages = with pkgs; [

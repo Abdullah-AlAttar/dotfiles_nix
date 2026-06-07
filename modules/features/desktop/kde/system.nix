@@ -24,6 +24,11 @@
       jack.enable = true;
     };
 
+    # fwupd is pulled in by KDE/Plasma; disable its refresh timer to avoid
+    # "Failed to obtain auth" errors on every rebuild (polkit agent unavailable
+    # when triggered by a systemd timer outside a user session).
+    systemd.timers.fwupd-refresh.enable = false;
+
     services.xserver.xkb = {
       layout = "us,ara";
       options = "grp:alt_shift_toggle,caps:escape";

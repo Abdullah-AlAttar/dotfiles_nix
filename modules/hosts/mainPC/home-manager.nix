@@ -18,6 +18,7 @@
         self.homeModules.apps
         self.homeModules.system
       ];
+
       home.sessionVariables = {
         SSH_ASKPASS = "";
         SSH_ASKPASS_REQUIRE = "never";

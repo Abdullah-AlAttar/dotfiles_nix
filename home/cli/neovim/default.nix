@@ -32,6 +32,6 @@
 
     luaLoader.enable = true;
 
-    extraConfigLua = builtins.readFile ./extraConfigLua.lua;
+    extraConfigLuaPre = builtins.readFile ./extraConfigLua.lua;
   };
 }
