@@ -6,6 +6,7 @@
     ./alacrity
     ./fonts
     ./neovide
+    # ./kitty
   ];
 
   home.packages = with pkgs; [
