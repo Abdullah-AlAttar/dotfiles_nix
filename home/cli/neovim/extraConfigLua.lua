@@ -1,5 +1,26 @@
 -- Custom Neovim configuration in Lua
 
+-- Right-to-left (RTL) text support — toggle with <leader>rt
+local rtl_enabled = false
+
+function _G.toggle_rtl()
+  rtl_enabled = not rtl_enabled
+  if rtl_enabled then
+    vim.opt.rightleft = true
+    vim.opt.rightleftcmd = 'search'
+    vim.opt.termbidi = true
+    vim.notify('RTL mode enabled', vim.log.levels.INFO)
+  else
+    vim.opt.rightleft = false
+    vim.opt.rightleftcmd = ''
+    vim.opt.termbidi = false
+    vim.notify('RTL mode disabled', vim.log.levels.INFO)
+  end
+end
+
+vim.keymap.set('n', '<leader>rt', '<cmd>lua _G.toggle_rtl()<CR>', { desc = 'Toggle RTL mode' })
+vim.keymap.set('n', '<leader>rT', '<cmd>lua _G.toggle_rtl(); vim.opt.rightleftcmd = "search"<CR>', { desc = 'Toggle RTL mode (with RTL search)' })
+
 -- Highlight yanked text
 vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Highlight when yanking (copying) text',
