@@ -145,6 +145,16 @@
                 action = ":let @+ = expand('%:t')<CR>";
                 desc = "Copy filename";
               };
+
+              # RTL toggle
+              "<leader>rt" = {
+                action = "<cmd>lua _G.toggle_rtl()<CR>";
+                desc = "Toggle RTL mode";
+              };
+              "<leader>rT" = {
+                action = "<cmd>lua _G.toggle_rtl(); vim.opt.rightleftcmd = 'search'<CR>";
+                desc = "Toggle RTL mode (with RTL search)";
+              };
             };
         visual =
           lib.mapAttrsToList
