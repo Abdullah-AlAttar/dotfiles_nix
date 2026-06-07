@@ -37,6 +37,7 @@
           spec-kit
           pi
           omp
+          reasonix
         ]);
     };
   };
