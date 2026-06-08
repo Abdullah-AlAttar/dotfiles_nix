@@ -143,11 +143,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1780679734,
-        "narHash": "sha256-KmRNvpNOb7QEORa06bVgjW9kITcx0VhsI7w0vhmZyD8=",
+        "lastModified": 1780943742,
+        "narHash": "sha256-01bTMR9ZPG+uxPaZBeOwagg5uxIaFYs2/3YIrOX+bCA=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "b2b7db486e06e098711dc291bb25db82850e1d16",
+        "rev": "df39142474950e42d5fc3bf2fef9d6c62abbe8d7",
         "type": "github"
       },
       "original": {
@@ -182,11 +182,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1780811039,
-        "narHash": "sha256-4IdvJPuLzmpLwBk2iQ1QjKHGi5pt8cvaE5hmkBnr3Xc=",
+        "lastModified": 1780954975,
+        "narHash": "sha256-Mmx/iUMYIzdyyeQlju1QkG6KH2skpQEg3cBW0AXHI3M=",
         "owner": "numtide",
         "repo": "llm-agents.nix",
-        "rev": "04df876de28f0684a0d7110444d7f64da5c14d17",
+        "rev": "f1844487a811570c44702a76b3f25370010ef73e",
         "type": "github"
       },
       "original": {
@@ -228,11 +228,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1780243769,
-        "narHash": "sha256-x5UQuRsH3MqI0U9afaXSNqzTPSeZlRLvFAav2Ux1pNw=",
+        "lastModified": 1780749050,
+        "narHash": "sha256-3av0pIjlOWQ6rDbNOmpUSvbNnJkGORQKKjb4LtCZsIY=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "331800de5053fcebacf6813adb5db9c9dca22a0c",
+        "rev": "a799d3e3886da994fa307f817a6bc705ae538eeb",
         "type": "github"
       },
       "original": {
@@ -267,11 +267,11 @@
         "systems": "systems_2"
       },
       "locked": {
-        "lastModified": 1780646548,
-        "narHash": "sha256-Ckyl/l1XBmEwnaHcHD8PvBZk1uph0NqwbJ//CAvB7iE=",
+        "lastModified": 1780952308,
+        "narHash": "sha256-Kam3161tlm/5t/3Jmw57QJt+3Be0oL5HLYc4ixbUSYc=",
         "owner": "nix-community",
         "repo": "nixvim",
-        "rev": "816a15282e58678dde831477964987d0262d4293",
+        "rev": "5dac467f1ca6b506bba95d25f6def2497d7a0af4",
         "type": "github"
       },
       "original": {
@@ -392,11 +392,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1780821329,
-        "narHash": "sha256-gXiLQcWu/ymm+HeIJq4eFWxVJ/S7bx3z6YKoQ4tro8w=",
+        "lastModified": 1780917168,
+        "narHash": "sha256-nVV/0czewESSbl/OobATBjO+e1iUeJCYSqvEaiNaSfI=",
         "owner": "devmobasa",
         "repo": "wayscriber",
-        "rev": "64cadd49cf8aeaf00415b9db719b5f4101a10b38",
+        "rev": "80d3215f52a71699fb4a978cc357449deeeb34b7",
         "type": "github"
       },
       "original": {

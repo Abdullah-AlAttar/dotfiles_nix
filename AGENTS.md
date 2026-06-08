@@ -39,23 +39,22 @@ dotfiles_nix/
 │   │           └── panels.nix    # Plasma top bar + bottom dock panel layout
 │   │
 │   ├── home/
-│   │   ├── default.nix        # NixOS HM bridge — sets up home-manager NixOS module
-│   │   ├── modules.nix        # Exposes flake.homeModules (common, cli, dev, apps, system)
-│   │   └── standalone.nix     # flake.homeConfigurations for non-NixOS (Ubuntu, WSL)
+│   │   ├── default.nix               # NixOS HM bridge — sets up home-manager NixOS module
+│   │   ├── default-hm-imports.nix     # Shared HM module import list (single source of truth for all hosts)
+│   │   ├── modules.nix               # Exposes flake.homeModules (common, cli, dev, apps, system)
+│   │   └── standalone.nix            # flake.homeConfigurations for non-NixOS (Ubuntu, WSL)
 │   │
 │   └── hosts/
 │       ├── mainPC/
-│       │   ├── default.nix                 # Declares `nixosConfigurations.mainPC`
-│       │   ├── configuration.nix           # Main system config — imports modules, sets users, packages
-│       │   ├── home-manager.nix            # Per-host HM user config (module imports, host-specific packages)
+│       │   ├── configuration.nix           # Declares nixosConfigurations.mainPC + system config (imports features, desktop, HM)
+│       │   ├── home-manager.nix            # Host-specific HM overrides (packages, session vars)
 │       │   ├── hardware-configuration.nix  # Auto-generated hardware config
 │       │   ├── taskfile.yml               # Host-specific tasks (included by root taskfile under `mainpc:` namespace)
 │       │   └── certs/
 │       │       └── cert_ca.crt            # Custom CA certificate
 │       └── t580/
-│           ├── default.nix                 # Declares `nixosConfigurations.t580`
-│           ├── configuration.nix           # ThinkPad T580 system config (Intel Kaby Lake, systemd-boot)
-│           ├── home-manager.nix            # Per-host HM user config (module imports)
+│           ├── configuration.nix           # Declares nixosConfigurations.t580 + system config (Intel Kaby Lake, systemd-boot)
+│           ├── home-manager.nix            # Host-specific HM overrides (session vars)
 │           ├── hardware-configuration.nix  # T580 hardware — Intel Kaby Lake GPU params, VAAPI, TRIM
 │           └── taskfile.yml               # Host-specific tasks (included by root taskfile under `t580:` namespace)
 │
@@ -199,26 +198,39 @@ flake.homeModules = {
 };
 ```
 
-Each host selects which modules to include in its `home-manager.nix` (a separate flake-parts module under `modules/hosts/<host>/`):
+The canonical set of Home Manager modules for all NixOS hosts is defined in `modules/home/default-hm-imports.nix`:
 
 ```nix
-{ self, inputs, ... }: {
-  flake.nixosModules.mainPCHomeManager = { pkgs, ... }: {
-    home-manager.users.ab_dullah = {
-      imports = [
-        self.homeModules.common
-        self.homeModules.cli
-        self.homeModules.dev
-        self.homeModules.apps
-        self.homeModules.system
-      ];
-      # Host-specific packages, session variables, etc.
+{ self, ... }: {
+  flake.nixosModules.defaultHomeManager = { username, ... }: {
+    home-manager.users.${username}.imports = [
+      self.homeModules.common
+      self.homeModules.cli
+      self.homeModules.dev
+      self.homeModules.apps
+      self.homeModules.system
+    ];
+  };
+}
+```
+
+Each host imports `self.nixosModules.defaultHomeManager` in its `configuration.nix` to get the shared baseline. Its `home-manager.nix` only adds **host-specific overrides** (extra packages, session variables):
+
+```nix
+{ inputs, ... }: {
+  flake.nixosModules.mainPCHomeManager = { pkgs, username, ... }: {
+    # Host-specific Home Manager overrides.
+    # The shared home module import list lives in
+    # flake.nixosModules.defaultHomeManager (modules/home/default-hm-imports.nix).
+    home-manager.users.${username} = {
+      home.sessionVariables = { SSH_ASKPASS = ""; };
+      home.packages = with pkgs; [ scrcpy libreoffice-qt6-fresh ];
     };
   };
 }
 ```
 
-Then in `configuration.nix`, add `self.nixosModules.mainPCHomeManager` to the imports list.
+Then in `configuration.nix`, add both `self.nixosModules.defaultHomeManager` and `self.nixosModules.mainPCHomeManager` to the imports list.
 
 Standalone (non-NixOS) configurations for Ubuntu/WSL are in `modules/home/standalone.nix`:
 ```bash
@@ -233,14 +245,16 @@ NixOS system build (mainPC)
           ├── kde
           ├── nvidia
           ├── gaming
+          ├── defaultHomeManager
+          │     └── home-manager.users.ab_dullah.imports = [
+          │           self.homeModules.common   → home/common.nix (base packages)
+          │           self.homeModules.cli      → home/cli/default.nix (zsh, neovim, ...)
+          │           self.homeModules.dev      → home/dev/default.nix (go, k8s, ...)
+          │           self.homeModules.apps     → home/apps/default.nix (ghostty, discord, ...)
+          │           self.homeModules.system   → home/system/default.nix (session vars, ...)
+          │         ]
           └── mainPCHomeManager
-                └── home-manager.users.ab_dullah.imports = [
-                      self.homeModules.common   → home/common.nix (base packages)
-                      self.homeModules.cli      → home/cli/default.nix (zsh, neovim, ...)
-                      self.homeModules.dev      → home/dev/default.nix (go, k8s, ...)
-                      self.homeModules.apps     → home/apps/default.nix (ghostty, discord, ...)
-                      self.homeModules.system   → home/system/default.nix (session vars, ...)
-                    ]
+                └── host-specific overrides (packages, session vars)
 ```
 
 ---
@@ -333,9 +347,9 @@ nix(action="flake-inputs", type="read", query="nixpkgs:flake.nix")
 | Large feature layout | Prefer an aggregator module plus sibling modules with single ownership, instead of one huge file or ad-hoc helper snippets |
 | Adding a program | Create `home/<category>/<name>.nix` (or `<name>/default.nix`), add it to the category `default.nix` imports |
 | Adding a feature | Create `modules/features/<name>.nix` exposing `flake.nixosModules.<name>`, import it in the relevant host `configuration.nix` |
-| Adding a new host | Create `modules/hosts/<name>/` with `default.nix`, `configuration.nix`, `hardware-configuration.nix`, `home-manager.nix`, and `taskfile.yml`; add an `includes` entry to root `taskfile.yml` |
+| Adding a new host | Create `modules/hosts/<name>/` with `configuration.nix`, `hardware-configuration.nix`, `home-manager.nix`, and `taskfile.yml`; add an `includes` entry to root `taskfile.yml` |
 | Adding a GUI app | Create `home/apps/<name>/default.nix`, add `./<name>` to `home/apps/default.nix` imports |
-| Selecting HM modules | Each host's `home-manager.nix` sets `home-manager.users.ab_dullah.imports` with the modules it needs |
+| Selecting HM modules | All hosts share `defaultHomeManager` (in `modules/home/default-hm-imports.nix`). Each host's `home-manager.nix` adds only host-specific overrides |
 
 ### Where to put a new package
 

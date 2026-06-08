@@ -50,6 +50,7 @@ dotfiles_nix/
 │   ├── features/          # Reusable NixOS modules: KDE, GNOME, Niri, NVIDIA, gaming…
 │   ├── home/              # Home Manager bridge + flake integration
 │   │   ├── default.nix    # NixOS HM bridge (useGlobalPkgs, extraSpecialArgs, …)
+│   │   ├── default-hm-imports.nix  # Shared HM module import list (single source of truth)
 │   │   ├── modules.nix    # Exposes flake.homeModules (common, cli, dev, apps, system)
 │   │   └── standalone.nix # flake.homeConfigurations for Ubuntu and WSL
 │   └── hosts/             # Per‑machine definitions
@@ -68,21 +69,9 @@ dotfiles_nix/
 
 ### Per‑host module selection
 
-Each NixOS host chooses exactly which Home Manager modules it needs. Look in `modules/hosts/<host>/configuration.nix`:
+All NixOS hosts share a canonical Home Manager module list defined in `modules/home/default-hm-imports.nix`. Each host's `configuration.nix` imports `self.nixosModules.defaultHomeManager` to get the shared baseline. Per-host overrides (extra packages, session variables) live in `modules/hosts/<host>/home-manager.nix`.
 
-```nix
-home-manager.users.ab_dullah = {
-  imports = [
-    self.homeModules.common   # Essential CLI tools
-    self.homeModules.cli      # Terminal / shell environment
-    self.homeModules.dev      # Development toolchains
-    self.homeModules.apps     # GUI applications
-    self.homeModules.system   # Session vars & network tools
-  ];
-};
-```
-
-Comment out or reorder any import to customise per machine.
+To customise per machine, edit `modules/home/default-hm-imports.nix` to change the shared list, or add/remove packages in the host's `home-manager.nix`.
 
 ### Adding a new package
 
@@ -95,7 +84,7 @@ Comment out or reorder any import to customise per machine.
 
 ### Adding a new machine
 
-1. Create `modules/hosts/<name>/` with `default.nix`, `configuration.nix`, `hardware-configuration.nix`, and `taskfile.yml`
+1. Create `modules/hosts/<name>/` with `configuration.nix`, `hardware-configuration.nix`, `home-manager.nix`, and `taskfile.yml`
 2. Add an `includes` entry in `taskfile.yml`
 
 ## Common Tasks
