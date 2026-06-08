@@ -38,6 +38,7 @@
           pi
           omp
           reasonix
+          snx-rs
         ]);
     };
   };

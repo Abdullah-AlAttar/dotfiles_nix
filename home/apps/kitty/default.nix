@@ -1,7 +1,4 @@
-{
-  pkgs,
-  ...
-}: {
+{pkgs, ...}: {
   # Note: set home.sessionVariables.TERMINAL to "kitty" in your host config if you want this as default
   home.packages = [pkgs.kitty];
 
