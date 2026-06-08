@@ -3,6 +3,17 @@
   inputs,
   ...
 }: {
+  # nixosConfiguration entry point for `nixos-rebuild switch --flake '.#mainPC'`
+  flake.nixosConfigurations.mainPC = inputs.nixpkgs.lib.nixosSystem {
+    specialArgs = {
+      inherit inputs;
+      username = "ab_dullah";
+    };
+    modules = [
+      self.nixosModules.mainPCConfiguration
+    ];
+  };
+
   flake.nixosModules.mainPCConfiguration =
     # Edit this configuration file to define what should be installed on
     # your system.  Help is available in the configuration.nix(5) man page
@@ -31,7 +42,8 @@
         self.nixosModules.teamviewer
         self.nixosModules.scanner
 
-        # User environment
+        # User environment — shared HM module list + host-specific overrides
+        self.nixosModules.defaultHomeManager
         self.nixosModules.mainPCHomeManager
         self.nixosModules.homeManager
       ];

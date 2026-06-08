@@ -3,6 +3,17 @@
   inputs,
   ...
 }: {
+  # nixosConfiguration entry point for `nixos-rebuild switch --flake '.#t580'`
+  flake.nixosConfigurations.t580 = inputs.nixpkgs.lib.nixosSystem {
+    specialArgs = {
+      inherit inputs;
+      username = "ab_dullah";
+    };
+    modules = [
+      self.nixosModules.t580Configuration
+    ];
+  };
+
   flake.nixosModules.t580Configuration = {
     config,
     pkgs,
@@ -22,7 +33,8 @@
       # self.nixosModules.scanner
       # self.nixosModules.teamviewer
 
-      # User environment
+      # User environment — shared HM module list + host-specific overrides
+      self.nixosModules.defaultHomeManager
       self.nixosModules.t580HomeManager
       self.nixosModules.homeManager
     ];

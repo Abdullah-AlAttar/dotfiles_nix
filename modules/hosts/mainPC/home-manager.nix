@@ -1,5 +1,4 @@
 {
-  self,
   inputs,
   ...
 }: {
@@ -8,17 +7,11 @@
     username,
     ...
   }: {
-    # Per-host Home Manager module selection (dendritic pattern).
-    # Each host chooses which home modules to include.
+    # Host-specific Home Manager overrides.
+    # The shared home module import list lives in
+    # flake.nixosModules.defaultHomeManager (modules/home/default-hm-imports.nix).
     home-manager.users.${username} = {
-      imports = [
-        self.homeModules.common
-        self.homeModules.cli
-        self.homeModules.dev
-        self.homeModules.apps
-        self.homeModules.system
-      ];
-
+      imports = [];
       home.sessionVariables = {
         SSH_ASKPASS = "";
         SSH_ASKPASS_REQUIRE = "never";
