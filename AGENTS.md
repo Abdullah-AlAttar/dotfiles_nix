@@ -372,9 +372,20 @@ KDE is the reference example for a split dendritic desktop feature:
 
 ### GUI App Module Pattern
 
-All GUI apps under `home/apps/` follow a simple pattern — just enable the program or add its package. No conditional flags; module selection is at the per-host level.
+All GUI apps under `home/apps/` follow a simple pattern — no conditional flags; module selection is at the per-host level.
 
-Simple package-only app:
+**Prefer `programs.<name>.enable`** when Home Manager has a module for the program. This gives declarative settings, shell integrations, and proper HM integration:
+
+```nix
+{ ... }: {
+  programs.zed-editor = {
+    enable = true;
+    extensions = ["catppuccin-icons" "html" "sql"];
+  };
+}
+```
+
+For programs **without** a Home Manager module, fall back to `home.packages`:
 
 ```nix
 { pkgs, ... }: {
@@ -382,16 +393,9 @@ Simple package-only app:
 }
 ```
 
-App with configuration files:
+If the HM module doesn't cover all config needs (e.g., custom shaders, non-standard paths), you can mix both — use the module for most settings and `home.file` for the extras.
 
-```nix
-{ pkgs, ... }: {
-  home.packages = [ pkgs.ghostty ];
-  home.file.".config/ghostty/config".source = ./config;
-}
-```
-
-After creating the file, add `./<name>` to the `imports` list in `home/apps/default.nix`.
+After creating the file, add `./<name>` to the `imports` list in `home/apps/default.nix`.`,
 
 ---
 

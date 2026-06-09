@@ -1,6 +1,6 @@
 {pkgs, ...}: {
   home.sessionVariables.TERMINAL = "ghostty";
-  home.packages = [pkgs.ghostty];
+  programs.ghostty.enable = true;
 
   home.file.".config/ghostty/config".source = ./config;
   home.file.".config/ghostty/shaders" = {
