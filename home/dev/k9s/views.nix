@@ -10,8 +10,13 @@
       "RESTARTS"
       "CPU"
       "MEM"
+      "NODE"
       "IP|H"
-      "NODE|H"
+      "%CPU/R|H"
+      "%CPU/L|H"
+      "MEM|H"
+      "%MEM/R|H"
+      "%MEM/L|H"
     ];
   };
 }

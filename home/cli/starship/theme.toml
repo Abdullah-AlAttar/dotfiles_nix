@@ -14,12 +14,10 @@ $c\
 $rust\
 $golang\
 $nodejs\
-$php\
-$java\
-$kotlin\
 $haskell\
 $python\
 [](fg:green bg:sapphire)\
+$kubernetes\
 $direnv\
 $conda\
 [](fg:sapphire bg:lavender)\
@@ -31,7 +29,7 @@ $character"""
 
 palette = 'catppuccin_mocha'
 
-command_timeout = 3000
+command_timeout = 500
 
 [os]
 disabled = false
@@ -137,7 +135,7 @@ style = "bg:sapphire"
 format = '[[ $symbol( $context) ](fg:crust bg:sapphire)]($style)'
 
 [kubernetes]
-disabled = true
+disabled = false
 symbol = "☸ "
 style = "bg:sapphire"
 format = '[[ $symbol$context( \($namespace\)) ](fg:crust bg:sapphire)]($style)'
