@@ -4,8 +4,8 @@
 #
 # For standalone (non-NixOS) configurations, keep the same list in
 # modules/home/standalone.nix — use self.homeModules.* there too.
-{ self, ... }: {
-  flake.nixosModules.defaultHomeManager = { username, ... }: {
+{self, ...}: {
+  flake.nixosModules.defaultHomeManager = {username, ...}: {
     home-manager.users.${username}.imports = [
       self.homeModules.common
       self.homeModules.cli

@@ -1,7 +1,4 @@
-{
-  inputs,
-  ...
-}: {
+{inputs, ...}: {
   flake.nixosModules.mainPCHomeManager = {
     pkgs,
     username,
