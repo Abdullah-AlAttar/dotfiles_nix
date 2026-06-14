@@ -7,6 +7,7 @@
       self.nixosModules.kdeKwin
       self.nixosModules.kdeShortcuts
       self.nixosModules.kdePanels
+      self.nixosModules.kdePackages
     ];
   };
 }
