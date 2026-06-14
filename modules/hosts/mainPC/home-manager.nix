@@ -18,6 +18,7 @@
         [
           scrcpy
           libreoffice-qt6-fresh
+          yt-dlp
 
           # nixard # explore NixOS packages
         ]
