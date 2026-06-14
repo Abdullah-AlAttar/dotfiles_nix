@@ -4,7 +4,12 @@
     programs.gamescope.enable = true;
     programs.steam = {
       enable = true;
-      gamescopeSession.enable = true;
+      gamescopeSession = {
+        enable = true;
+
+        # Keep the mouse captured in fullscreen games launched through Gamescope.
+        # args = [ "--force-grab-cursor" ];
+      };
 
       # Open firewall ports for Steam Remote Play
       remotePlay.openFirewall = true;
