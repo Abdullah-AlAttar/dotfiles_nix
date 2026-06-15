@@ -19,6 +19,7 @@
           scrcpy
           libreoffice-qt6-fresh
           yt-dlp
+          freetube
 
           # nixard # explore NixOS packages
         ]
