@@ -6,13 +6,13 @@
     ./alacrity
     ./fonts
     ./neovide
+    ./obs
     # ./kitty
   ];
 
   home.packages = with pkgs; [
     # Trivial apps — no config files, just the package
     discord
-    obs-studio
     telegram-desktop
     obsidian
     microsoft-edge

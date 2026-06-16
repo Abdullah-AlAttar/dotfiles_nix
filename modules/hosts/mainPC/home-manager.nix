@@ -24,6 +24,7 @@
             yt-dlp
             freetube
             pear-desktop
+            showmethekey
 
             # nixard # explore NixOS packages
           ]
