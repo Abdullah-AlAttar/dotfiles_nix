@@ -25,6 +25,7 @@
             freetube
             pear-desktop
             showmethekey
+            anydesk
 
             # nixard # explore NixOS packages
           ]
