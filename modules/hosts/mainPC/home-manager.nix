@@ -25,9 +25,7 @@
             freetube
             pear-desktop
             showmethekey
-            anydesk
-
-            # nixard # explore NixOS packages
+            snx-rs
           ]
           ++ (with inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}; [
             opencode
@@ -36,7 +34,6 @@
             pi
             omp
             reasonix
-            snx-rs
           ]);
       };
     };
