@@ -1,5 +1,5 @@
 # Development tools aggregator — imports all dev program modules.
-{pkgs, ...}: {
+{ pkgs, ... }: {
   imports = [
     ./go
     ./kubernetes.nix
@@ -15,6 +15,7 @@
     # Databases
     postgresql
     sqlite
+    rainfrog
 
     # Protocol buffers
     buf
