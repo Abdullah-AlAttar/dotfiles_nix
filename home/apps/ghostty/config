@@ -5,6 +5,7 @@ copy-on-select = true
 window-theme = dark
 background-opacity = 0.95
 theme = Gruvbox Material Dark
+font-family = Sans Code Monospaced
 font-family = CaskaydiaCove Nerd Font
 cursor-style = block
 cursor-style-blink = true
