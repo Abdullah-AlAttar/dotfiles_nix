@@ -397,6 +397,57 @@ If the HM module doesn't cover all config needs (e.g., custom shaders, non-stand
 
 After creating the file, add `./<name>` to the `imports` list in `home/apps/default.nix`.`,
 
+### AppImage Wrapping Pattern
+
+When a GUI app is only available as an AppImage and not in nixpkgs (or was removed), wrap it using `pkgs.appimageTools.wrapType2`. Create `home/apps/<name>/default.nix`:
+
+```nix
+# <Name> — <short description> (AppImage wrap)
+# <homepage>
+{pkgs, ...}: let
+  pname = "<name>";
+  version = "<version>";
+
+  src = pkgs.fetchurl {
+    url = "https://download.example.com/releases/${pname}-${version}-x86_64.AppImage";
+    hash = "sha256-...";
+  };
+
+  appimageContents = pkgs.appimageTools.extract { inherit pname version src; };
+in {
+  home.packages = [
+    (pkgs.appimageTools.wrapType2 {
+      inherit pname version src;
+
+      extraInstallCommands = ''
+        install -m 444 -D ${appimageContents}/<app-id>.desktop $out/share/applications/${pname}.desktop
+        install -m 444 -D ${appimageContents}/path/to/icon.png $out/share/icons/hicolor/512x512/apps/${pname}.png
+        substituteInPlace $out/share/applications/${pname}.desktop \
+          --replace-fail 'Exec=AppRun' 'Exec=${pname}' \
+          --replace-fail 'Icon=<app-id>' 'Icon=${pname}'
+      '';
+
+      meta = {
+        description = "...";
+        homepage = "https://...";
+        license = pkgs.lib.licenses.unfree;
+        platforms = ["x86_64-linux"];
+        mainProgram = pname;
+      };
+    })
+  ];
+};
+```
+
+Key steps:
+1. **Get the hash** — download the AppImage and run `nix hash file <file>`.
+2. **Find desktop + icon paths** — extract locally first: `nix run nixpkgs#appimage-run -- --appimage-extract <AppImage>`, then look in the `squashfs-root/` output for `.desktop` and icon files.
+3. **App ID** — the `.desktop` file's `Icon=` value reveals the icon identifier inside the AppImage.
+4. **Add the import** — add `./<name>` to `home/apps/default.nix`'s `imports` list.
+5. **Run `task mainpc:switch`** (or `t580:switch`) to build and deploy.
+
+This pattern does **not** need `programs.appimage.binfmt` at runtime — `wrapType2` produces a regular FHS binary, not a raw AppImage. It works with any `pkgs.appimageTools.wrapType2` call; the extracted contents provide `.desktop` entries and icons.
+
 ---
 
 ## Rebuild

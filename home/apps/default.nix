@@ -7,6 +7,7 @@
     ./fonts
     ./neovide
     ./obs
+    ./chatbox
     # ./kitty
   ];
 
