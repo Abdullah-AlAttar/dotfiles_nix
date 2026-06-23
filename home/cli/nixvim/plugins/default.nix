@@ -21,6 +21,7 @@
     ./copilot.nix
     # ./pi.nix # AI coding assistant (pi.dev)
     ./lazygit.nix
+    ./neogit.nix
   ];
 
   programs.nixvim = {

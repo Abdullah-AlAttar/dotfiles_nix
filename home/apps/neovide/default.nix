@@ -3,8 +3,7 @@
   lib,
   pkgs,
   ...
-}:
-{
+}: {
   programs.neovide = {
     enable = true;
     settings = {

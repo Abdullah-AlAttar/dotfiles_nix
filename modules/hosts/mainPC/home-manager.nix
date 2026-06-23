@@ -23,6 +23,7 @@
           pear-desktop
           showmethekey
           snx-rs
+          code-cursor
         ]
         ++ (with inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}; [
           opencode
