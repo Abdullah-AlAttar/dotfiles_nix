@@ -23,5 +23,6 @@
       ];
       command = "setlocal spell spelllang=en";
     }
+
   ];
 }

@@ -71,3 +71,9 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
+-- :Ai — open toggleterm with reasonix (usage: nvim -c Chat)
+vim.api.nvim_create_user_command('Chat', function()
+  local Terminal = require('toggleterm.terminal').Terminal
+  local reasonix = Terminal:new({ cmd = 'reasonix' })
+  reasonix:toggle()
+end, { desc = 'Open toggleterm with reasonix' })
