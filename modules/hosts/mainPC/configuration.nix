@@ -25,6 +25,9 @@
       ...
     }: {
       imports = [
+        # Shared system baseline (nix, i18n, timezone, user, programs, services)
+        self.nixosModules.common
+
         # Base hardware + desktop
         self.nixosModules.mainPCHardware
         self.nixosModules.kde
@@ -60,7 +63,6 @@
 
       networking = {
         hostName = "nixos";
-        networkmanager.enable = true;
         firewall = {
           enable = true;
           allowedTCPPorts = [
@@ -70,90 +72,22 @@
         };
       };
 
-      nix = {
-        gc = {
-          automatic = true;
-          dates = "weekly";
-          options = "--delete-older-than 14d";
-        };
-        settings = {
-          auto-optimise-store = true;
-          experimental-features = [
-            "nix-command"
-            "flakes"
-          ];
-          trusted-users = [
-            "root"
-            "@wheel"
-          ];
-        };
-      };
-
-      # Trusted users can pass extra settings to the Nix daemon (e.g. system, extra-substituters).
-      # Tools like devenv require this — without it, the daemon silently ignores their settings
-      # and derivation evaluation fails. "@wheel" means "all users in the wheel group" (sudoers).
-      # Configure network proxy if necessary
-      # networking.proxy.default = "http://user:password@proxy:port/";
-      # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-      time.timeZone = "Europe/Berlin";
-
-      i18n = {
-        defaultLocale = "en_US.UTF-8";
-        extraLocaleSettings = {
-          LC_ADDRESS = "de_DE.UTF-8";
-          LC_IDENTIFICATION = "de_DE.UTF-8";
-          LC_MEASUREMENT = "de_DE.UTF-8";
-          LC_MONETARY = "de_DE.UTF-8";
-          LC_NAME = "de_DE.UTF-8";
-          LC_NUMERIC = "de_DE.UTF-8";
-          LC_PAPER = "de_DE.UTF-8";
-          LC_TELEPHONE = "de_DE.UTF-8";
-          LC_TIME = "de_DE.UTF-8";
-        };
-      };
-
       security.pki.certificateFiles = [./certs/cert_ca.crt];
-      security.rtkit.enable = true;
 
-      users.users.${username} = {
-        isNormalUser = true;
-        description = "Abdullah";
-        shell = pkgs.zsh;
-        extraGroups = [
-          "networkmanager"
-          "wheel"
-          "docker"
-          "sound"
-          "audio"
-        ];
-      };
+      users.users.${username}.extraGroups = [
+        "docker"
+        "sound"
+        "audio"
+      ];
 
-      programs = {
-        appimage = {
-          enable = true;
-          binfmt = true;
-        };
-        firefox.enable = true;
-        nix-ld.enable = true;
-        ssh.startAgent = true;
-        zsh.enable = true;
-      };
-
-      nixpkgs.config.allowUnfree = true;
-
-      services = {
-        printing.enable = true;
-        pulseaudio.enable = false;
+      programs.appimage = {
+        enable = true;
+        binfmt = true;
       };
 
       virtualisation.docker.enable = true;
 
       environment.systemPackages = with pkgs; [
-        vim
-        git
-        wget
-        go-task
         vscode
         android-tools
         brave
