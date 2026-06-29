@@ -8,6 +8,7 @@
     ./lsp.nix # Language Server Protocol support
     ./lualine.nix # Status line for Neovim
     ./markdown-preview.nix # Markdown preview plugin
+    ./render-markdown.nix # Improved Markdown rendering
     ./neo-tree.nix # File explorer for Neovim
     # ./snacks.nix # TODO remove
     ./startify.nix # Start screen for Neovim

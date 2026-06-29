@@ -26,5 +26,6 @@
     sqlfluff
     asciinema
     chafa
+    glow
   ];
 }
