@@ -1,0 +1,27 @@
+# SOPS encryption configuration — tells `sops` CLI which keys to encrypt with.
+#
+# HOW IT WORKS:
+# ─────────────
+# 1. You run `sops secrets/secrets.yaml` to create/edit encrypted secrets.
+# 2. sops reads this file to know WHICH age keys to encrypt the file for.
+# 3. Anyone with the corresponding PRIVATE age key can decrypt.
+#
+# For you (ab_dullah):
+#   Your age public key is listed below. The private key is at
+#   ~/.config/sops/age/keys.txt — sops-nix reads it at build time.
+#
+# To add a new host later:
+#   1. Get the host's SSH host key → convert to age:
+#      nix-shell -p ssh-to-age --run 'ssh-keyscan <host> | ssh-to-age'
+#   2. Add it as a new &anchor below and in the key_groups list.
+#   3. Run: sops updatekeys secrets/secrets.yaml
+#
+# See: https://github.com/getsops/sops#using-sops-yaml-conf-to-select-kms-pgp-and-age-for-new-files
+keys:
+  - &ab_dullah age1rgur94z2alzh75nmw6sa2twmcuc7hgz3wc3ksnnflz3w7qdmypasmvhpjk
+
+creation_rules:
+  - path_regex: secrets/[^/]+\.yaml$
+    key_groups:
+    - age:
+      - *ab_dullah

@@ -12,11 +12,19 @@ A NixOS system configuration managed as a **flake**, structured using **flake-pa
 dotfiles_nix/
 ├── flake.nix                  # Entry point — wires inputs and delegates to modules/
 ├── taskfile.yml               # Task runner shortcuts
+├── .sops.yaml                 # SOPS encryption config — which age keys can encrypt secrets
+│
+├── docs/                      # Reference documentation
+│   └── sops-nix.md            # Secrets management guide
+│
+├── secrets/                   # Encrypted secrets (safe to commit)
+│   └── secrets.yaml           # API keys, tokens — edit with `sops secrets/secrets.yaml`
 │
 ├── modules/                   # All flake-parts modules (auto-imported via import-tree)
 │   ├── parts.nix              # Declares supported systems (x86_64-linux, etc.)
 │   │
 │   ├── features/              # Reusable nixosModules (desktops, hardware, etc.)
+│   │   ├── sops.nix           # sops-nix NixOS module (system-level secrets)
 │   │   ├── gaming.nix         # Steam / gaming packages
 │   │   ├── nvidia.nix         # Nvidia drivers / CUDA
 │   │   ├── displaylink.nix    # DisplayLink dock support
@@ -41,7 +49,7 @@ dotfiles_nix/
 │   ├── home/
 │   │   ├── default.nix               # NixOS HM bridge — sets up home-manager NixOS module
 │   │   ├── default-hm-imports.nix     # Shared HM module import list (single source of truth for all hosts)
-│   │   ├── modules.nix               # Exposes flake.homeModules (common, cli, dev, apps, system)
+│   │   ├── modules.nix               # Exposes flake.homeModules (common, cli, dev, apps, system, sops)
 │   │   └── standalone.nix            # flake.homeConfigurations for non-NixOS (Ubuntu, WSL)
 │   │
 │   └── hosts/
@@ -104,7 +112,8 @@ dotfiles_nix/
     │   └── fonts/             # Font packages
     │
     └── system/                # System integration
-        └── default.nix        # Aggregator — session vars, network tools, misc
+        ├── default.nix        # Aggregator — session vars, network tools, misc
+        └── sops.nix           # sops-nix HM module — opt-in per host (API keys, tokens)
 ```
 
 ---
@@ -129,11 +138,12 @@ Every `.nix` file under `modules/` is a **flake-parts module** — a function th
 import-tree ./modules
     │
     ├── parts.nix           → config.systems = [...]
+    ├── features/sops.nix                     → flake.nixosModules.sops
     ├── features/desktop/gnome/default.nix → flake.nixosModules.gnome
     ├── features/desktop/cosmic/default.nix → flake.nixosModules.cosmic
     ├── features/desktop/kde/default.nix   → flake.nixosModules.kde
     ├── modules/home/default.nix           → flake.nixosModules.homeManager
-    ├── modules/home/modules.nix           → flake.homeModules (common, cli, dev, apps, system)
+    ├── modules/home/modules.nix           → flake.homeModules (common, cli, dev, apps, system, sops)
     ├── modules/home/standalone.nix        → flake.homeConfigurations (ubuntu, wsl)
     ├── modules/hosts/mainPC/
     │   ├── default.nix           → flake.nixosConfigurations.mainPC
@@ -253,6 +263,7 @@ NixOS system build (mainPC)
           │           self.homeModules.apps     → home/apps/default.nix (ghostty, discord, ...)
           │           self.homeModules.system   → home/system/default.nix (session vars, ...)
           │         ]
+          │     (sops is OPT-IN — imported per-host, not in defaultHomeManager)
           └── mainPCHomeManager
                 └── host-specific overrides (packages, session vars)
 ```
@@ -350,6 +361,7 @@ nix(action="flake-inputs", type="read", query="nixpkgs:flake.nix")
 | Adding a new host | Create `modules/hosts/<name>/` with `configuration.nix`, `hardware-configuration.nix`, `home-manager.nix`, and `taskfile.yml`; add an `includes` entry to root `taskfile.yml` |
 | Adding a GUI app | Create `home/apps/<name>/default.nix`, add `./<name>` to `home/apps/default.nix` imports |
 | Selecting HM modules | All hosts share `defaultHomeManager` (in `modules/home/default-hm-imports.nix`). Each host's `home-manager.nix` adds only host-specific overrides |
+| sops-nix (Secrets) | API keys stored in `secrets/secrets.yaml` (encrypted). Each host opts in by importing `self.homeModules.sops` in its `home-manager.nix`. Edit with `sops secrets/secrets.yaml`. Full guide: `docs/sops-nix.md` |
 
 ### Where to put a new package
 

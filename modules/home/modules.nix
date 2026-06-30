@@ -7,5 +7,9 @@
     dev = import ../../home/dev/default.nix;
     apps = import ../../home/apps/default.nix;
     system = import ../../home/system/default.nix;
+
+    # OPT-IN: hosts that need user-level secrets import this explicitly.
+    # It is NOT in defaultHomeManager — each host opts in via its home-manager.nix.
+    sops = import ../../home/system/sops.nix;
   };
 }

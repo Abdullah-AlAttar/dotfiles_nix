@@ -87,6 +87,24 @@ To customise per machine, edit `modules/home/default-hm-imports.nix` to change t
 1. Create `modules/hosts/<name>/` with `configuration.nix`, `hardware-configuration.nix`, `home-manager.nix`, and `taskfile.yml`
 2. Add an `includes` entry in `taskfile.yml`
 
+## Secrets Management (sops-nix)
+
+API keys and tokens are managed with [sops-nix](https://github.com/Mic92/sops-nix). Secrets are encrypted in the repo and decrypted at build time using your **age** key.
+
+- **Encrypted file**: `secrets/secrets.yaml`
+- **Configuration**: `.sops.yaml` (which keys can encrypt), `home/system/sops.nix` (HM module)
+- **Decrypted at**: `~/.config/sops-nix/secrets/<key>`
+
+```bash
+sops secrets/secrets.yaml    # Edit secrets
+sops -d secrets/secrets.yaml # View decrypted
+task mainpc:switch            # Rebuild with new secrets
+```
+
+sops is **opt-in per host** — only hosts that import `self.homeModules.sops` in their `home-manager.nix` get secrets. Currently enabled on `mainPC`.
+
+Full reference: **[docs/sops-nix.md](docs/sops-nix.md)**
+
 ## Common Tasks
 
 ```bash
