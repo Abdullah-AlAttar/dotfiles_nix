@@ -18,10 +18,10 @@
 #
 # See: https://github.com/getsops/sops#using-sops-yaml-conf-to-select-kms-pgp-and-age-for-new-files
 keys:
-  - &ab_dullah age1rgur94z2alzh75nmw6sa2twmcuc7hgz3wc3ksnnflz3w7qdmypasmvhpjk
+- &ab_dullah age1rgur94z2alzh75nmw6sa2twmcuc7hgz3wc3ksnnflz3w7qdmypasmvhpjk
 
 creation_rules:
-  - path_regex: secrets/[^/]+\.yaml$
-    key_groups:
-    - age:
-      - *ab_dullah
+- path_regex: secrets/[^/]+\.yaml$
+  key_groups:
+  - age:
+    - *ab_dullah

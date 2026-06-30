@@ -1,4 +1,4 @@
-{ ... }: {
+{...}: {
   programs.nixvim = {
     plugins.render-markdown = {
       enable = true;
@@ -59,7 +59,7 @@
         mode = "n";
         key = "<leader>mt";
         action = ":RenderMarkdown toggle<cr>";
-        options = { desc = "Toggle markdown rendering"; };
+        options = {desc = "Toggle markdown rendering";};
       }
     ];
   };
