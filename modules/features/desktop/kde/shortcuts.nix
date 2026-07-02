@@ -5,6 +5,9 @@
         kwin = {
           "Window Close" = "Alt+Q";
         };
+        plasmashell = {
+          "show dashboard" = "none";
+        };
         wayscriber.toggle-overlay = "Meta+K";
       };
 
