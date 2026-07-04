@@ -71,9 +71,16 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
--- :Ai — open toggleterm with reasonix (usage: nvim -c Chat)
+-- :Chat — open toggleterm with reasonix (usage: nvim -c Chat)
 vim.api.nvim_create_user_command('Chat', function()
   local Terminal = require('toggleterm.terminal').Terminal
-  local reasonix = Terminal:new({ cmd = 'reasonix' })
-  reasonix:toggle()
+  local cmd = Terminal:new({ cmd = 'reasonix' })
+  cmd:toggle()
 end, { desc = 'Open toggleterm with reasonix' })
+
+-- :Crush — open toggleterm with crush (usage: nvim -c Crush)
+vim.api.nvim_create_user_command('Crush', function()
+  local Terminal = require('toggleterm.terminal').Terminal
+  local cmd = Terminal:new({ cmd = 'crush' })
+  cmd:toggle()
+end, { desc = 'Open toggleterm with crush' })
