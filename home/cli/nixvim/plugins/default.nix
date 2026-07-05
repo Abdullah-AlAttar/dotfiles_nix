@@ -23,6 +23,7 @@
     # ./pi.nix # AI coding assistant (pi.dev)
     ./lazygit.nix
     ./neogit.nix
+    ./oil.nix # File explorer (oil.nvim)
   ];
 
   programs.nixvim = {
@@ -58,11 +59,6 @@
       colorizer = {
         enable = true;
         settings.user_default_options.names = false;
-      };
-
-      oil = {
-        enable = true;
-        lazyLoad.settings.cmd = "Oil";
       };
 
       trim = {
