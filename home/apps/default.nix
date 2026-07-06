@@ -8,6 +8,7 @@
     ./neovide
     ./obs
     ./chatbox
+    ./teams-for-linux
     # ./kitty
   ];
 
@@ -19,7 +20,6 @@
     microsoft-edge
     vlc
     remmina
-    teams-for-linux
     bruno # API testing tool, like Postman but open source and with a nice UI
     zathura # PDF viewer
 
