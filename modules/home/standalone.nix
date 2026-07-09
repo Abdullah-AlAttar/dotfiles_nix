@@ -13,6 +13,7 @@
     pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
     # Modules shared by all standalone configurations.
     # Uses the same self.homeModules.* as the NixOS defaultHomeManager module.
+    llm-agents-pkgs = inputs.llm-agents.packages.x86_64-linux;
     baseModules = [
       self.homeModules.common
       self.homeModules.cli
@@ -27,6 +28,7 @@
         programs.home-manager.enable = true;
         targets.genericLinux.enable = true;
         nixpkgs.config.allowUnfree = true;
+        home.packages = [llm-agents-pkgs.claude-code];
       }
     ];
   in {
