@@ -8,39 +8,42 @@
   inputs,
   lib,
   ...
-}: {
-  flake.homeConfigurations = let
-    pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
-    # Modules shared by all standalone configurations.
-    # Uses the same self.homeModules.* as the NixOS defaultHomeManager module.
-    llm-agents-pkgs = inputs.llm-agents.packages.x86_64-linux;
-    baseModules = [
-      self.homeModules.common
-      self.homeModules.cli
-      self.homeModules.dev
-      self.homeModules.system
-      # No GUI apps (home/apps) on non-NixOS — import them explicitly if needed.
+}:
+{
+  flake.homeConfigurations =
+    let
+      pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
+      # Modules shared by all standalone configurations.
+      # Uses the same self.homeModules.* as the NixOS defaultHomeManager module.
+      llm-agents-pkgs = inputs.llm-agents.packages.x86_64-linux;
+      baseModules = [
+        self.homeModules.common
+        self.homeModules.cli
+        self.homeModules.dev
+        self.homeModules.system
+        # No GUI apps (home/apps) on non-NixOS — import them explicitly if needed.
 
-      # Standalone HM boilerplate (handled by NixOS module on NixOS hosts)
-      {
-        home.username = "ab_dullah";
-        home.homeDirectory = "/home/ab_dullah";
-        programs.home-manager.enable = true;
-        targets.genericLinux.enable = true;
-        nixpkgs.config.allowUnfree = true;
-        home.packages = [llm-agents-pkgs.claude-code];
-      }
-    ];
-  in {
-    ubuntu = inputs.home-manager.lib.homeManagerConfiguration {
-      inherit pkgs;
-      modules = baseModules;
-      extraSpecialArgs = {inherit inputs;};
+        # Standalone HM boilerplate (handled by NixOS module on NixOS hosts)
+        {
+          home.username = "ab_dullah";
+          home.homeDirectory = "/home/ab_dullah";
+          programs.home-manager.enable = true;
+          targets.genericLinux.enable = true;
+          nixpkgs.config.allowUnfree = true;
+          home.packages = [ llm-agents-pkgs.claude-code ];
+        }
+      ];
+    in
+    {
+      ubuntu = inputs.home-manager.lib.homeManagerConfiguration {
+        inherit pkgs;
+        modules = baseModules;
+        extraSpecialArgs = { inherit inputs; };
+      };
+      wsl = inputs.home-manager.lib.homeManagerConfiguration {
+        inherit pkgs;
+        modules = baseModules;
+        extraSpecialArgs = { inherit inputs; };
+      };
     };
-    wsl = inputs.home-manager.lib.homeManagerConfiguration {
-      inherit pkgs;
-      modules = baseModules;
-      extraSpecialArgs = {inherit inputs;};
-    };
-  };
 }

@@ -52,6 +52,13 @@
       programs.plasma = {
         enable = true;
         powerdevil.AC.autoSuspend.action = "nothing";
+        input.keyboard = {
+          layouts = [
+            { layout = "us"; }
+            { layout = "ara"; }
+          ];
+          options = ["grp:alt_shift_toggle" "caps:escape"];
+        };
       };
     };
   };
