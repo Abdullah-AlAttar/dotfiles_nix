@@ -1,7 +1,7 @@
 {
   nixConfig = {
-    extra-substituters = ["https://cache.numtide.com"];
-    extra-trusted-public-keys = ["niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="];
+    extra-substituters = [ "https://cache.numtide.com" ];
+    extra-trusted-public-keys = [ "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g=" ];
   };
 
   inputs = {
@@ -35,9 +35,10 @@
     #   inputs.nixpkgs.follows = "nixpkgs";
     # };
     wayscriber = {
-      # TODO: Remember to remove specific version once the dependency is stable on rustc
-      # url = "github:devmobasa/wayscriber/v0.9.18";
-      url = "github:devmobasa/wayscriber";
+      # Pinned to 90b26de — later commit c132054 has a failing test
+      # (frozen_v1_client_fails_closed_for_nonempty_v2_request_but_keeps_empty_signal)
+      # url = "github:devmobasa/wayscriber";
+      url = "github:devmobasa/wayscriber/90b26de11314e66b538d8f9078e42a8b3e6287c3";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     llm-agents.url = "github:numtide/llm-agents.nix";
@@ -46,5 +47,5 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
-  outputs = inputs: inputs.flake-parts.lib.mkFlake {inherit inputs;} (inputs.import-tree ./modules);
+  outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);
 }
