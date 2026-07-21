@@ -9,6 +9,7 @@
     ./obs
     ./chatbox
     ./teams-for-linux
+    ./obsidian
     # ./kitty
   ];
 
@@ -16,7 +17,6 @@
     # Trivial apps — no config files, just the package
     discord
     telegram-desktop
-    obsidian
     microsoft-edge
     vlc
     remmina

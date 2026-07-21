@@ -18,7 +18,7 @@
       lazyLoad.settings.cmd = "Oil";
 
       settings = {
-        columns = [ "icon" ];
+        columns = ["icon"];
         view_options = {
           show_hidden = true;
         };

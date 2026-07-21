@@ -242,7 +242,7 @@
           };
         })
         {
-          "ff" = {
+          "fj" = {
             action = "<C-\\><C-n>";
             desc = "Exit terminal mode";
           };
