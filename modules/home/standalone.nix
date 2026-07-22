@@ -28,7 +28,7 @@
         programs.home-manager.enable = true;
         targets.genericLinux.enable = true;
         nixpkgs.config.allowUnfree = true;
-        home.packages = [llm-agents-pkgs.claude-code];
+        home.packages = [llm-agents-pkgs.claude-code pkgs.awscli2];
       }
     ];
   in {
