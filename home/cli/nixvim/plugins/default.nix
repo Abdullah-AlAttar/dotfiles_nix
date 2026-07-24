@@ -4,7 +4,7 @@
     ./comment.nix # Commenting plugin
     ./floaterm.nix # Floating terminal for Neovim
     ./toggleterm.nix # Vertical side-panel terminal
-    ./fff.nix # Fast fuzzy file finder
+    # ./fff.nix # Fast fuzzy file finder
     ./lsp.nix # Language Server Protocol support
     ./lualine.nix # Status line for Neovim
     ./markdown-preview.nix # Markdown preview plugin
