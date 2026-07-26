@@ -12,6 +12,8 @@
     ./neo-tree.nix # File explorer for Neovim
     # ./snacks.nix # TODO remove
     ./startify.nix # Start screen for Neovim
+
+    # ./fff.nix # Fast fuzzy file finder
     ./telescope.nix # Fuzzy finder for Neovim
     ./treesitter.nix # Syntax highlighting and code parsing
     ./zellij-nav.nix # Seamless nav between Zellij panes and Neovim windows
