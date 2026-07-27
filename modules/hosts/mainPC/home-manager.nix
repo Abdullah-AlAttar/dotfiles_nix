@@ -65,6 +65,7 @@ in {
           code-cursor
           postman
           awscli2
+          herdr
         ]
         ++ (with inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}; [
           opencode
