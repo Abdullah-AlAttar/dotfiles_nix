@@ -23,6 +23,10 @@
       };
       updatetime = 100; # Faster completion
 
+      # Terminal title
+      title = true; # Allow terminal title to be set
+      titlestring = ""; # Will be set dynamically by autocommands
+
       # Line numbers
       relativenumber = true; # Relative line numbers
       number = true; # Display the absolute line number of the current line
