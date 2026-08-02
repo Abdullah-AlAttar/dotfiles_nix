@@ -51,7 +51,7 @@
             # --- Apps ---
             "Mod+Return".spawn = "ghostty";
             "Mod+T".spawn = "ghostty";
-            "Mod+B".spawn = "microsoft-edge";
+            "Mod+B".spawn = "google-chrome-stable";
 
             # --- Window management ---
             "Mod+Q".close-window = [];
@@ -257,7 +257,7 @@
           };
 
           dock = {
-            enabled = true;
+            enabled = false;
             position = "bottom";
             auto_hide = true;
             icon_size = 30;

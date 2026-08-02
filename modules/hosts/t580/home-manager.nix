@@ -14,7 +14,7 @@
         SSH_ASKPASS_REQUIRE = "never";
       };
       # t580-specific packages (currently none beyond shared modules)
-      home.packages = with pkgs; [];
+      home.packages = with pkgs; [google-chrome];
     };
   };
 }
