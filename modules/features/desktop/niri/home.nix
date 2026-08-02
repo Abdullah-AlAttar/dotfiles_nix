@@ -187,11 +187,37 @@
               grid_columns = 3;
               show_shortcuts = true;
               actions = [
-                {action = "lock"; label = "Lock"; shortcut = "1"; enabled = true;}
-                {action = "logout"; label = "Log Out"; shortcut = "2"; enabled = true;}
-                {action = "suspend"; label = "Sleep"; shortcut = "3"; enabled = true;}
-                {action = "reboot"; label = "Restart"; shortcut = "4"; enabled = true;}
-                {action = "shutdown"; label = "Shut Down"; shortcut = "5"; enabled = true; variant = "destructive";}
+                {
+                  action = "lock";
+                  label = "Lock";
+                  shortcut = "1";
+                  enabled = true;
+                }
+                {
+                  action = "logout";
+                  label = "Log Out";
+                  shortcut = "2";
+                  enabled = true;
+                }
+                {
+                  action = "suspend";
+                  label = "Sleep";
+                  shortcut = "3";
+                  enabled = true;
+                }
+                {
+                  action = "reboot";
+                  label = "Restart";
+                  shortcut = "4";
+                  enabled = true;
+                }
+                {
+                  action = "shutdown";
+                  label = "Shut Down";
+                  shortcut = "5";
+                  enabled = true;
+                  variant = "destructive";
+                }
               ];
             };
 
@@ -245,14 +271,16 @@
               center = ["date" "control-center" "clock"];
               end = ["media" "weather" "tray" "group:g1"];
 
-              capsule_group = [{
-                enabled = true;
-                fill = "surface_variant";
-                id = "g1";
-                members = ["notifications" "volume" "bluetooth" "network" "battery"];
-                opacity = 1.0;
-                padding = 6.0;
-              }];
+              capsule_group = [
+                {
+                  enabled = true;
+                  fill = "surface_variant";
+                  id = "g1";
+                  members = ["notifications" "volume" "bluetooth" "network" "battery"];
+                  opacity = 1.0;
+                  padding = 6.0;
+                }
+              ];
             };
           };
 

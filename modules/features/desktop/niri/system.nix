@@ -1,8 +1,5 @@
 {inputs, ...}: {
-  flake.nixosModules.niriSystem = {
-    pkgs,
-    ...
-  }: {
+  flake.nixosModules.niriSystem = {pkgs, ...}: {
     imports = [
       inputs.niri-nix.nixosModules.niri-nix
       inputs.noctalia-greeter.nixosModules.default

@@ -1,15 +1,7 @@
 {
   nixConfig = {
-    extra-substituters = [
-      "https://cache.numtide.com"
-      "https://niri-nix.cachix.org"
-      "https://noctalia.cachix.org"
-    ];
-    extra-trusted-public-keys = [
-      "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
-      "niri-nix.cachix.org-1:Wv0OmO7PsuocRKzfDoJ3mulSl7Z6oezYhGhR+3CFPos="
-      "noctalia.cachix.org-1:5nmYc0E2h0a7gn0ok0Dqj7lmJORna2Rqpus0Zq7sDqE="
-    ];
+    extra-substituters = ["https://cache.numtide.com"];
+    extra-trusted-public-keys = ["niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="];
   };
 
   inputs = {
