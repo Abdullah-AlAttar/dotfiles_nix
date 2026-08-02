@@ -1,10 +1,12 @@
 {inputs, ...}: {
   flake.nixosModules.niriSystem = {
-    lib,
     pkgs,
     ...
   }: {
-    imports = [inputs.niri-nix.nixosModules.niri-nix];
+    imports = [
+      inputs.niri-nix.nixosModules.niri-nix
+      inputs.noctalia-greeter.nixosModules.default
+    ];
 
     nix.settings = {
       substituters = ["https://niri-nix.cachix.org"];
@@ -13,18 +15,29 @@
 
     programs.niri.enable = true;
 
+    services.xserver.enable = true;
+
+    programs.noctalia-greeter = {
+      enable = true;
+      greeter-args = "--session niri";
+      settings = {
+        session.default = "niri";
+
+        keyboard = {
+          layout = "us,ara";
+          options = "grp:alt_shift_toggle,caps:escape";
+        };
+
+        cursor = {
+          theme = "Adwaita";
+          size = 24;
+        };
+      };
+    };
+
     environment.systemPackages = with pkgs; [
       xwayland-satellite
     ];
-
-    services.xserver.enable = true;
-
-    services.displayManager.sddm = {
-      enable = lib.mkDefault true;
-      wayland.enable = lib.mkDefault true;
-    };
-
-    services.displayManager.defaultSession = lib.mkDefault "niri";
 
     services.pipewire = {
       enable = true;

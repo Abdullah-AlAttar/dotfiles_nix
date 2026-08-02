@@ -42,6 +42,10 @@
       url = "github:noctalia-dev/noctalia";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    noctalia-greeter = {
+      url = "github:noctalia-dev/noctalia-greeter";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     wayscriber = {
       # Pinned to 90b26de — later commit c132054 has a failing test
       # (frozen_v1_client_fails_closed_for_nonempty_v2_request_but_keeps_empty_signal)
