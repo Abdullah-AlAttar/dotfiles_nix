@@ -4,18 +4,19 @@
     pkgs,
     ...
   }: {
-    imports = [inputs.dms.nixosModules.dank-material-shell];
+    imports = [inputs.niri-nix.nixosModules.niri-nix];
 
-    # --- niri compositor ---
+    nix.settings = {
+      substituters = ["https://niri-nix.cachix.org"];
+      trusted-public-keys = ["niri-nix.cachix.org-1:Wv0OmO7PsuocRKzfDoJ3mulSl7Z6oezYhGhR+3CFPos="];
+    };
+
     programs.niri.enable = true;
 
-    # --- DMS (NixOS-level) ---
-    programs.dank-material-shell.enable = true;
+    environment.systemPackages = with pkgs; [
+      xwayland-satellite
+    ];
 
-    # Disable GCR SSH agent — conflicts with programs.ssh.startAgent
-    services.gnome.gcr-ssh-agent.enable = false;
-
-    # --- Display manager (mkDefault so KDE coexistence is safe) ---
     services.xserver.enable = true;
 
     services.displayManager.sddm = {
@@ -25,7 +26,6 @@
 
     services.displayManager.defaultSession = lib.mkDefault "niri";
 
-    # --- Audio ---
     services.pipewire = {
       enable = true;
       alsa.enable = true;
@@ -36,22 +36,20 @@
 
     security.rtkit.enable = true;
 
-    # --- Keyboard ---
     services.xserver.xkb = {
       layout = "us,ara";
       options = "grp:alt_shift_toggle,caps:escape";
     };
 
-    # --- Portals ---
     xdg.portal = {
       enable = true;
       extraPortals = [pkgs.xdg-desktop-portal-gtk];
     };
 
-    # --- Environment ---
+    services.gnome.gcr-ssh-agent.enable = false;
+
     environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
-    # --- Fonts ---
     fonts.packages = with pkgs; [
       noto-fonts
       noto-fonts-cjk-sans

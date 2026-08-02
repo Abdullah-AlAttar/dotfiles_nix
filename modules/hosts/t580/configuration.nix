@@ -26,9 +26,9 @@
 
       # Base hardware + desktop
       self.nixosModules.t580Hardware
-      self.nixosModules.kde
+      self.nixosModules.niri
+      # self.nixosModules.kde
       # self.nixosModules.gnome
-      # self.nixosModules.niri
 
       # Optional host features
       # self.nixosModules.nvidia  # T580 is Intel; uncomment if you have the dGPU model
