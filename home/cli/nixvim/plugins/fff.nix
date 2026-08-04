@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{ pkgs, ... }: {
   programs.nixvim = {
     plugins.fff = {
       enable = true;
@@ -12,12 +12,17 @@
       #     hash = "sha256-JbV2dTQhTyZgDZYvFoR1mz9CeM2IPv59Qmp2iiJC8a0=";
       #   };
       # });
-      #
+
       settings = {
         base_path = {
           __raw = "vim.fn.getcwd()";
         };
         max_results = 100;
+
+        hl = {
+          cursor = "CursorLine";
+          normal = "Normal";
+        };
 
         layout = {
           anchor = "top";
@@ -25,10 +30,10 @@
           height = 0.7;
           prompt_position = "top";
           preview_position = "right";
-          # # Keep the preview on the right at any width. fff's flex layout
-          # # otherwise flips it on top below 130 cols, which at height 0.5
-          # # collapses the list window to 0 rows and crashes nvim_open_win.
-          # flex.size = 0;
+          # Keep the preview on the right at any width. fff's flex layout
+          # otherwise flips it on top below 130 cols, which at height 0.5
+          # collapses the list window to 0 rows and crashes nvim_open_win.
+          flex.size = 0;
         };
         key_bindings = {
           close = [
