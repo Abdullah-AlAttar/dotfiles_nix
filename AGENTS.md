@@ -362,6 +362,7 @@ nix(action="flake-inputs", type="read", query="nixpkgs:flake.nix")
 | Adding a GUI app | Create `home/apps/<name>/default.nix`, add `./<name>` to `home/apps/default.nix` imports |
 | Selecting HM modules | All hosts share `defaultHomeManager` (in `modules/home/default-hm-imports.nix`). Each host's `home-manager.nix` adds only host-specific overrides |
 | sops-nix (Secrets) | API keys stored in `secrets/secrets.yaml` (encrypted). Each host opts in by importing `self.homeModules.sops` in its `home-manager.nix`. Edit with `sops secrets/secrets.yaml`. Full guide: `docs/sops-nix.md` |
+| plasma-manager cache | After changing panels/wallpaper, `plasmashell` may not reflect changes if `last_run_*` hash cache is stale. Fix: `rm ~/.local/share/plasma-manager/last_run_* && ~/.local/share/plasma-manager/run_all.sh` or reboot. |
 
 ### Where to put a new package
 
