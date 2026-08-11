@@ -46,6 +46,8 @@
 
     security.rtkit.enable = true;
 
+    services.upower.enable = true;
+
     services.xserver.xkb = {
       layout = "us,ara";
       options = "grp:alt_shift_toggle,caps:escape";
