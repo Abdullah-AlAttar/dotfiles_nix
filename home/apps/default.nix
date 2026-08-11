@@ -1,5 +1,5 @@
 # GUI applications aggregator — imports all GUI app modules.
-{pkgs, ...}: {
+{ pkgs, ... }: {
   imports = [
     ./ghostty
     ./zed
@@ -7,7 +7,7 @@
     ./fonts
     ./neovide
     ./obs
-    ./chatbox
+    # ./chatbox
     ./teams-for-linux
     ./obsidian
     # ./kitty
