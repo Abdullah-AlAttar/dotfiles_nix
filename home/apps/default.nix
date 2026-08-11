@@ -33,5 +33,9 @@
 
     # GUI apps without their own module (yet)
     inkscape
+    thunar
+    thunar-volman
+    tumbler # Thunar thumbnail service
+    gvfs    # GVFS for mounting/trash support
   ];
 }
