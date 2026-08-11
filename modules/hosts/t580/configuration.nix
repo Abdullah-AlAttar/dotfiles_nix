@@ -35,6 +35,7 @@
       # self.nixosModules.gaming
       # self.nixosModules.scanner
       # self.nixosModules.teamviewer
+      self.nixosModules.tailscale
 
       # User environment — shared HM module list + host-specific overrides
       self.nixosModules.defaultHomeManager

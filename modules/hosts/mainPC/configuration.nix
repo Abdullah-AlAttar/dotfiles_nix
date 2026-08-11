@@ -44,6 +44,7 @@
         # self.nixosModules.weylus
         self.nixosModules.teamviewer
         self.nixosModules.scanner
+        self.nixosModules.tailscale
 
         # User environment — shared HM module list + host-specific overrides
         self.nixosModules.defaultHomeManager
