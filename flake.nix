@@ -31,12 +31,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     noctalia = {
-      url = "github:noctalia-dev/noctalia";
-      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:noctalia-dev/noctalia/cachix";
+      # inputs.nixpkgs.follows = "nixpkgs";  # cache miss if followed
     };
     noctalia-greeter = {
       url = "github:noctalia-dev/noctalia-greeter";
-      inputs.nixpkgs.follows = "nixpkgs";
+      # inputs.nixpkgs.follows = "nixpkgs";  # cache miss if followed
     };
     wayscriber = {
       # Pinned to 90b26de — later commit c132054 has a failing test

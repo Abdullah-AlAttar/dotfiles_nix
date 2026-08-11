@@ -6,8 +6,11 @@
     ];
 
     nix.settings = {
-      substituters = ["https://niri-nix.cachix.org"];
-      trusted-public-keys = ["niri-nix.cachix.org-1:Wv0OmO7PsuocRKzfDoJ3mulSl7Z6oezYhGhR+3CFPos="];
+      substituters = ["https://niri-nix.cachix.org" "https://noctalia.cachix.org"];
+      trusted-public-keys = [
+        "niri-nix.cachix.org-1:Wv0OmO7PsuocRKzfDoJ3mulSl7Z6oezYhGhR+3CFPos="
+        "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
+      ];
     };
 
     programs.niri.enable = true;
