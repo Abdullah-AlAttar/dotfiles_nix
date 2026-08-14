@@ -1,4 +1,4 @@
-{config, ...}: {
+{ ... }: {
   flake.nixosModules.t580HomeManager = {
     pkgs,
     username,
@@ -13,8 +13,13 @@
         SSH_ASKPASS = "";
         SSH_ASKPASS_REQUIRE = "never";
       };
-      # t580-specific packages (currently none beyond shared modules)
-      home.packages = with pkgs; [google-chrome];
+      home.packages = with pkgs; [
+        google-chrome
+        thunar
+        thunar-volman
+        tumbler # Thunar thumbnail service
+        gvfs    # GVFS for mounting/trash support
+      ];
     };
   };
 }

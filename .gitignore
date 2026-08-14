@@ -1,6 +1,8 @@
 # Nix build output symlink created by nix build/nixos-rebuild
+
 result
 tmp_nix_dir
 tmp/den-main
 reasonix.toml
 .codegraph
+.omx
