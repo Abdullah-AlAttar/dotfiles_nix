@@ -71,6 +71,7 @@ in
             postman
             awscli2
             herdr
+            anki
           ]
           ++ (with inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}; [
             opencode
