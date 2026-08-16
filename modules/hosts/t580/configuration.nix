@@ -72,6 +72,10 @@
 
     # services.openssh.enable = true;
 
+    environment.systemPackages = [
+      inputs.wayscriber.packages.${pkgs.stdenv.hostPlatform.system}.default
+    ];
+
     system.stateVersion = "25.11"; # Did you read the comment?
   };
 }

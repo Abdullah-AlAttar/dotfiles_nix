@@ -129,6 +129,9 @@
             "XF86AudioPrev".spawn = ["noctalia" "msg" "media" "previous"];
             "XF86AudioNext".spawn = ["noctalia" "msg" "media" "next"];
 
+            # --- Wayscriber annotation ---
+            "Mod+Shift+K".spawn = ["wayscriber" "--active"];
+
             # --- Screenshots (niri built-in) ---
             "Print".screenshot = [];
             "Ctrl+Print".screenshot-screen = [];

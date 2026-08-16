@@ -1,5 +1,5 @@
-{...}: {
-  flake.nixosModules.kdeShortcuts = {username, ...}: {
+{ ... }: {
+  flake.nixosModules.kdeShortcuts = { username, ... }: {
     home-manager.users.${username}.programs.plasma = {
       shortcuts = {
         kwin = {
@@ -8,7 +8,7 @@
         plasmashell = {
           "show dashboard" = "none";
         };
-        wayscriber.toggle-overlay = "Meta+K";
+        wayscriber.toggle-overlay = "Ctrl+Alt+K";
       };
 
       hotkeys.commands."launch-terminal" = {
