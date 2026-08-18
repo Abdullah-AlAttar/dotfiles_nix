@@ -1,5 +1,5 @@
-{ ... }: {
-  flake.nixosModules.kdeShortcuts = { username, ... }: {
+{...}: {
+  flake.nixosModules.kdeShortcuts = {username, ...}: {
     home-manager.users.${username}.programs.plasma = {
       shortcuts = {
         kwin = {

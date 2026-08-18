@@ -1,4 +1,4 @@
-{ ... }: {
+{...}: {
   flake.nixosModules.t580HomeManager = {
     pkgs,
     username,
@@ -18,7 +18,7 @@
         thunar
         thunar-volman
         tumbler # Thunar thumbnail service
-        gvfs    # GVFS for mounting/trash support
+        gvfs # GVFS for mounting/trash support
       ];
     };
   };

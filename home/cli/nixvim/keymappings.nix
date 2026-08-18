@@ -117,18 +117,18 @@
           };
 
           # Avante AI assistant keybindings
-          "<leader>aa" = {
-            action = "<cmd>AvanteAsk<cr>";
-            desc = "Avante: Ask AI";
-          };
-          "<leader>ar" = {
-            action = "<cmd>AvanteRefresh<cr>";
-            desc = "Avante: Refresh";
-          };
-          "<leader>ae" = {
-            action = "<cmd>AvanteEdit<cr>";
-            desc = "Avante: Edit";
-          };
+          # "<leader>aa" = {
+          #   action = "<cmd>AvanteAsk<cr>";
+          #   desc = "Avante: Ask AI";
+          # };
+          # "<leader>ar" = {
+          #   action = "<cmd>AvanteRefresh<cr>";
+          #   desc = "Avante: Refresh";
+          # };
+          # "<leader>ae" = {
+          #   action = "<cmd>AvanteEdit<cr>";
+          #   desc = "Avante: Edit";
+          # };
 
           # Copy file path
           "<leader>yp" = {
@@ -197,14 +197,14 @@
           };
 
           # Avante visual mode keybindings
-          "<leader>aa" = {
-            action = "<cmd>AvanteAsk<cr>";
-            desc = "Avante: Ask AI about selection";
-          };
-          "<leader>ae" = {
-            action = "<cmd>AvanteEdit<cr>";
-            desc = "Avante: Edit selection";
-          };
+          # "<leader>aa" = {
+          #   action = "<cmd>AvanteAsk<cr>";
+          #   desc = "Avante: Ask AI about selection";
+          # };
+          # "<leader>ae" = {
+          #   action = "<cmd>AvanteEdit<cr>";
+          #   desc = "Avante: Edit selection";
+          # };
         };
 
       insert =

@@ -11,6 +11,8 @@
         };
         logger = {
           fullScreen = false;
+          buffer = 5000;
+          tail = 500;
         };
       };
     };

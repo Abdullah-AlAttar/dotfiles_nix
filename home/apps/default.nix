@@ -1,5 +1,5 @@
 # GUI applications aggregator — imports all GUI app modules.
-{ pkgs, ... }: {
+{pkgs, ...}: {
   imports = [
     ./ghostty
     ./zed
