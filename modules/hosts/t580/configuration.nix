@@ -44,7 +44,13 @@
     ];
 
     boot.loader = {
-      systemd-boot.enable = true;
+      grub = {
+        enable = true;
+        efiSupport = true;
+        enableCryptodisk = true;
+        device = "nodev";
+        theme = pkgs.catppuccin-grub;
+      };
       efi.canTouchEfiVariables = true;
     };
 
