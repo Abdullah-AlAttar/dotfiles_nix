@@ -37,7 +37,6 @@
 
     environment.systemPackages = with pkgs; [
       xwayland-satellite
-      kdePackages.plasma-workspace-wallpapers
     ];
 
     services.pipewire = {

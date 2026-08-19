@@ -247,7 +247,7 @@
             transition = ["honeycomb"];
             transition_duration = 1500;
             transition_on_startup = true;
-            default.path = "${pkgs.kdePackages.plasma-workspace-wallpapers}/share/wallpapers/Mountain/contents/images/5120x2880.png";
+            default.path = ../../../../wallpapers/wallhaven-21oyv6.jpg;
           };
 
           bar = {
