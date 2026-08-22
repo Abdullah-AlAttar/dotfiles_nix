@@ -15,10 +15,6 @@
       };
       home.packages = with pkgs; [
         google-chrome
-        thunar
-        thunar-volman
-        tumbler # Thunar thumbnail service
-        gvfs # GVFS for mounting/trash support
       ];
     };
   };
