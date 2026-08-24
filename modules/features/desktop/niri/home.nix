@@ -7,7 +7,8 @@
     home-manager.users.${username} = {
       imports = [
         inputs.niri-nix.homeModules.niri-nix
-        inputs.noctalia.homeModules.default
+        # programs.noctalia is now upstreamed in home-manager itself; importing
+        # inputs.noctalia.homeModules.default here duplicates that option.
       ];
 
       wayland.windowManager.niri = {
