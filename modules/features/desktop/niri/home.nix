@@ -293,6 +293,7 @@
             enabled = true;
             position = "bottom";
             auto_hide = true;
+            reserve_space = false;
             icon_size = 30;
             magnification = true;
             magnification_scale = 1.45;
