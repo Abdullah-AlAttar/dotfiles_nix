@@ -260,7 +260,7 @@
               thickness = 30;
               radius = 12;
               padding = 10;
-              margin_edge = 10;
+              margin_edge = 4;
               margin_ends = 10;
               background_opacity = 0.75;
               capsule = true;
@@ -290,7 +290,7 @@
           };
 
           dock = {
-            enabled = false;
+            enabled = true;
             position = "bottom";
             auto_hide = true;
             icon_size = 30;
