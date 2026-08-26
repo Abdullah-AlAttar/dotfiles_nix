@@ -21,7 +21,8 @@
     vlc
     remmina
     bruno # API testing tool, like Postman but open source and with a nice UI
-    zathura # PDF viewer
+    zathura # PDF viewer (vim-like, minimal, Wayland-friendly)
+    readest # modern ebook reader (epub, mobi, etc.)
 
     # GUI-related utilities
     xclip
