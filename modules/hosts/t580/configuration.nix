@@ -36,6 +36,7 @@
       # self.nixosModules.scanner
       # self.nixosModules.teamviewer
       self.nixosModules.tailscale
+      self.nixosModules.kdeconnect
 
       # User environment — shared HM module list + host-specific overrides
       self.nixosModules.defaultHomeManager

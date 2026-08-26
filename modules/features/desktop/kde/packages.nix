@@ -4,7 +4,5 @@
     environment.systemPackages = with pkgs; [
       haruna # KDE video player (mpv-based)
     ];
-
-    programs.kdeconnect.enable = true;
   };
 }

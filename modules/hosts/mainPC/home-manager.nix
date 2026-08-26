@@ -72,6 +72,7 @@ in
             awscli2
             herdr
             anki
+            pnpm
           ]
           ++ (with inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}; [
             opencode
