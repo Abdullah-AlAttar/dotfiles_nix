@@ -2,7 +2,8 @@
   self,
   inputs,
   ...
-}: {
+}:
+{
   # nixosConfiguration entry point for `nixos-rebuild switch --flake '.#mainPC'`
   flake.nixosConfigurations.mainPC = inputs.nixpkgs.lib.nixosSystem {
     specialArgs = {
@@ -23,7 +24,8 @@
       pkgs,
       username,
       ...
-    }: {
+    }:
+    {
       imports = [
         # Shared system baseline (nix, i18n, timezone, user, programs, services)
         self.nixosModules.common
@@ -41,6 +43,7 @@
 
         # Optional workstation features
         self.nixosModules.gaming
+        self.nixosModules.vr
         # self.nixosModules.weylus
         self.nixosModules.teamviewer
         self.nixosModules.scanner
@@ -74,7 +77,7 @@
         };
       };
 
-      security.pki.certificateFiles = [./certs/cert_ca.crt];
+      security.pki.certificateFiles = [ ./certs/cert_ca.crt ];
 
       users.users.${username}.extraGroups = [
         "docker"
@@ -93,7 +96,7 @@
         vscode
         android-tools
         brave
-        beekeeper-studio
+        # beekeeper-studio
         freerdp
         inputs.wayscriber.packages.${pkgs.stdenv.hostPlatform.system}.default
       ];
