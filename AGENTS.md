@@ -104,7 +104,7 @@ dotfiles_nix/
     │   ├── obs/               # OBS Studio
     │   ├── microsoft-edge/    # Edge browser
     │   ├── zed/               # Zed editor
-    │   ├── alacrity/          # Alacritty terminal
+    │   ├── wezterm/           # WezTerm terminal
     │   ├── bruno/             # Bruno API client
     │   ├── remmina/           # RDP client
     │   ├── teams/             # Teams for Linux

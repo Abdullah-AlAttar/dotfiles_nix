@@ -3,7 +3,7 @@
   imports = [
     ./ghostty
     ./zed
-    ./alacrity
+    ./wezterm
     ./fonts
     ./neovide
     ./obs

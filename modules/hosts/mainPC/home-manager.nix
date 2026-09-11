@@ -22,6 +22,7 @@ in
       home-manager.users.${username} = {
         imports = [
           sops
+          ../../../home/dev/gortex
         ];
 
         # ── sops-nix secrets ─────────────────────────────────────────
@@ -74,6 +75,7 @@ in
             herdr
             pnpm
             calibre
+            gh
           ]
           ++ (with inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}; [
             opencode
