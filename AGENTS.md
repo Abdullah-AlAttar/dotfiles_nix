@@ -74,7 +74,7 @@ dotfiles_nix/
     │   ├── zsh/               # Zsh + oh-my-zsh + plugins
     │   ├── starship/          # Starship prompt
     │   ├── atuin/             # Atuin shell history
-    │   ├── zellij/            # Terminal multiplexer
+    │   ├── herdr/             # Herdr (AI agent PTY multiplexer)
     │   ├── helix/             # Helix editor
     │   ├── neovim/            # NixVim-based Neovim config
     │   │   ├── default.nix

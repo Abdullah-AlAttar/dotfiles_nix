@@ -4,7 +4,7 @@
     ./zsh
     ./starship
     ./atuin
-    ./zellij
+    ./herdr
     ./helix
     ./nixvim
     ./yazi.nix

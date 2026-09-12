@@ -16,7 +16,6 @@
     # ./fff.nix # Fast fuzzy file finder
     # ./telescope.nix # Fuzzy finder for Neovim
     ./treesitter.nix # Syntax highlighting and code parsing
-    ./zellij-nav.nix # Seamless nav between Zellij panes and Neovim windows
     ./which-key.nix # Shows available keybindings
     ./yazi.nix # file explorer for Neovim
     # ./hardtime.nix # Prevents accidental key presses

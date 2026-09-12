@@ -72,7 +72,6 @@ in
             code-cursor
             postman
             awscli2
-            herdr
             pnpm
             calibre
             gh

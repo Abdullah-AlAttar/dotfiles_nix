@@ -213,7 +213,7 @@ show_milliseconds = true
 format = " in $duration "
 style = "fg:color_fg0"
 disabled = false
-show_notifications = true
+show_notifications = false
 min_time_to_notify = 45000
 
 [status]

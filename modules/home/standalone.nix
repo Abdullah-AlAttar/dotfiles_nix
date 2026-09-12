@@ -29,7 +29,6 @@
         targets.genericLinux.enable = true;
         nixpkgs.config.allowUnfree = true;
         home.packages = [
-          pkgs.herdr
           llm-agents-pkgs.claude-code
           llm-agents-pkgs.copilot-cli
           pkgs.awscli2
