@@ -75,6 +75,7 @@ in
             pnpm
             calibre
             gh
+            harper
           ]
           ++ (with inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}; [
             opencode
