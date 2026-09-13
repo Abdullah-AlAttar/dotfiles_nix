@@ -6,6 +6,7 @@
     ./atuin
     ./herdr
     ./helix
+    ./fresh-editor
     ./nixvim
     ./yazi.nix
     ./bash
