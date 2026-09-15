@@ -3,8 +3,31 @@
 maximize = true
 copy-on-select = true
 window-theme = dark
-background-opacity = 0.98
-theme = Gruvbox Material Dark
+background-opacity = 1
+
+# 0x96f Theme palette
+background = #191515
+foreground = #FCFCFA
+palette = 0=#191515
+palette = 1=#FF7272
+palette = 2=#BCDF59
+palette = 3=#FFCA58
+palette = 4=#49CAE4
+palette = 5=#A093E2
+palette = 6=#AEE8F4
+palette = 7=#FCFCFA
+palette = 8=#545452
+palette = 9=#FF8787
+palette = 10=#C6E472
+palette = 11=#FFD271
+palette = 12=#64D2E8
+palette = 13=#AEA3E6
+palette = 14=#BAEBF6
+palette = 15=#FCFCFA
+cursor-color = #FCFCFA
+selection-foreground = #262427
+selection-background = #FCFCFA
+
 font-family = Sans Code Monospaced
 font-family = CaskaydiaCove Nerd Font
 cursor-style = block
