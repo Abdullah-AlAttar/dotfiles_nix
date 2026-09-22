@@ -10,6 +10,7 @@
     # ./chatbox
     ./teams-for-linux
     ./obsidian
+    ./dbflux
     # ./kitty
   ];
 
