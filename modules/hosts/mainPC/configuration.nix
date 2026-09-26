@@ -43,6 +43,9 @@
         self.nixosModules.nvidia
         # self.nixosModules.displaylink
 
+        # Qt development IDE and tools
+        self.nixosModules.qtDev
+
         # Optional workstation features
         self.nixosModules.gaming
         self.nixosModules.vr
