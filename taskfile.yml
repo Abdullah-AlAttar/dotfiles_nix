@@ -32,9 +32,9 @@ tasks:
   nix:gc:
     desc: Remove ALL old system generations and run garbage collection
     cmds:
-    - sudo nix-env --profile /nix/var/nix/profiles/system --delete-generations old
-    - sudo nix-collect-garbage -d
-    - sudo nix store optimise
+      - sudo nix-env --profile /nix/var/nix/profiles/system --delete-generations old
+      - sudo nix-collect-garbage -d
+      - sudo nix store optimise
 
   nix:gc:user:
     desc: Garbage collect only user profile generations
@@ -43,8 +43,8 @@ tasks:
   nix:gc:old:
     desc: Delete all but the last 3 system generations
     cmds:
-    - sudo nix-env --profile /nix/var/nix/profiles/system --delete-generations +3
-    - sudo nix-collect-garbage
+      - sudo nix-env --profile /nix/var/nix/profiles/system --delete-generations +3
+      - sudo nix-collect-garbage
 
   nix:generations:
     desc: List system generations
@@ -78,8 +78,8 @@ tasks:
   standalone:gc:
     desc: Delete old Home Manager generations and run garbage collection (no sudo needed)
     cmds:
-    - nix-collect-garbage -d
-    - nix store optimise
+      - nix-collect-garbage -d
+      - nix store optimise
 
   dump:config:
     desc: Dump kde plasma configuration to a nix file

@@ -6,7 +6,18 @@ vars:
 tasks:
   switch:
     desc: Build and switch to the NixOS configuration
-    cmd: sudo nixos-rebuild switch --flake '.#{{.HOST}}'
+    cmds:
+      - sudo nixos-rebuild switch --flake '.#{{.HOST}}'
+      - |
+        if command -v modinfo &>/dev/null && modinfo -F version nvidia &>/dev/null; then
+          kernel_ver=$(modinfo -F version nvidia)
+          lib_ver=$(readlink -f /run/opengl-driver/lib/libGLX_nvidia.so.0 2>/dev/null \
+            | grep -oP '(?<=nvidia-x11-)\d+\.\d+\.\d+')
+          if [ -n "$kernel_ver" ] && [ -n "$lib_ver" ] && [ "$kernel_ver" != "$lib_ver" ]; then
+            echo "⚠  NVIDIA mismatch: kernel module $kernel_ver ≠ userspace $lib_ver"
+            echo "   → Reboot to load the new kernel module"
+          fi
+        fi
 
   boot:
     desc: Build and set as boot entry — no switch
