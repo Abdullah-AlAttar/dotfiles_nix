@@ -101,6 +101,7 @@
         vscode
         android-tools
         brave
+        google-chrome
         # beekeeper-studio
         freerdp
         inputs.wayscriber.packages.${pkgs.stdenv.hostPlatform.system}.default
