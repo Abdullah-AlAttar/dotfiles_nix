@@ -88,6 +88,7 @@ in
             claude-code
             codex
             oh-my-codex
+            # ripwire
           ]);
       };
     };
