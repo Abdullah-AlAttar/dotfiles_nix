@@ -14,6 +14,8 @@
     services.displayManager.defaultSession = "plasma";
     services.desktopManager.plasma6.enable = true;
 
+    programs.kde-pim.enable = false;
+
     security.rtkit.enable = true;
 
     services.pipewire = {
