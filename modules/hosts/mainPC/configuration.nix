@@ -105,6 +105,7 @@
         # beekeeper-studio
         freerdp
         inputs.wayscriber.packages.${pkgs.stdenv.hostPlatform.system}.default
+        inputs.herdr-gpui.packages.${pkgs.stdenv.hostPlatform.system}.default
       ];
 
       # Some programs need SUID wrappers, can be configured further or are
