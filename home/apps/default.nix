@@ -8,7 +8,6 @@
     ./neovide
     ./obs
     # ./chatbox
-    ./revpdf
     ./teams-for-linux
     ./obsidian
     ./dbflux
