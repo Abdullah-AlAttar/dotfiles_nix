@@ -12,6 +12,7 @@
         show_agent_labels_on_pane_borders = true;
         host_cursor = "native";
         toast.delivery = "terminal";
+        window_title = "🐂 herdr: {workspace}";
       };
     };
   };

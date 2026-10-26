@@ -33,6 +33,9 @@
       "nvidia.NVreg_UsePageAttributeTable=1" # improves memory performance
       "nvidia.NVreg_EnableMSI=1" # reduces interrupt overhead (usually default)
     ];
+    # Plasma 6.8 enabled triple buffering on NVIDIA by default; causes stutter (KDE bug 527753).
+    environment.sessionVariables.KWIN_DRM_DISABLE_TRIPLE_BUFFERING = "1";
+
     # Enable OpenGL (required for rendering)
     hardware.graphics = {
       enable = true;
