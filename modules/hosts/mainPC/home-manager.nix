@@ -22,7 +22,6 @@ in
       home-manager.users.${username} = {
         imports = [
           sops
-          ../../../home/dev/gortex
         ];
 
         # ── sops-nix secrets ─────────────────────────────────────────
