@@ -31,6 +31,8 @@
     environment.systemPackages = with pkgs; [
       # GUI tool to install/manage Proton-GE versions into Steam's compatibilitytools.d
       protonup-qt
+      # Mod manager for Thunderstore games (Lethal Company, Risk of Rain 2, etc.)
+      r2modman
     ];
   };
 }
