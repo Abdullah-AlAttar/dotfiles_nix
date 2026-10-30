@@ -53,6 +53,7 @@
         self.nixosModules.teamviewer
         self.nixosModules.scanner
         self.nixosModules.tailscale
+        self.nixosModules.herdrApp
 
         # User environment — shared HM module list + host-specific overrides
         self.nixosModules.defaultHomeManager
