@@ -13,7 +13,6 @@
 
     environment.systemPackages = with pkgs; [
       simple-scan
-      xsane
       kdePackages.skanlite
     ];
   };
