@@ -11,6 +11,7 @@
     ./teams-for-linux
     ./obsidian
     ./dbflux
+    ./flameshot
     # ./kitty
   ];
 
