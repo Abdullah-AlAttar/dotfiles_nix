@@ -4,9 +4,9 @@
   ...
 }:
 let
-  # Resolve the opt-in sops HM module from the flake registry.
+  # Resolve the opt-in HM modules (sops, dbflux) from the flake registry.
   # (Captured here because the inner NixOS module doesn't receive `self`.)
-  inherit (self.homeModules) sops;
+  inherit (self.homeModules) sops dbflux;
 in
 {
   flake.nixosModules.mainPCHomeManager =
@@ -22,6 +22,7 @@ in
       home-manager.users.${username} = {
         imports = [
           sops
+          dbflux
         ];
 
         # ── sops-nix secrets ─────────────────────────────────────────

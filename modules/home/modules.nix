@@ -11,5 +11,9 @@
     # OPT-IN: hosts that need user-level secrets import this explicitly.
     # It is NOT in defaultHomeManager — each host opts in via its home-manager.nix.
     sops = import ../../home/system/sops.nix;
+
+    # OPT-IN: DBFlux database client. Not in home/apps/default.nix, so hosts
+    # that don't need it never build it. Import via the host's home-manager.nix.
+    dbflux = import ../../home/apps/dbflux/default.nix;
   };
 }

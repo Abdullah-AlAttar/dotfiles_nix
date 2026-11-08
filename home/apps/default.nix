@@ -10,7 +10,7 @@
     # ./chatbox
     ./teams-for-linux
     ./obsidian
-    ./dbflux
+    # dbflux is opt-in per host: see flake.homeModules.dbflux (modules/home/modules.nix)
     ./flameshot
     # ./kitty
   ];
