@@ -5,7 +5,7 @@
     ./zed
     ./wezterm
     ./fonts
-    ./neovide
+    # ./neovide # disabled: nixos-unstable f9a75f4 has wrong neovide hashes (fixed on nixpkgs master in 2cc8df229); re-enable after `nix flake update nixpkgs` picks it up
     ./obs
     # ./chatbox
     ./teams-for-linux
