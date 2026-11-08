@@ -101,7 +101,6 @@
       environment.systemPackages = with pkgs; [
         vscode
         android-tools
-        brave
         google-chrome
         # beekeeper-studio
         freerdp

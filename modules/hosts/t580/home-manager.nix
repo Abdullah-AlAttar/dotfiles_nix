@@ -15,7 +15,6 @@
       };
       home.packages = with pkgs; [
         google-chrome
-        brave
         thunar
         thunar-volman
         tumbler # Thunar thumbnail service
