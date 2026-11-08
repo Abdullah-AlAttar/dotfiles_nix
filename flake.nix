@@ -30,6 +30,10 @@
       url = "git+https://codeberg.org/BANanaD3V/niri-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    ryoku = {
+      url = "github:Ryoku-dev/Ryoku-on-NixOS";
+      # No nixpkgs follows: Ryoku pins its own package set on purpose.
+    };
     noctalia = {
       url = "github:noctalia-dev/noctalia/cachix";
       # inputs.nixpkgs.follows = "nixpkgs";  # cache miss if followed

@@ -26,7 +26,8 @@
 
       # Base hardware + desktop
       self.nixosModules.t580Hardware
-      self.nixosModules.niri
+      self.nixosModules.ryoku
+      # self.nixosModules.niri
       # self.nixosModules.kde
       # self.nixosModules.gnome
 
