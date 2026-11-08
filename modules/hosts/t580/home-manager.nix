@@ -15,6 +15,7 @@
       };
       home.packages = with pkgs; [
         google-chrome
+        librewolf
         thunar
         thunar-volman
         tumbler # Thunar thumbnail service

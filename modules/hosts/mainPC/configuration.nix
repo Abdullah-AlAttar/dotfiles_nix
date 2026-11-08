@@ -101,6 +101,7 @@
       environment.systemPackages = with pkgs; [
         vscode
         android-tools
+        librewolf
         google-chrome
         # beekeeper-studio
         freerdp

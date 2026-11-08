@@ -23,7 +23,6 @@
       alsa.enable = true;
       alsa.support32Bit = true;
       pulse.enable = true;
-      jack.enable = true;
     };
 
     # fwupd is pulled in by KDE/Plasma; disable its refresh timer to avoid
