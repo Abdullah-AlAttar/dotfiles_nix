@@ -22,7 +22,6 @@
 
     # Dev environments
     process-compose
-    dioxus-cli
 
     # WebAssembly
     binaryen
