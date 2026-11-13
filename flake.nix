@@ -49,6 +49,10 @@
       url = "github:devmobasa/wayscriber/90b26de11314e66b538d8f9078e42a8b3e6287c3";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    bootvine = {
+      url = "git+https://codeberg.org/wvhulle/bootvine";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     llm-agents.url = "github:numtide/llm-agents.nix";
     sops-nix = {
       url = "github:Mic92/sops-nix";

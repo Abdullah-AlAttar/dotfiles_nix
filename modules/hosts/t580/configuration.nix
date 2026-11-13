@@ -38,6 +38,7 @@
       # self.nixosModules.teamviewer
       self.nixosModules.tailscale
       self.nixosModules.kdeconnect
+      self.nixosModules.bootvine
 
       # User environment — shared HM module list + host-specific overrides
       self.nixosModules.defaultHomeManager
